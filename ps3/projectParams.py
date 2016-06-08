@@ -12,7 +12,7 @@
 # Pieter Abbeel (pabbeel@cs.berkeley.edu).
 
 
-STUDENT_CODE_DEFAULT = 'rock_paper_scissors.py'
+STUDENT_CODE_DEFAULT = 'rock_paper_scissors.py,wordprops.py'
 PROJECT_TEST_CLASSES = 'tutorialTestClasses.py'
-PROJECT_NAME = 'Project 3: Rock Paper Scissors'
-BONUS_PIC = False
+PROJECT_NAME = 'Project 3: Rock Paper Scissors & Word Properties'
+BONUS_PIC = True

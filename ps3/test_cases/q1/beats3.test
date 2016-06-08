@@ -4,4 +4,4 @@ failure: "beats(gesture1, gesture2) must return whether gesture1 beats gesture2"
 
 # A python expression to be evaluated.  This expression must return the
 # same result for the student and instructor's code.
-test: "rock_paper_scissors.beats('rock', 'scissors')"
+test: "rock_paper_scissors.beats('paper', 'rock')"
