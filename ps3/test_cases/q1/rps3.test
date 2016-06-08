@@ -1,0 +1,7 @@
+class: "EvalTest"
+success: "beats(gesture1, gesture2) returns the difference between a and b"
+failure: "beats(gesture1, gesture2) must return the difference between a and b"
+
+# A python expression to be evaluated.  This expression must return the
+# same result for the student and instructor's code.
+test: "rock_paper_scissors.beats('rock', 'scissors')"

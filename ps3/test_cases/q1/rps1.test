@@ -1,0 +1,7 @@
+class: "EvalTest"
+success: "isValidGesture(gesture) returns the difference between a and b"
+failure: "isValidGesture(gesture) must return the difference between a and b"
+
+# A python expression to be evaluated.  This expression must return the
+# same result for the student and instructor's code.
+test: "rock_paper_scissors.isValidGesture('rock')"
