@@ -2,7 +2,7 @@ def isValidGesture(gesture):
     """Returns True if gesture is one of the
     strings 'rock', 'paper', or 'scissors',
     and False otherwise."""
-    return gesture in ['rock', 'paper', 'scissors']
+    return gesture in ['rock', 'paper', 'scissors', 'spock']
 
 def beats(gesture1, gesture2):
     """Returns True if the first gesture beats the second
