@@ -1,0 +1,7 @@
+class: "EvalTest"
+success: "functionname returns description"
+failure: "functionname must return description"
+
+# A python expression to be evaluated.  This expression must return the
+# same result for the student and instructor's code.
+test: "modulename.functionname(arg1,arg2,etc)"

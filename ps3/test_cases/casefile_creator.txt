@@ -1,0 +1,4 @@
+directory,functionname,modulename,description,result,arg1,arg2,etc
+q1,beats,rock_paper_scissors,True if gesture1 beats gesture2; False otherwise,True,'rock','scissors'
+q2,isPalindrome,wordprops,True if word is a palindrome; False otherwise,False,'pepe'
+q2,isPalindrome,wordprops,True if word is a palindrome; False otherwise,False,'sburb'
