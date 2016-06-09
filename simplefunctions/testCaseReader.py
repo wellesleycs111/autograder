@@ -3,13 +3,14 @@
 # Created to allow easy input for test cases in CS111 autograder
 
 import sys
+import os
 
 def linesFromFile(filename):
     '''Returns a list of all the lines from a file with the given filename.
        In each line, the terminating newline has been removed.'''
     with open(filename, 'r') as inputFile: # open the file
         # read each line in the file
-        strippedLines = [line.strip() for line in inputFile.readlines()]
+        strippedLines = [line.strip() for line in inputFile.readlines()][1:] # skip header row
     return strippedLines
     
 def generateTestFile(caseList,filename):
@@ -45,7 +46,7 @@ def main():
     for line in caseList:
         line=line.split(',')
         amountOfSolutionsDict[line[0]] = amountOfSolutionsDict.get(line[0],0)+1
-        testFile=line[0]+"/"+line[1]+str(amountOfSolutionsDict[line[0]])
+        testFile=os.path.join('test_cases', line[0], line[1]+str(amountOfSolutionsDict[line[0]]))
         generateTestFile(line,testFile+".test")
         generateSolutionFile(line,testFile+".solution")
     
