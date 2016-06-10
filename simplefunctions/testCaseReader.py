@@ -35,6 +35,13 @@ def generateSolutionFile(caseList,filename):
         f.write("# The result of evaluating the test must equal the below when cast to a string.\n")
         f.write("result: \""+caseList[4]+"\"\n")
 
+def generateCONFIGFile(directory,numPoints):
+    '''Creates a CONFIG file for each folder to indicate number of points'''
+    filename = os.path.join('test_cases',directory,'CONFIG')
+    with open(filename,'w')as f:
+        f.write("max_points: \""+str(numPoints)+"\"\n")
+        f.write("class: \"NumberPassedQuestion\"")
+
 def main():
     caseList=[]
     if len(sys.argv)>1:
@@ -43,12 +50,16 @@ def main():
         caseList=linesFromFile("casefile_creator.txt") #default file otherwise
     amountOfSolutionsDict={} #will store how many solutions a certain function has
     #(so we don't overwrite the same solution file a buncha times)
+    testsPerQDict={}
     for line in caseList:
         line=line.split(',')
-        amountOfSolutionsDict[line[0]] = amountOfSolutionsDict.get(line[0],0)+1
-        testFile=os.path.join('test_cases', line[0], line[1]+str(amountOfSolutionsDict[line[0]]))
+        amountOfSolutionsDict[line[1]] = amountOfSolutionsDict.get(line[1],0)+1
+        testsPerQDict[line[0]]=testsPerQDict.get(line[0],0)+1
+        testFile=os.path.join('test_cases', line[0], line[1]+str(amountOfSolutionsDict[line[1]]))
         generateTestFile(line,testFile+".test")
         generateSolutionFile(line,testFile+".solution")
+    for key in testsPerQDict:
+        generateCONFIGFile(key,testsPerQDict[key])
     
 if __name__=='__main__':
     main()

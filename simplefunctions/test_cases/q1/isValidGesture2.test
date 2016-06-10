@@ -1,6 +1,6 @@
 class: "EvalTest"
-success: "isValidGesture(gesture) returns True if gesture is one of 'rock', 'paper' or 'scissors', False otherwise"
-failure: "isValidGesture(gesture) must return True if gesture is one of 'rock', 'paper' or 'scissors', False otherwise"
+success: "isValidGesture returns True if gesture is one of 'rock' 'paper' or 'scissors'; False otherwise"
+failure: "isValidGesture must return True if gesture is one of 'rock' 'paper' or 'scissors'; False otherwise"
 
 # A python expression to be evaluated.  This expression must return the
 # same result for the student and instructor's code.

@@ -4,4 +4,4 @@ failure: "isPalindrome must return True if word is a palindrome; False otherwise
 
 # A python expression to be evaluated.  This expression must return the
 # same result for the student and instructor's code.
-test: "wordprops.isPalindrome('homestuck')"
+test: "wordprops.isPalindrome('civic')"
