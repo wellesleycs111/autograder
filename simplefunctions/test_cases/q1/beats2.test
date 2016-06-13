@@ -1,6 +1,6 @@
 class: "EvalTest"
-success: "beats returns True if gesture1 beats gesture2; False otherwise"
-failure: "beats must return True if gesture1 beats gesture2; False otherwise"
+success: "beats('scissors','rock') returns True if gesture1 beats gesture2; False otherwise"
+failure: "beats('scissors','rock') must return True if gesture1 beats gesture2; False otherwise"
 
 # A python expression to be evaluated.  This expression must return the
 # same result for the student and instructor's code.

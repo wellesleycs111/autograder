@@ -20,8 +20,8 @@ def generateTestFile(caseList,filename):
     with open(filename,'w') as f:
         #writes test file with information from the list
         f.write("class: \"EvalTest\"\n");
-        f.write("success: \""+caseList[1]+" returns "+caseList[3]+"\"\n")
-        f.write("failure: \""+caseList[1]+" must return "+caseList[3]+"\"\n")
+        f.write("success: \""+caseList[1]+"("+','.join(arguments)+") returns "+caseList[3]+"\"\n")
+        f.write("failure: \""+caseList[1]+"("+','.join(arguments)+") must return "+caseList[3]+"\"\n")
         f.write("\n# A python expression to be evaluated.  This expression must return the\n")
         f.write("# same result for the student and instructor's code.\n")
         f.write("test: \""+caseList[2]+"."+caseList[1]+'('+','.join(arguments)+')\"\n')
