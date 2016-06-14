@@ -4,7 +4,7 @@
 # educational purposes provided that (1) you do not distribute or publish
 # solutions, (2) you retain this notice, and (3) you provide clear
 # attribution to UC Berkeley, including a link to http://ai.berkeley.edu.
-# 
+#
 # Attribution Information: The Pacman AI projects were developed at UC Berkeley.
 # The core projects and autograders were primarily created by John DeNero
 # (denero@cs.berkeley.edu) and Dan Klein (klein@cs.berkeley.edu).
@@ -169,7 +169,7 @@ to follow your instructor's guidelines to receive credit on your project.
       self.addMessage(line)
 
   def produceOutput(self):
-    edxOutput = open('edx_response.html', 'w')
+    edxOutput = open('grader_result.html', 'w')
     edxOutput.write("<div>")
 
     # first sum
@@ -220,7 +220,7 @@ to follow your instructor's guidelines to receive credit on your project.
       edxOutput.write(output)
     edxOutput.write("</div>")
     edxOutput.close()
-    edxOutput = open('edx_grade', 'w')
+    edxOutput = open('grade', 'w')
     edxOutput.write(str(self.points.totalCount()))
     edxOutput.close()
 
@@ -279,4 +279,3 @@ class Counter(dict):
     Returns the sum of counts for all keys.
     """
     return sum(self.values())
-
