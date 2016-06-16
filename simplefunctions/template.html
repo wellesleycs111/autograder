@@ -1,24 +1,79 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>CS111 Autograder PS0x</title>
+  <title>CS111 Autograder Results for PS0x</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous"> <!-- bootstrap -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+  <link href="grader.css" rel="stylesheet"/> <!-- our customizations -->
 </head>
 <body>
-  <h1>Pset 0x autograder</h1>
-  <h2>question 1</h2>
-  <h3>[PASS/FAIL]: [test_case/qx/file.test]</h3>
-  <p>[function description]</p>
+  <h1>Pset 0x autograder results</h1>
+  <div>
+          <h3>
+              Total score (15 / 16)
+          </h3>
 
-  <h3>etc</h3>
-  <p>etc</p>
+          <div class="test">
+            <section>
+            <div class="shortform">
+              <button type="button" class="btn btn-warning">Question 1 <span class="badge">4/5</span> </button> <!-- make this clickable to collapse or uncollapse the associated longform -->
+            </div>
+          <div class="longform">  <!-- make longform collapsible -->
+            <h4 class="alert alert-success">Passed</h4>
+<pre>
+  test_cases/q1/beats1.test
+  	beats('rock','scissors') returns True if gesture1 beats gesture2; False otherwise
+  test_cases/q1/beats2.test
+  	beats('scissors','rock') returns True if gesture1 beats gesture2; False otherwise
+  test_cases/q1/beats3.test
+  	beats('paper','rock') returns True if gesture1 beats gesture2; False otherwise
+  test_cases/q1/isValidGesture1.test
+  	isValidGesture('rock') returns True if gesture is one of 'rock' 'paper' or 'scissors'; False otherwise
+</pre>
+<h4 class="alert alert-danger">Failed</h4>
+<pre>
+  test_cases/q1/isValidGesture2.test
+  	isValidGesture('spock') must return True if gesture is one of 'rock' 'paper' or 'scissors'; False otherwise
+  	student result: "True"
+  	correct result: "False"
+</pre>
+          </div>
+          </section>
+        </div>
 
-  <h3>x/y points</h3>
-
-  <h2>repeat for other questions</h2>
-
-  <h2>Provisional grades</h2>
-  <h3>Question q1: points</h3>
-  <h3>etc</h3>
-  <h2>total</h2>
-</body>
+          <div class="test">
+            <section>
+            <div class="shortform">
+              <button type="button" class="btn btn-success">Question 2 <span class="badge">11/11</span> </h2>
+            </div>
+          <div class="longform">
+            <h4 class="alert alert-success">Passed</h4>
+            <pre>
+  test_cases/q2/isPalindrome1.test
+  	isPalindrome('pepe') returns True if word is a palindrome; False otherwise
+  test_cases/q2/isPalindrome2.test
+  	isPalindrome('homestuck') returns True if word is a palindrome; False otherwise
+  test_cases/q2/isPalindrome3.test
+  	isPalindrome('civic') returns True if word is a palindrome; False otherwise
+  test_cases/q2/isPalindrome4.test
+  	isPalindrome('Noon') returns True if word is a palindrome; False otherwise
+  test_cases/q2/isTopRow1.test
+  	isTopRow('pretty') returns True if word uses only letters on the first row of the keyboard; False otherwise
+  test_cases/q2/isTopRow2.test
+  	isTopRow('TyPeWrItEr') returns True if word uses only letters on the first row of the keyboard; False otherwise
+  test_cases/q2/isTopRow3.test
+  	isTopRow('jessica jones') returns True if word uses only letters on the first row of the keyboard; False otherwise
+  test_cases/q2/scrabbleScore1.test
+  	scrabbleScore('juxtapose') returns the scrabble value (int) of the word
+  test_cases/q2/scrabbleScore2.test
+  	scrabbleScore('quiz') returns the scrabble value (int) of the word
+  test_cases/q2/scrabbleScore3.test
+  	scrabbleScore('Wellesley') returns the scrabble value (int) of the word
+  test_cases/q2/scrabbleScore4.test
+  	scrabbleScore('Dyonisus') returns the scrabble value (int) of the word</pre>
+          </div>
+          </section>
+        </div>
+  </div>
+  </body>
 </html>
