@@ -21,6 +21,7 @@ import traceback
 import pdb
 from collections import defaultdict
 import util
+import jinja2
 
 class Grades:
   "A data structure for project grades, along with formatting code to display them"
@@ -167,6 +168,14 @@ to follow your instructor's guidelines to receive credit on your project.
 
     for line in errorHint.split('\n'):
       self.addMessage(line)
+
+def fillHTMLTemplate(templateString, paramsDict):
+    """Invokes the jinja2 methods to fill in the slots
+       in the template.
+    """
+    templateObject = jinja2.Template(templateString)
+    htmlContent = templateObject.render(paramsDict)
+    return htmlContent
 
   def produceOutput(self):
     edxOutput = open('grader_result.html', 'w')
