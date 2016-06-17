@@ -170,14 +170,13 @@ to follow your instructor's guidelines to receive credit on your project.
       self.addMessage(line)
 
 def fillHTMLTemplate(templateString, paramsDict):
-    """Invokes the jinja2 methods to fill in the slots
-       in the template.
+    """Invokes the jinja2 methods to fill in the slots in the template.
     """
     templateObject = jinja2.Template(templateString)
     htmlContent = templateObject.render(paramsDict)
     return htmlContent
 
-  def produceOutput(self):
+def produceOutput(self):
     edxOutput = open('grader_result.html', 'w')
     edxOutput.write("<div>")
 
@@ -233,27 +232,27 @@ def fillHTMLTemplate(templateString, paramsDict):
     edxOutput.write(str(self.points.totalCount()))
     edxOutput.close()
 
-  def fail(self, message, raw=False):
+def fail(self, message, raw=False):
     "Sets sanity check bit to false and outputs a message"
     self.sane = False
     self.assignZeroCredit()
     self.addMessage(message, raw)
 
-  def assignZeroCredit(self):
+def assignZeroCredit(self):
     self.points[self.currentQuestion] = 0
 
-  def addPoints(self, amt):
+def addPoints(self, amt):
     self.points[self.currentQuestion] += amt
 
-  def deductPoints(self, amt):
+def deductPoints(self, amt):
     self.points[self.currentQuestion] -= amt
 
-  def assignFullCredit(self, message="", raw=False):
+def assignFullCredit(self, message="", raw=False):
     self.points[self.currentQuestion] = self.maxes[self.currentQuestion]
     if message != "":
       self.addMessage(message, raw)
 
-  def addMessage(self, message, raw=False):
+def addMessage(self, message, raw=False):
     if not raw:
         # We assume raw messages, formatted for HTML, are printed separately
         if self.mute: util.unmutePrint()
@@ -262,7 +261,7 @@ def fillHTMLTemplate(templateString, paramsDict):
         message = cgi.escape(message)
     self.messages[self.currentQuestion].append(message)
 
-  def addMessageToEmail(self, message):
+def addMessageToEmail(self, message):
     print "WARNING**** addMessageToEmail is deprecated %s" % message
     for line in message.split('\n'):
       pass
