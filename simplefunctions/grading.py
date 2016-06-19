@@ -21,10 +21,12 @@ import traceback
 import pdb
 from collections import defaultdict
 import util
+import os
+import webbrowser
 
 class Grades:
   "A data structure for project grades, along with formatting code to display them"
-  def __init__(self, projectName, questionsAndMaxesList, edxOutput=False, muteOutput=False):
+  def __init__(self, projectName, questionsAndMaxesList, edxOutput=False, muteOutput=False, logOutput=True):
     """
     Defines the grading scheme for a project
       projectName: project name
@@ -40,10 +42,10 @@ class Grades:
     self.currentQuestion = None # Which question we're grading
     self.edxOutput = edxOutput
     self.mute = muteOutput
+    self.log = logOutput
     self.prereqs = defaultdict(set)
 
-    #print 'Autograder transcript for %s' % self.project
-    print 'Starting on %d-%d at %d:%02d:%02d' % self.start
+    self.printedMessage = 'Starting on %d-%d at %d:%02d:%02d' % self.start
 
   def addPrereq(self, question, prereq):
     self.prereqs[question].add(prereq)
@@ -56,16 +58,15 @@ class Grades:
 
     completedQuestions = set([])
     for q in self.questions:
-      print '\nQuestion %s' % q
-      print '=' * (9 + len(q))
-      print
+      self.printedMessage += '\nQuestion %s\n' % q
+      self.printedMessage += '=' * (9 + len(q))
+      self.printedMessage += '\n'
       self.currentQuestion = q
 
       incompleted = self.prereqs[q].difference(completedQuestions)
       if len(incompleted) > 0:
           prereq = incompleted.pop()
-          print \
-"""*** NOTE: Make sure to complete Question %s before working on Question %s,
+          self.printedMessage += """*** NOTE: Make sure to complete Question %s before working on Question %s,
 *** because Question %s builds upon your answer for Question %s.
 """ % (prereq, q, q, prereq)
           continue
@@ -85,56 +86,34 @@ class Grades:
       if self.points[q] >= self.maxes[q]:
         completedQuestions.add(q)
 
-      print '\n### Question %s: %d/%d ###\n' % (q, self.points[q], self.maxes[q])
+      self.printedMessage += '\n### Question %s: %d/%d ###\n' % (q, self.points[q], self.maxes[q])
 
 
-    print '\nFinished at %d:%02d:%02d' % time.localtime()[3:6]
-    print "\nProvisional grades\n=================="
+    self.printedMessage += '\nFinished at %d:%02d:%02d' % time.localtime()[3:6]
+    self.printedMessage += "\nProvisional grades\n==================\n"
 
     for q in self.questions:
-      print 'Question %s: %d/%d' % (q, self.points[q], self.maxes[q])
-    print '------------------'
-    print 'Total: %d/%d' % (self.points.totalCount(), sum(self.maxes.values()))
-    if bonusPic and self.points.totalCount() == 25:
-      print """
-
-                     ALL HAIL GRANDPAC.
-              LONG LIVE THE GHOSTBUSTING KING.
-
-                  ---      ----      ---
-                  |  \    /  + \    /  |
-                  | + \--/      \--/ + |
-                  |   +     +          |
-                  | +     +        +   |
-                @@@@@@@@@@@@@@@@@@@@@@@@@@
-              @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-            @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-            @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-            \   @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-             \ /  @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-              V   \   @@@@@@@@@@@@@@@@@@@@@@@@@@@@
-                   \ /  @@@@@@@@@@@@@@@@@@@@@@@@@@
-                    V     @@@@@@@@@@@@@@@@@@@@@@@@
-                            @@@@@@@@@@@@@@@@@@@@@@
-                    /\      @@@@@@@@@@@@@@@@@@@@@@
-                   /  \  @@@@@@@@@@@@@@@@@@@@@@@@@
-              /\  /    @@@@@@@@@@@@@@@@@@@@@@@@@@@
-             /  \ @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-            /    @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-            @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-            @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-              @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-                @@@@@@@@@@@@@@@@@@@@@@@@@@
-                    @@@@@@@@@@@@@@@@@@
-
-"""
-    print """
-Your grades are NOT yet registered.  To register your grades, make sure
-to follow your instructor's guidelines to receive credit on your project.
-"""
+      self.printedMessage += 'Question %s: %d/%d\n' % (q, self.points[q], self.maxes[q])
+    self.printedMessage += '------------------\n'
+    self.printedMessage += 'Total: %d/%d\n' % (self.points.totalCount(), sum(self.maxes.values()))
 
     if self.edxOutput:
         self.produceOutput()
+    else:
+        print self.printedMessage
+
+    if self.log:
+        # Store results of current run
+        if not os.path.isdir('logs'):
+            os.mkdir('logs')
+        current = [int(filename.split('.')[-1]) for filename in os.listdir('logs')]
+        if current:
+            ctr = max(current)+1
+        else:
+            ctr = 0
+        with open(os.path.join('logs', 'log.'+str(ctr)), 'w') as o:
+            o.write(self.printedMessage)
+
 
   def addExceptionMessage(self, q, inst, traceback):
     """
@@ -196,6 +175,8 @@ to follow your instructor's guidelines to receive credit on your project.
 
     with open('grade', 'w') as o:
         o.write(str(self.points.totalCount()))
+
+    webbrowser.open(os.path.join('file:' + os.getcwd(), 'grader_result.html'))
 
   def produceOutputOld(self):  # archived the original
     edxOutput = open('grader_result.html', 'w')
@@ -277,7 +258,7 @@ to follow your instructor's guidelines to receive credit on your project.
     if not raw:
         # We assume raw messages, formatted for HTML, are printed separately
         if self.mute: util.unmutePrint()
-        print '*** ' + message
+        self.printedMessage += '*** ' + message + '\n'
         if self.mute: util.mutePrint()
         message = cgi.escape(message)
     self.messages[self.currentQuestion].append(message)
