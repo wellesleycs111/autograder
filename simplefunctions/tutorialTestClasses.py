@@ -4,7 +4,7 @@
 # educational purposes provided that (1) you do not distribute or publish
 # solutions, (2) you retain this notice, and (3) you provide clear
 # attribution to UC Berkeley, including a link to http://ai.berkeley.edu.
-# 
+#
 # Attribution Information: The Pacman AI projects were developed at UC Berkeley.
 # The core projects and autograders were primarily created by John DeNero
 # (denero@cs.berkeley.edu) and Dan Klein (klein@cs.berkeley.edu).
@@ -34,14 +34,10 @@ class EvalTest(testClasses.TestCase):
     def execute(self, grades, moduleDict, solutionDict):
         result = self.evalCode(moduleDict)
         if result == solutionDict['result']:
-            grades.addMessage('PASS: %s' % self.path)
-            grades.addMessage('\t%s' % self.success)
+            grades.addMessage('PASS: {0}\n\t{1}'.format(self.path, self.success))
             return True
         else:
-            grades.addMessage('FAIL: %s' % self.path)
-            grades.addMessage('\t%s' % self.failure)
-            grades.addMessage('\tstudent result: "%s"' % result)
-            grades.addMessage('\tcorrect result: "%s"' % solutionDict['result'])
+            grades.addMessage('FAIL: {0}\n\t{1}\n\tstudent result: {2}\n\tcorrect result: {3}'.format(self.path, self.failure, result, solutionDict['result']))
 
         return False
 
@@ -53,4 +49,3 @@ class EvalTest(testClasses.TestCase):
         handle.write('result: "%s"\n' % self.evalCode(moduleDict))
         handle.close()
         return True
-

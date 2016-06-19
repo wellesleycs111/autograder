@@ -4,7 +4,7 @@
 # educational purposes provided that (1) you do not distribute or publish
 # solutions, (2) you retain this notice, and (3) you provide clear
 # attribution to UC Berkeley, including a link to http://ai.berkeley.edu.
-# 
+#
 # Attribution Information: The Pacman AI projects were developed at UC Berkeley.
 # The core projects and autograders were primarily created by John DeNero
 # (denero@cs.berkeley.edu) and Dan Klein (klein@cs.berkeley.edu).
@@ -16,7 +16,15 @@ import sys
 import inspect
 import heapq, random
 import cStringIO
+import jinja2
 
+def fillHTMLTemplate(templateString, paramsDict):
+    """Invokes the jinja2 methods to fill in the slots
+       in the template.
+    """
+    templateObject = jinja2.Template(templateString)
+    htmlContent = templateObject.render(paramsDict)
+    return htmlContent
 
 class FixedRandom:
     def __init__(self):
@@ -650,4 +658,3 @@ def unmutePrint():
 
     sys.stdout = _ORIGINAL_STDOUT
     #sys.stderr = _ORIGINAL_STDERR
-

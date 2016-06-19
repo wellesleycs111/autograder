@@ -21,7 +21,6 @@ import traceback
 import pdb
 from collections import defaultdict
 import util
-import jinja2
 
 class Grades:
   "A data structure for project grades, along with formatting code to display them"
@@ -169,14 +168,36 @@ to follow your instructor's guidelines to receive credit on your project.
     for line in errorHint.split('\n'):
       self.addMessage(line)
 
-def fillHTMLTemplate(templateString, paramsDict):
-    """Invokes the jinja2 methods to fill in the slots in the template.
-    """
-    templateObject = jinja2.Template(templateString)
-    htmlContent = templateObject.render(paramsDict)
-    return htmlContent
+  def produceOutput(self):
+    """Passes dictionary of parameters to fill in the Jinja template,
+    writes filled-in HTML and grade to files"""
+    paramsDict = {}
 
-def produceOutput(self):
+    paramsDict['totalpossible'] = sum(self.maxes.values())
+    paramsDict['totalscore'] = sum(self.points.values())
+
+    for q in self.questions:
+        if self.points[q] == self.maxes[q]:
+            paramsDict[q+'correctness']='success'
+
+        elif self.points[q] == 0:
+            paramsDict[q+'correctness']='danger'
+
+        else:
+            paramsDict[q+'correctness']='warning'
+
+        paramsDict[q+'score']=self.points[q]
+        paramsDict[q+'max']=self.maxes[q]
+        paramsDict[q+'passedcases'] = [message[6:] for message in self.messages[q] if message.startswith('PASS')]
+        paramsDict[q+'failedcases'] = [message[6:] for message in self.messages[q] if message.startswith('FAIL')]
+
+    with open('grader_result.html', 'w') as o:
+          o.write(util.fillHTMLTemplate(open('jinjatemplate.html').read(), paramsDict))
+
+    with open('grade', 'w') as o:
+        o.write(str(self.points.totalCount()))
+
+  def produceOutputOld(self):  # archived the original
     edxOutput = open('grader_result.html', 'w')
     edxOutput.write("<div>")
 
@@ -232,27 +253,27 @@ def produceOutput(self):
     edxOutput.write(str(self.points.totalCount()))
     edxOutput.close()
 
-def fail(self, message, raw=False):
+  def fail(self, message, raw=False):
     "Sets sanity check bit to false and outputs a message"
     self.sane = False
     self.assignZeroCredit()
     self.addMessage(message, raw)
 
-def assignZeroCredit(self):
+  def assignZeroCredit(self):
     self.points[self.currentQuestion] = 0
 
-def addPoints(self, amt):
+  def addPoints(self, amt):
     self.points[self.currentQuestion] += amt
 
-def deductPoints(self, amt):
+  def deductPoints(self, amt):
     self.points[self.currentQuestion] -= amt
 
-def assignFullCredit(self, message="", raw=False):
+  def assignFullCredit(self, message="", raw=False):
     self.points[self.currentQuestion] = self.maxes[self.currentQuestion]
     if message != "":
       self.addMessage(message, raw)
 
-def addMessage(self, message, raw=False):
+  def addMessage(self, message, raw=False):
     if not raw:
         # We assume raw messages, formatted for HTML, are printed separately
         if self.mute: util.unmutePrint()
@@ -261,7 +282,7 @@ def addMessage(self, message, raw=False):
         message = cgi.escape(message)
     self.messages[self.currentQuestion].append(message)
 
-def addMessageToEmail(self, message):
+  def addMessageToEmail(self, message):
     print "WARNING**** addMessageToEmail is deprecated %s" % message
     for line in message.split('\n'):
       pass

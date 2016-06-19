@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>CS111 Autograder Results</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+<link href="grader.css" rel="stylesheet"/>
+</head>
+<body>
+
+  <div class="container">
+  <h1>Pset 0x autograder results</h1> <!-- TODO: encode PS ID somewhere in grading data and use to fill in. Will be nice to extract the student's name from somewhere as well.-->
+</div>
+
+<div class="container">
+  <h3>Total score: {{totalscore}}/{{totalpossible}}</h3>
+<div class="test">
+<section>
+<p>Click each question for a detailed analysis of passed and failed
+test cases.
+</p>
+
+<!-- TODO: This hardcodes q1 and q2. Wrap this up in a for loop to allow for a variable number of questions -->
+<div class="shortform">
+  <button type="button" class="btn btn-{{q1correctness}}" data-toggle="collapse" data-target="#q1">Question 1
+    <span class="badge">{{q1score}}/{{q1max}}</span>
+  </button>
+</div>
+  <div class="collapse" id="q1">
+{% if q1passedcases %}
+<h4 class="alert alert-success">Passed</h4>
+<pre>
+  {% for message in q1passedcases %}
+    {{message}}
+  {% endfor %}
+</pre>
+{% endif %}
+
+{% if q1failedcases %}
+<h4 class="alert alert-danger">Failed</h4>
+<pre>
+  {% for message in q1failedcases %}
+    {{message}}
+  {% endfor %}
+</pre>
+{% endif %}
+  </div><!--collapse-->
+</section>
+</div><!--test-->
+<hr>
+<div class="test">
+<section>
+<div class="shortform">
+  <button type="button" class="btn btn-{{q2correctness}}" data-toggle="collapse" data-target="#q2">Question 2
+    <span class="badge">{{q2score}}/{{q2max}}</span>
+  </button>
+</div>
+  <div class="collapse" id="q2">
+{% if q2passedcases %}
+<h4 class="alert alert-success">Passed</h4>
+<pre>
+  {% for message in q2passedcases %}
+    {{message}}
+  {% endfor %}
+</pre>
+{% endif %}
+{% if q2failedcases %}
+<h4 class="alert alert-danger">Failed</h4>
+<pre>
+  {% for message in q2failedcases %}
+    {{message}}
+  {% endfor %}
+</pre>
+{% endif %}
+  </div><!--collapse-->
+</section>
+</div>
+
+
+</div><!--container-->
+
+</body>
+</html>
