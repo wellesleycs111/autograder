@@ -9,7 +9,6 @@ import Tkinter as tk
 import time
 
 # hardcode problem set ID and list of files to submit
-ps = 'ps03'
 filelist = ['rock_paper_scissors.py', 'wordprops.py']
 dirlist = ['logs']
 
@@ -38,6 +37,7 @@ class Prompt(tk.Tk):
         self.attributes("-topmost", True)  # bring to front of screen
 
 def connect(window):
+    ps = open('psid.txt').read().strip()
     username = window.user_entry.get()
     password = window.pw_entry.get()
 
@@ -68,7 +68,7 @@ def connect(window):
         sftpclient.put(filename, filename)
         sftpclient.put(filename, os.path.join(timestamp, filename))
 
-    for dirname in dirlist: # Do directories need to be archived?
+    for dirname in dirlist: # TODO: Do directories need to be archived?
         print 'uploading', dirname
         try:
             sftpclient.chdir(dirname)
@@ -99,12 +99,12 @@ def connect(window):
 
 def checkfiles():
     """check for missing files"""
-    for itemname in filelist+dirlist:
+    for itemname in filelist+dirlist+['psid.txt']:
         if not os.path.exists(itemname):
             if itemname.startswith('logs'):
                 print "You must run the autograder at least once before submitting. Do not delete the log files."
             else:
-                print itemname, 'does not exist'
+                print 'The required', itemname, 'does not exist'
                 print 'Check your folder, ensure you are submitting from the correct location, and try again.'
             return False
     return True
