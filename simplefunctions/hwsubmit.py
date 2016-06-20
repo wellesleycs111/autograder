@@ -15,9 +15,9 @@ class Prompt(tk.Tk):
     """a small Tkinter window prompting for username and password"""
     def __init__(self):
         tk.Tk.__init__(self)
-        
+
         self.title('Authenticate')
-        
+
         self.user_label = tk.Label(self, text='Enter your tempest username: ')
         self.user_entry = tk.Entry(self)
         self.user_entry.focus()
@@ -70,6 +70,18 @@ def connect(window):
             sftpclient.chdir('..')
         else:
             sftpclient.put(itemname, itemname)
+
+    sshclient = trans.open_channel("session")
+    sshclient.exec_command('ls')
+    stdout = []
+
+    while True:
+        if sshclient.recv_ready():
+            stdout.append(sshclient.recv(4096))
+        if sshclient.exit_status_ready():
+            break
+
+    print ''.join(stdout)
 
     sftpclient.close()
     trans.close()
