@@ -154,21 +154,24 @@ class Grades:
 
     paramsDict['totalpossible'] = sum(self.maxes.values())
     paramsDict['totalscore'] = sum(self.points.values())
+    paramsDict['questions']=[]
 
     for q in self.questions:
+        num = str(self.questions.index(q)+1)
         if self.points[q] == self.maxes[q]:
-            paramsDict[q+'correctness']='success'
+            correctness='success'
 
         elif self.points[q] == 0:
-            paramsDict[q+'correctness']='danger'
+            correctness='danger'
 
         else:
-            paramsDict[q+'correctness']='warning'
+            correctness='warning'
 
-        paramsDict[q+'score']=self.points[q]
-        paramsDict[q+'max']=self.maxes[q]
-        paramsDict[q+'passedcases'] = [message[6:] for message in self.messages[q] if message.startswith('PASS')]
-        paramsDict[q+'failedcases'] = [message[6:] for message in self.messages[q] if message.startswith('FAIL')]
+        score=self.points[q]
+        qmax=self.maxes[q]
+        passedcases = [message[6:] for message in self.messages[q] if message.startswith('PASS')]
+        failedcases = [message[6:] for message in self.messages[q] if message.startswith('FAIL')]
+        paramsDict['questions'].append({'num':num,'correctness':correctness,'score':score,'max':qmax,'passedcases':passedcases,'failedcases':failedcases})
 
     with open('grader_result.html', 'w') as o:
           o.write(util.fillHTMLTemplate(open('jinjatemplate.html').read(), paramsDict))
