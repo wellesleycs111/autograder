@@ -9,7 +9,8 @@ import Tkinter as tk
 
 # hardcode problem set ID and list of files to submit
 ps = 'ps03'
-filelist = ['rock_paper_scissors.py', 'wordprops.py', 'logs']
+filelist = ['rock_paper_scissors.py', 'wordprops.py']
+dirlist = ['logs']
 
 class Prompt(tk.Tk):
     """a small Tkinter window prompting for username and password"""
@@ -57,20 +58,23 @@ def connect(window):
     except:
         sftpclient.mkdir(os.path.join(userdrop, ps))
         sftpclient.chdir(os.path.join(userdrop, ps))
-    for itemname in filelist:
-        print 'uploading', itemname
-        if os.path.isdir(itemname):
-            try:
-                sftpclient.chdir(os.path.join(userdrop, ps, itemname))
-            except:
-                sftpclient.mkdir(os.path.join(userdrop, ps, itemname))
-                sftpclient.chdir(os.path.join(userdrop, ps, itemname))
-            for filename in os.listdir(itemname):
-                sftpclient.put(os.path.join(itemname, filename), filename)
-            sftpclient.chdir('..')
-        else:
-            sftpclient.put(itemname, itemname)
 
+    for filename in filelist:
+        print 'uploading', filename
+        sftpclient.put(filename, filename)
+
+    for dirname in dirlist:
+        print 'uploading', dirname
+        try:
+            sftpclient.chdir(dirname)
+        except:
+            sftpclient.mkdir(dirname)
+            sftpclient.chdir(dirname)
+        for filename in os.listdir(dirname):
+            sftpclient.put(os.path.join(dirname, filename), filename)
+        sftpclient.chdir('..')
+
+    """
     sshclient = trans.open_channel("session")
     sshclient.exec_command('ls')
     stdout = []
@@ -82,6 +86,7 @@ def connect(window):
             break
 
     print ''.join(stdout)
+    """
 
     sftpclient.close()
     trans.close()
@@ -89,10 +94,13 @@ def connect(window):
 
 def checkfiles():
     """check for missing files"""
-    for itemname in filelist:
+    for itemname in filelist+dirlist:
         if not os.path.exists(itemname):
-            print itemname, 'does not exist'
-            print 'Check your folder and try again.'
+            if itemname.startswith('logs'):
+                print "You must run the autograder at least once before submitting. Do not delete the log files."
+            else:
+                print itemname, 'does not exist'
+                print 'Check your folder, ensure you are submitting from the correct location, and try again.'
             return False
     return True
 
