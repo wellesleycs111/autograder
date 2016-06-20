@@ -6,6 +6,7 @@ __author__='Sravana Reddy'
 from paramiko import Transport, SFTPClient
 import os
 import Tkinter as tk
+import time
 
 # hardcode problem set ID and list of files to submit
 ps = 'ps03'
@@ -59,11 +60,15 @@ def connect(window):
         sftpclient.mkdir(os.path.join(userdrop, ps))
         sftpclient.chdir(os.path.join(userdrop, ps))
 
+    timestamp = '-'.join(map(str, time.localtime()[1:6]))
+    sftpclient.mkdir(timestamp)  # for archiving
+
     for filename in filelist:
         print 'uploading', filename
         sftpclient.put(filename, filename)
+        sftpclient.put(filename, os.path.join(timestamp, filename))
 
-    for dirname in dirlist:
+    for dirname in dirlist: # Do directories need to be archived?
         print 'uploading', dirname
         try:
             sftpclient.chdir(dirname)
