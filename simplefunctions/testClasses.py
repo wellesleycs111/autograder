@@ -121,8 +121,10 @@ class NumberPassedQuestion(Question):
         grades.addPoints([f(grades) for _, f in self.testCases].count(True))
 
 
-
-
+class WeightedCasesQuestion(Question):
+    """Grade is sum of weights of test cases passed"""
+    def execute(self,grades):
+        grades.addPoints(sum([int(case.weight) for case, f in self.testCases if f(grades)==True]))
 
 # Template modeling a generic test case
 class TestCase(object):
@@ -138,6 +140,7 @@ class TestCase(object):
         self.question = question
         self.testDict = testDict
         self.path = testDict['path']
+        self.weight = testDict['weight']
         self.messages = []
 
     def __str__(self):

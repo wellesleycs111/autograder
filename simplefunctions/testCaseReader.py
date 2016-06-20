@@ -12,11 +12,11 @@ def linesFromFile(filename):
         # read each line in the file
         strippedLines = [line.strip() for line in inputFile.readlines()][1:] # skip header row
     return strippedLines
-    
+
 def generateTestFile(caseList,filename):
     '''Creates a .test file from a single list containing information about
     the case'''
-    arguments = caseList[5:] #stores test case arguments as a list
+    arguments = caseList[6:] #stores test case arguments as a list
     with open(filename,'w') as f:
         #writes test file with information from the list
         f.write("class: \"EvalTest\"\n");
@@ -25,7 +25,8 @@ def generateTestFile(caseList,filename):
         f.write("\n# A python expression to be evaluated.  This expression must return the\n")
         f.write("# same result for the student and instructor's code.\n")
         f.write("test: \""+caseList[2]+"."+caseList[1]+'('+','.join(arguments)+')\"\n')
-    
+        f.write("weight: \""+caseList[5]+"\"")
+
 def generateSolutionFile(caseList,filename):
     '''Creates a .test file from a single list containing information about
     the case'''
@@ -40,7 +41,7 @@ def generateCONFIGFile(directory,numPoints):
     filename = os.path.join('test_cases',directory,'CONFIG')
     with open(filename,'w')as f:
         f.write("max_points: \""+str(numPoints)+"\"\n")
-        f.write("class: \"NumberPassedQuestion\"")
+        f.write("class: \"WeightedCasesQuestion\"")
 
 def main():
     caseList=[]
@@ -54,12 +55,12 @@ def main():
     for line in caseList:
         line=line.split(',')
         amountOfSolutionsDict[line[1]] = amountOfSolutionsDict.get(line[1],0)+1
-        testsPerQDict[line[0]]=testsPerQDict.get(line[0],0)+1
+        testsPerQDict[line[0]]=testsPerQDict.get(line[0],0)+int(line[5])
         testFile=os.path.join('test_cases', line[0], line[1]+str(amountOfSolutionsDict[line[1]]))
         generateTestFile(line,testFile+".test")
         generateSolutionFile(line,testFile+".solution")
     for key in testsPerQDict:
         generateCONFIGFile(key,testsPerQDict[key])
-    
+
 if __name__=='__main__':
     main()

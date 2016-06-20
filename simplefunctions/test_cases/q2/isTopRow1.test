@@ -5,3 +5,4 @@ failure: "isTopRow('pretty') must return True if word uses only letters on the f
 # A python expression to be evaluated.  This expression must return the
 # same result for the student and instructor's code.
 test: "wordprops.isTopRow('pretty')"
+weight: "1"

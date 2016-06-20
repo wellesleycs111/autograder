@@ -5,3 +5,4 @@ failure: "isPalindrome('homestuck') must return True if word is a palindrome; Fa
 # A python expression to be evaluated.  This expression must return the
 # same result for the student and instructor's code.
 test: "wordprops.isPalindrome('homestuck')"
+weight: "1"

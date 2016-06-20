@@ -5,3 +5,4 @@ failure: "beats('rock','scissors') must return True if gesture1 beats gesture2; 
 # A python expression to be evaluated.  This expression must return the
 # same result for the student and instructor's code.
 test: "rock_paper_scissors.beats('rock','scissors')"
+weight: "1"

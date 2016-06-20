@@ -1,2 +1,2 @@
-max_points: "5"
-class: "NumberPassedQuestion"
+max_points: "7"
+class: "WeightedCasesQuestion"

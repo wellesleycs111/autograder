@@ -30,7 +30,7 @@ except:
 # register arguments and set default values
 def readCommand(argv):
     parser = optparse.OptionParser(description = 'Run public tests on student code')
-    parser.set_defaults(generateSolutions=False, edxOutput=True, muteOutput=True, printTestCase=False, noGraphics=False)
+    parser.set_defaults(generateSolutions=False, edxOutput=True, muteOutput=False, printTestCase=False, noGraphics=False)
     parser.add_option('--test-directory',
                       dest = 'testRoot',
                       default = 'test_cases',
@@ -292,7 +292,9 @@ def evaluate(generateSolutions, testRoot, moduleDict, exceptionMap=ERROR_HINT_MA
 
         # Note extra function is necessary for scoping reasons
         def makefun(question):
-            return lambda grades: question.execute(grades)
+            f= lambda grades: question.execute(grades)
+            #print [f(grades) for _, f in question.testCases]
+            return f
         setattr(sys.modules[__name__], q, makefun(question))
         questions.append((q, question.getMaxPoints()))
 

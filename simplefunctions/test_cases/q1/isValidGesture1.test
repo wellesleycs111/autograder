@@ -5,3 +5,4 @@ failure: "isValidGesture('rock') must return True if gesture is one of 'rock' 'p
 # A python expression to be evaluated.  This expression must return the
 # same result for the student and instructor's code.
 test: "rock_paper_scissors.isValidGesture('rock')"
+weight: "1"

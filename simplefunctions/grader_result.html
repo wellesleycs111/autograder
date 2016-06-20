@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>CS111 Autograder Results</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+<link href="grader.css" rel="stylesheet"/>
+</head>
+<body>
+
+  <div class="container">
+  <h1>Pset 0x autograder results</h1> <!-- TODO: encode PS ID somewhere in grading data and use to fill in. Will be nice to extract the student's name from somewhere as well.-->
+</div>
+
+<div class="container">
+  <h3>Total score: 27/28</h3>
+<div class="test">
+<section>
+<p>Click each question for a detailed analysis of passed and failed
+test cases.
+</p>
+
+<!-- TODO: This hardcodes q1 and q2. Wrap this up in a for loop to allow for a variable number of questions -->
+<div class="shortform">
+  <button type="button" class="btn btn-warning" data-toggle="collapse" data-target="#q1">Question 1
+    <span class="badge">6/7</span>
+  </button>
+</div>
+  <div class="collapse" id="q1">
+
+<h4 class="alert alert-success">Passed</h4>
+<pre>
+  
+    test_cases/q1/beats1.test
+	beats('rock','scissors') returns True if gesture1 beats gesture2; False otherwise
+  
+    test_cases/q1/beats2.test
+	beats('scissors','rock') returns True if gesture1 beats gesture2; False otherwise
+  
+    test_cases/q1/beats3.test
+	beats('paper','rock') returns True if gesture1 beats gesture2; False otherwise
+  
+    test_cases/q1/isValidGesture1.test
+	isValidGesture('rock') returns True if gesture is one of 'rock' 'paper' or 'scissors'; False otherwise
+  
+</pre>
+
+
+
+<h4 class="alert alert-danger">Failed</h4>
+<pre>
+  
+    test_cases/q1/isValidGesture2.test
+	isValidGesture('spock') must return True if gesture is one of 'rock' 'paper' or 'scissors'; False otherwise
+	student result: True
+	correct result: False
+  
+</pre>
+
+  </div><!--collapse-->
+  <!-- TODO: also show exception messages if any -->
+</section>
+</div><!--test-->
+<br>
+<div class="test">
+<section>
+<div class="shortform">
+  <button type="button" class="btn btn-success" data-toggle="collapse" data-target="#q2">Question 2
+    <span class="badge">21/21</span>
+  </button>
+</div>
+  <div class="collapse" id="q2">
+
+<h4 class="alert alert-success">Passed</h4>
+<pre>
+  
+    test_cases/q2/isPalindrome1.test
+	isPalindrome('pepe') returns True if word is a palindrome; False otherwise
+  
+    test_cases/q2/isPalindrome2.test
+	isPalindrome('homestuck') returns True if word is a palindrome; False otherwise
+  
+    test_cases/q2/isPalindrome3.test
+	isPalindrome('civic') returns True if word is a palindrome; False otherwise
+  
+    test_cases/q2/isPalindrome4.test
+	isPalindrome('Noon') returns True if word is a palindrome; False otherwise
+  
+    test_cases/q2/isTopRow1.test
+	isTopRow('pretty') returns True if word uses only letters on the first row of the keyboard; False otherwise
+  
+    test_cases/q2/isTopRow2.test
+	isTopRow('TyPeWrItEr') returns True if word uses only letters on the first row of the keyboard; False otherwise
+  
+    test_cases/q2/isTopRow3.test
+	isTopRow('jessica jones') returns True if word uses only letters on the first row of the keyboard; False otherwise
+  
+    test_cases/q2/scrabbleScore1.test
+	scrabbleScore('juxtapose') returns the scrabble value (int) of the word
+  
+    test_cases/q2/scrabbleScore2.test
+	scrabbleScore('quiz') returns the scrabble value (int) of the word
+  
+    test_cases/q2/scrabbleScore3.test
+	scrabbleScore('Wellesley') returns the scrabble value (int) of the word
+  
+    test_cases/q2/scrabbleScore4.test
+	scrabbleScore('Dyonisus') returns the scrabble value (int) of the word
+  
+</pre>
+
+
+  </div><!--collapse-->
+</section>
+</div>
+
+<br>
+<p>This output is for your information only.
+  You may fix mistakes and re-run the autograder as many times as you like.
+  Once you are satisfied with your code,
+  turn it in by running <code>hwsubmit.py</code>.
+</p>
+
+
+
+</div><!--container-->
+
+</body>
+</html>
