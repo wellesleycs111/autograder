@@ -26,7 +26,7 @@ import webbrowser
 
 class Grades:
   "A data structure for project grades, along with formatting code to display them"
-  def __init__(self, projectName, questionsAndMaxesList, edxOutput=False, muteOutput=False, logOutput=True):
+  def __init__(self, projectName, questionsAndMaxesList, htmlOutput=False, muteOutput=False, logOutput=False):
     """
     Defines the grading scheme for a project
       projectName: project name
@@ -40,7 +40,7 @@ class Grades:
     self.start = time.localtime()[1:6]
     self.sane = True # Sanity checks
     self.currentQuestion = None # Which question we're grading
-    self.edxOutput = edxOutput
+    self.htmlOutput = htmlOutput
     self.mute = muteOutput
     self.log = logOutput
     self.prereqs = defaultdict(set)
@@ -97,7 +97,7 @@ class Grades:
     self.printedMessage += '------------------\n'
     self.printedMessage += 'Total: %d/%d\n' % (self.points.totalCount(), sum(self.maxes.values()))
 
-    if self.edxOutput:
+    if self.htmlOutput:
         self.produceOutput()
     else:
         print self.printedMessage
@@ -179,8 +179,8 @@ class Grades:
     webbrowser.open(os.path.join('file:' + os.getcwd(), 'grader_result.html'))
 
   def produceOutputOld(self):  # archived the original
-    edxOutput = open('grader_result.html', 'w')
-    edxOutput.write("<div>")
+    htmlOutput = open('grader_result.html', 'w')
+    htmlOutput.write("<div>")
 
     # first sum
     total_possible = sum(self.maxes.values())
@@ -196,7 +196,7 @@ class Grades:
       total_possible = total_possible,
       checkOrX = checkOrX
     )
-    edxOutput.write(header)
+    htmlOutput.write(header)
 
     for q in self.questions:
       if len(q) == 2:
@@ -227,12 +227,12 @@ class Grades:
       )
       # print "*** output for Question %s " % q[1]
       # print output
-      edxOutput.write(output)
-    edxOutput.write("</div>")
-    edxOutput.close()
-    edxOutput = open('grade', 'w')
-    edxOutput.write(str(self.points.totalCount()))
-    edxOutput.close()
+      htmlOutput.write(output)
+    htmlOutput.write("</div>")
+    htmlOutput.close()
+    htmlOutput = open('grade', 'w')
+    htmlOutput.write(str(self.points.totalCount()))
+    htmlOutput.close()
 
   def fail(self, message, raw=False):
     "Sets sanity check bit to false and outputs a message"
