@@ -23,6 +23,10 @@ from collections import defaultdict
 import util
 import os
 import webbrowser
+from pygments import highlight
+from pygments.lexers import PythonLexer
+from pygments.formatters import HtmlFormatter
+
 
 class Grades:
   "A data structure for project grades, along with formatting code to display them"
@@ -167,8 +171,8 @@ class Grades:
 
         score=self.points[q]
         qmax=self.maxes[q]
-        passedcases = [message[6:] for message in self.messages[q] if message.startswith('PASS')]
-        failedcases = [message[6:] for message in self.messages[q] if message.startswith('FAIL')]
+        passedcases = [highlight(message[6:], PythonLexer(), HtmlFormatter()) for message in self.messages[q] if message.startswith('PASS')]
+        failedcases = [highlight(message[6:], PythonLexer(), HtmlFormatter()) for message in self.messages[q] if message.startswith('FAIL')]
         paramsDict['questions'].append({'num':num,'correctness':correctness,'score':score,'max':qmax,'passedcases':passedcases,'failedcases':failedcases})
 
     with open('grader_result.html', 'w') as o:
