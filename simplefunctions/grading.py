@@ -26,7 +26,7 @@ import webbrowser
 
 class Grades:
   "A data structure for project grades, along with formatting code to display them"
-  def __init__(self, projectName, questionsAndMaxesList, htmlOutput=False, muteOutput=False, logOutput=False):
+  def __init__(self, projectName, questionsAndMaxesList, htmlOutput=False, logOutput=False):
     """
     Defines the grading scheme for a project
       projectName: project name
@@ -41,7 +41,6 @@ class Grades:
     self.sane = True # Sanity checks
     self.currentQuestion = None # Which question we're grading
     self.htmlOutput = htmlOutput
-    self.mute = muteOutput
     self.log = logOutput
     self.prereqs = defaultdict(set)
 
@@ -71,7 +70,6 @@ class Grades:
 """ % (prereq, q, q, prereq)
           continue
 
-      if self.mute: util.mutePrint()
       try:
         util.TimeoutFunction(getattr(gradingModule, q),300)(self) # Call the question's function
         #TimeoutFunction(getattr(gradingModule, q),1200)(self) # Call the question's function
@@ -80,8 +78,6 @@ class Grades:
         self.addErrorHints(exceptionMap, inst, q[1])
       except:
         self.fail('FAIL: Terminated with a string exception.')
-      finally:
-        if self.mute: util.unmutePrint()
 
       if self.points[q] >= self.maxes[q]:
         completedQuestions.add(q)
@@ -151,6 +147,8 @@ class Grades:
     """Passes dictionary of parameters to fill in the Jinja template,
     writes filled-in HTML and grade to files"""
     paramsDict = {}
+
+    paramsDict['psid'] = open('psid.txt').read().strip().upper()
 
     paramsDict['totalpossible'] = sum(self.maxes.values())
     paramsDict['totalscore'] = sum(self.points.values())
@@ -260,9 +258,7 @@ class Grades:
   def addMessage(self, message, raw=False):
     if not raw:
         # We assume raw messages, formatted for HTML, are printed separately
-        if self.mute: util.unmutePrint()
         self.printedMessage += '*** ' + message + '\n'
-        if self.mute: util.mutePrint()
         message = cgi.escape(message)
     self.messages[self.currentQuestion].append(message)
 

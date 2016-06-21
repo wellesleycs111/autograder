@@ -34,7 +34,7 @@ except:
 # register arguments and set default values
 def readCommand(argv):
     parser = optparse.OptionParser(description = 'Run public tests on student code')
-    parser.set_defaults(generateSolutions=False, htmlOutput=True, muteOutput=True, logOutput=True, printTestCase=False, noGraphics=False)
+    parser.set_defaults(generateSolutions=False, htmlOutput=True, logOutput=True, printTestCase=False, noGraphics=False)
     parser.add_option('--test-directory',
                       dest = 'testRoot',
                       default = 'test_cases',
@@ -59,10 +59,6 @@ def readCommand(argv):
                     dest = 'htmlOutput',
                     action = 'store_true',
                     help = 'Generate HTML output files')
-    parser.add_option('--mute',
-                    dest = 'muteOutput',
-                    action = 'store_true',
-                    help = 'Mute output from executing tests')
     parser.add_option('--log',
                     dest = 'logOutput',
                     action = 'store_true',
@@ -248,7 +244,7 @@ def getTestSubdirs(testParser, testRoot, questionToGrade):
 
 
 # evaluate student code
-def evaluate(generateSolutions, testRoot, moduleDict, exceptionMap=ERROR_HINT_MAP, htmlOutput=False, muteOutput=False, logOutput=False,
+def evaluate(generateSolutions, testRoot, moduleDict, exceptionMap=ERROR_HINT_MAP, htmlOutput=False, logOutput=False,
             printTestCase=False, questionToGrade=None, display=None):
     # imports of testbench code.  note that the testClasses import must follow
     # the import of student code due to dependencies
@@ -306,7 +302,7 @@ def evaluate(generateSolutions, testRoot, moduleDict, exceptionMap=ERROR_HINT_MA
         setattr(sys.modules[__name__], q, makefun(question))
         questions.append((q, question.getMaxPoints()))
 
-    grades = grading.Grades(projectParams.PROJECT_NAME, questions, htmlOutput=htmlOutput, muteOutput=muteOutput, logOutput=logOutput)
+    grades = grading.Grades(projectParams.PROJECT_NAME, questions, htmlOutput=htmlOutput, logOutput=logOutput)
     if questionToGrade == None:
         for q in questionDicts:
             for prereq in questionDicts[q].get('depends', '').split():
@@ -351,5 +347,5 @@ if __name__ == '__main__':
         runTest(options.runTest, moduleDict, printTestCase=options.printTestCase, display=getDisplay(True, options))
     else:
         evaluate(options.generateSolutions, options.testRoot, moduleDict,
-            htmlOutput=options.htmlOutput, muteOutput=options.muteOutput, logOutput=options.logOutput, printTestCase=options.printTestCase,
+            htmlOutput=options.htmlOutput, logOutput=options.logOutput, printTestCase=options.printTestCase,
             questionToGrade=options.gradeQuestion, display=getDisplay(options.gradeQuestion!=None, options))
