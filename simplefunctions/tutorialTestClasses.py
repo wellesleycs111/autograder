@@ -34,11 +34,10 @@ class EvalTest(testClasses.TestCase):
     def execute(self, grades, moduleDict, solutionDict):
         result = self.evalCode(moduleDict)
         if result == solutionDict['result']:
-            grades.addMessage('PASS: {0}\n\t{1}'.format(self.path, self.success))
+            grades.addMessage('PASS: {0}\n\t{1}\n\tscore: {2}'.format(self.path, self.success, self.weight+'/'+self.weight))
             return True
         else:
-            grades.addMessage('FAIL: {0}\n\t{1}\n\tstudent result: {2}\n\tcorrect result: {3}'.format(self.path, self.failure, result, solutionDict['result']))
-
+            grades.addMessage('FAIL: {0}\n\t{1}\n\tstudent result: {2}\n\tcorrect result: {3}\n\tscore: {4}'.format(self.path, self.failure, result, solutionDict['result'],'0/'+self.weight))
         return False
 
     def writeSolution(self, moduleDict, filePath):

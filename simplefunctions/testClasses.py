@@ -160,13 +160,16 @@ class TestCase(object):
     # to get a nice hierarchical project - question - test structure,
     # then these should be moved into Question proper.
     def testPass(self, grades):
+        #turns out this func and the next are never called - a func in tutorial test classes is called instead
         grades.addMessage('PASS: %s' % (self.path,))
+        #grades.addMessage('    score: %s/%s' % (self.weight,self.weight,))
         for line in self.messages:
             grades.addMessage('    %s' % (line,))
         return True
 
     def testFail(self, grades):
         grades.addMessage('FAIL: %s' % (self.path,))
+        #grades.addMessage('    score: 0/%s' % (self.weight,))
         for line in self.messages:
             grades.addMessage('    %s' % (line,))
         return False
