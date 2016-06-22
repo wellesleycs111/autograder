@@ -32,20 +32,16 @@ test cases.
   <div class="collapse" id="q{{q['num']}}">
 {% if q['passedcases'] %}
 <h4 class="alert alert-success">Passed</h4>
-<pre>
   {% for message in q['passedcases'] %}
     {{message}}
   {% endfor %}
-</pre>
 {% endif %}
 
 {% if q['failedcases'] %}
 <h4 class="alert alert-danger">Failed</h4>
-<pre>
   {% for message in q['failedcases'] %}
     {{message}}
   {% endfor %}
-</pre>
 {% endif %}
   </div><!--collapse-->
   <!-- TODO: also show exception messages if any -->
