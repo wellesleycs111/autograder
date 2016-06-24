@@ -252,7 +252,7 @@ def evaluate(generateSolutions, testRoot, moduleDict, exceptionMap=ERROR_HINT_MA
     import testClasses
     for module in moduleDict:
         setattr(sys.modules[__name__], module, moduleDict[module])
-
+        
     questions = []
     questionDicts = {}
     test_subdirs = getTestSubdirs(testParser, testRoot, questionToGrade)
@@ -275,6 +275,12 @@ def evaluate(generateSolutions, testRoot, moduleDict, exceptionMap=ERROR_HINT_MA
             solution_file = os.path.join(subdir_path, '%s.solution' % t)
             test_out_file = os.path.join(subdir_path, '%s.test_output' % t)
             testDict = testParser.TestParser(test_file).parse()
+
+            moduleName, funcCall = testDict['test'].split('.')
+            funcName = funcCall.split('(')[0]
+            if funcName not in dir(moduleDict[moduleName]):
+                continue
+
             if testDict.get("disabled", "false").lower() == "true":
                 continue
             testDict['test_out_file'] = test_out_file
