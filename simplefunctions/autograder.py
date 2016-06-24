@@ -252,7 +252,7 @@ def evaluate(generateSolutions, testRoot, moduleDict, exceptionMap=ERROR_HINT_MA
     import testClasses
     for module in moduleDict:
         setattr(sys.modules[__name__], module, moduleDict[module])
-        
+
     questions = []
     questionDicts = {}
     test_subdirs = getTestSubdirs(testParser, testRoot, questionToGrade)

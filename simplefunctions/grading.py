@@ -153,6 +153,8 @@ class Grades:
     paramsDict = {}
 
     paramsDict['psid'] = open('psid.txt').read().strip().upper()
+    studentinfo = util.parseCoverSheet()
+    paramsDict['studentname'] = studentinfo['studentname']
 
     paramsDict['totalpossible'] = sum(self.maxes.values())
     paramsDict['totalscore'] = sum(self.points.values())

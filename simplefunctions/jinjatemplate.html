@@ -11,7 +11,7 @@
 <body>
 
   <div class="container">
-  <h1>{{psid}} Autograder Results</h1>
+  <h1>{{psid}} Autograder Results for {{ studentname }}</h1>
 </div>
 
 <div class="container">
@@ -49,11 +49,23 @@ test cases.
 </div><!--test-->
 <br>
 {% endfor%}
-<div class="container"><p>This output is for your information only.
+<div class="container">
+  <p>This output is for your information only.
   You may fix mistakes and re-run the autograder as many times as you like.
   Once you are satisfied with your code,
   turn it in by running <code>hwsubmit.py</code>.
-</p></div>
+</p>
+
+{% if studentname=='x' %}
+<p>
+  It seems that your coversheet information is incomplete.
+  Please fill it out before you make your final submission.
+</p>
+{% endif %}
+</p>
+
+</div>
+
 
 
 

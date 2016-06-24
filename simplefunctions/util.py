@@ -658,3 +658,19 @@ def unmutePrint():
 
     sys.stdout = _ORIGINAL_STDOUT
     #sys.stderr = _ORIGINAL_STDERR
+
+def parseCoverSheet():
+    info = {}
+    for line in open('coversheet.txt').readlines():
+        line = line.split(':')
+        if len(line)<2:
+            continue
+        k = line[0].strip()
+        v = line[1].strip()
+        if k.startswith('Name'):
+            info['studentname'] = v
+        elif k.startswith('Collaborators'):
+            info['collaborators'] = v
+        elif k.startswith('Time spent on'):
+            info['time'+k[-2]] = v
+    return info
