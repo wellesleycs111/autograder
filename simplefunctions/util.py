@@ -1,5 +1,9 @@
 # util.py
 # -------
+# This autograder was developed by Sravana Reddy (sravana.reddy@wellesley.edu)
+# and Daniela Kreimerman (dkreimer@wellesley.edu), built upon the framework
+# provided by the Berkeley AI autograding scripts. See below.
+#
 # Licensing Information:  You are free to use or extend these projects for
 # educational purposes provided that (1) you do not distribute or publish
 # solutions, (2) you retain this notice, and (3) you provide clear
@@ -17,6 +21,17 @@ import inspect
 import heapq, random
 import cStringIO
 import jinja2
+
+def capturePrint(func, arglist):
+    """Redirect print output from func and return it alongwith the actual return value"""
+    # apapted from https://wrongsideofmemphis.wordpress.com/2010/03/01/store-standard-output-on-a-variable-in-python/
+    old_stdout = sys.stdout
+    result = cStringIO.StringIO()
+    sys.stdout = result
+    returnval = func(*arglist)  # call the function
+    printval = result.getvalue()
+    sys.stdout = old_stdout
+    return returnval, printval
 
 def fillHTMLTemplate(templateString, paramsDict):
     """Invokes the jinja2 methods to fill in the slots
@@ -669,6 +684,12 @@ def parseCoverSheet():
         v = line[1].strip()
         if k.startswith('Name'):
             info['studentname'] = v
+        elif k.startswith('Username'):
+            info['studentid'] = v
+        elif k.startswith('Partner Name'):
+            info['partnername'] = v
+        elif k.startswith('Partner Username'):
+            info['partnerid'] = v
         elif k.startswith('Collaborators'):
             info['collaborators'] = v
         elif k.startswith('Time spent on'):
