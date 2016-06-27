@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+{% block title %}Welcome{% endblock %}
+
+{% block content %}
+
+{% if username %}
+<h2>Welcome {{ username }}</h2>
+
+{% else %}
+<h2>Login</h2>
+
+<p>Enter your Wellesley username and password to sign in.</p>
+
+<form action = "/" method=post>
+<p>Username <input type="text" id="username" name="username"></p>
+<p>Password <input type="password" id="password" name="password"></p>
+
+<input type="submit" value="Sign in">
+</form>
+{% endif %}
+
+{% endblock %}

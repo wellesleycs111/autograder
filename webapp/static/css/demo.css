@@ -1,0 +1,25 @@
+body{
+	background-color: #fdfdff;
+	font-family: Arial;
+	font-size: 14pt;
+	padding: 3em;
+}
+
+.input{
+	color: #009900;
+	font-weight: bold;
+}
+
+.output{
+	color: #aa0000;
+}
+
+#content{
+	background-color: #e0e0ea;
+	padding: 1em;
+}
+
+#footer{
+	font-size: 10pt;
+	padding-top: 3em;
+}

@@ -41,11 +41,11 @@ def readCommand(argv):
                       help = 'Root test directory which contains subdirectories corresponding to each question')
     parser.add_option('--student-code',
                       dest = 'studentCode',
-                      default = projectParams.STUDENT_CODE_DEFAULT,
+                      default = projectParams.STUDENT_CODE_LIST,
                       help = 'comma separated list of student code files')
     parser.add_option('--code-directory',
                     dest = 'codeRoot',
-                    default = "",
+                    default = "solutions",
                     help = 'Root directory containing the student and testClass code')
     parser.add_option('--test-case-code',
                       dest = 'testCaseCode',
@@ -276,9 +276,7 @@ def evaluate(generateSolutions, testRoot, moduleDict, exceptionMap=ERROR_HINT_MA
             test_out_file = os.path.join(subdir_path, '%s.test_output' % t)
             testDict = testParser.TestParser(test_file).parse()
 
-            moduleName, funcCall = testDict['test'].split('.')
-            funcName = funcCall.split('(')[0]
-            if funcName not in dir(moduleDict[moduleName]):
+            if testDict['func'] not in dir(moduleDict[testDict['module']]):
                 continue
 
             if testDict.get("disabled", "false").lower() == "true":
