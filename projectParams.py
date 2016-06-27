@@ -11,6 +11,7 @@
 # Student side autograding was added by Brad Miller, Nick Hay, and
 # Pieter Abbeel (pabbeel@cs.berkeley.edu).
 
+STUDENT_CODE_DIR = '../psetsolutions'
 STUDENT_CODE_LIST = 'rock_paper_scissors.py,wordprops.py'
 PROJECT_TEST_CLASSES = 'tutorialTestClasses.py'
 PROJECT_NAME = 'Project 3: Rock Paper Scissors & Word Properties'

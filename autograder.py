@@ -45,7 +45,7 @@ def readCommand(argv):
                       help = 'comma separated list of student code files')
     parser.add_option('--code-directory',
                     dest = 'codeRoot',
-                    default = "solutions",
+                    default = projectParams.STUDENT_CODE_DIR,
                     help = 'Root directory containing the student and testClass code')
     parser.add_option('--test-case-code',
                       dest = 'testCaseCode',
