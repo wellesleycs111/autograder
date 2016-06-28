@@ -11,7 +11,10 @@
 <body>
 
   <div class="container">
-  <h1>{{psid}} Autochecker Results for {{ studentname }}</h1>
+  <h1>{{psid}} Autochecker Results
+    {% if studentname!='x' %}
+    for {{ studentname }}
+    {% endif %}</h1>
 </div>
 
 <div class="container">
