@@ -60,7 +60,6 @@ class Grades:
     """
 
     self.undefined = funcNotDefined
-    print self.undefined
     completedQuestions = set([])
     for q in self.questions:
       self.printedMessage += '\nQuestion %s\n' % q

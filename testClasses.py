@@ -122,7 +122,7 @@ class NumberPassedQuestion(Question):
 
 #TODO: make it hapen
 class UngradedImageQuestion(Question):
-    def execute(self):
+    def execute(self, grades):
         return None
 
 class WeightedCasesQuestion(Question):
@@ -213,7 +213,10 @@ class EvalTest(TestCase): # moved from tutorialTestClasses
 
     def execute(self, grades, moduleDict, solutionDict):
         result = self.evalCode(moduleDict)
-        if result == solutionDict['result']:
+        if isinstance(self.question, UngradedImageQuestion):
+            grades.addMessage('IMAGE: {0}\n\tExpected image: <img src={1}>\n\tStudent image: <img src={2}>'.format(self.path, solutionDict['result'],result))
+            return True
+        elif result == solutionDict['result']:
             grades.addMessage('PASS: {0}\n\t{1}\n\tscore: {2}'.format(self.path, self.success, self.weight+'/'+self.weight))
             return True
         else:
