@@ -256,7 +256,9 @@ def evaluate(generateSolutions, testRoot, moduleDict, exceptionMap=ERROR_HINT_MA
     questions = []
     questionDicts = {}
     test_subdirs = getTestSubdirs(testParser, testRoot, questionToGrade)
+    funcNotDefined={}
     for q in test_subdirs:
+        funcNotDefined[q]=[]
         subdir_path = os.path.join(testRoot, q)
         if not os.path.isdir(subdir_path) or q[0] == '.':
             continue
@@ -277,6 +279,8 @@ def evaluate(generateSolutions, testRoot, moduleDict, exceptionMap=ERROR_HINT_MA
             testDict = testParser.TestParser(test_file).parse()
 
             if testDict['func'] not in dir(moduleDict[testDict['module']]):
+                if testDict['func'] not in funcNotDefined[q]:
+                    funcNotDefined[q].append(testDict['func'])
                 continue
 
             if testDict.get("disabled", "false").lower() == "true":
@@ -312,7 +316,7 @@ def evaluate(generateSolutions, testRoot, moduleDict, exceptionMap=ERROR_HINT_MA
             for prereq in questionDicts[q].get('depends', '').split():
                 grades.addPrereq(q, prereq)
 
-    grades.grade(sys.modules[__name__], bonusPic = projectParams.BONUS_PIC)
+    grades.grade(sys.modules[__name__], funcNotDefined, bonusPic = projectParams.BONUS_PIC)
     return grades.points
 
 

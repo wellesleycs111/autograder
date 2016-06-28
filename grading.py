@@ -53,18 +53,24 @@ class Grades:
   def addPrereq(self, question, prereq):
     self.prereqs[question].add(prereq)
 
-  def grade(self, gradingModule, exceptionMap = {}, bonusPic = False):
+  def grade(self, gradingModule, funcNotDefined, exceptionMap = {}, bonusPic = False):
     """
     Grades each question
       gradingModule: the module with all the grading functions (pass in with sys.modules[__name__])
     """
 
+    self.undefined = funcNotDefined
+    print self.undefined
     completedQuestions = set([])
     for q in self.questions:
       self.printedMessage += '\nQuestion %s\n' % q
       self.printedMessage += '=' * (9 + len(q))
       self.printedMessage += '\n'
       self.currentQuestion = q
+
+      if q in self.undefined:
+          for func in self.undefined[q]:
+              self.printedMessage+= '***Function %s() not defined.\n' % func
 
       incompleted = self.prereqs[q].difference(completedQuestions)
       if len(incompleted) > 0:
@@ -175,7 +181,8 @@ class Grades:
         qmax=self.maxes[q]
         passedcases = [highlight(message[6:], PythonLexer(), HtmlFormatter()) for message in self.messages[q] if message.startswith('PASS')]
         failedcases = [highlight(message[6:], PythonLexer(), HtmlFormatter()) for message in self.messages[q] if message.startswith('FAIL')]
-        paramsDict['questions'].append({'num':num,'correctness':correctness,'score':score,'max':qmax,'passedcases':passedcases,'failedcases':failedcases})
+        undefined = ['<pre>Function %s() is not defined.</pre>' % message for message in self.undefined[q]]
+        paramsDict['questions'].append({'num':num,'correctness':correctness,'score':score,'max':qmax,'passedcases':passedcases,'failedcases':failedcases, 'undefined': undefined})
 
     with open('grader_result.html', 'w') as o:
           o.write(util.fillHTMLTemplate(open('jinjatemplate.html').read(), paramsDict))
