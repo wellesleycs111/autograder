@@ -192,3 +192,35 @@ class TestCase(object):
 
     def addMessage(self, message):
         self.messages.extend(message.split('\n'))
+
+class EvalTest(TestCase): # moved from tutorialTestClasses
+
+    def __init__(self, question, testDict):
+        super(EvalTest, self).__init__(question, testDict)
+        self.preamble = compile(testDict.get('preamble', ""), "%s.preamble" % self.getPath(), 'exec')
+        self.test = compile(testDict['test'], "%s.test" % self.getPath(), 'eval')
+        self.success = testDict['success']
+        self.failure = testDict['failure']
+
+    def evalCode(self, moduleDict):
+        bindings = dict(moduleDict)
+        exec self.preamble in bindings
+        return str(eval(self.test, bindings))
+
+    def execute(self, grades, moduleDict, solutionDict):
+        result = self.evalCode(moduleDict)
+        if result == solutionDict['result']:
+            grades.addMessage('PASS: {0}\n\t{1}\n\tscore: {2}'.format(self.path, self.success, self.weight+'/'+self.weight))
+            return True
+        else:
+            grades.addMessage('FAIL: {0}\n\t{1}\n\tstudent result: {2}\n\tcorrect result: {3}\n\tscore: {4}'.format(self.path, self.failure, result, solutionDict['result'],'0/'+self.weight))
+        return False
+
+    def writeSolution(self, moduleDict, filePath):
+        handle = open(filePath, 'w')
+        handle.write('# This is the solution file for %s.\n' % self.path)
+        handle.write('# The result of evaluating the test must equal the below when cast to a string.\n')
+
+        handle.write('result: "%s"\n' % self.evalCode(moduleDict))
+        handle.close()
+        return True

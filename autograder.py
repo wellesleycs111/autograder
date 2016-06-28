@@ -46,7 +46,7 @@ def readCommand(argv):
     parser.add_option('--code-directory',
                     dest = 'codeRoot',
                     default = projectParams.STUDENT_CODE_DIR,
-                    help = 'Root directory containing the student and testClass code')
+                    help = 'Root directory containing the student code')
     parser.add_option('--test-case-code',
                       dest = 'testCaseCode',
                       default = projectParams.PROJECT_TEST_CLASSES,
@@ -344,7 +344,7 @@ if __name__ == '__main__':
         moduleName = re.match('.*?([^/]*)\.py', cp).group(1)
         moduleDict[moduleName] = loadModuleFile(moduleName, os.path.join(options.codeRoot, cp))
     moduleName = re.match('.*?([^/]*)\.py', options.testCaseCode).group(1)
-    moduleDict['projectTestClasses'] = loadModuleFile(moduleName, os.path.join(options.codeRoot, options.testCaseCode))
+    moduleDict['projectTestClasses'] = loadModuleFile(moduleName, options.testCaseCode)
 
 
     if options.runTest != None:
