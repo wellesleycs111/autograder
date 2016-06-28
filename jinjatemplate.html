@@ -43,6 +43,13 @@ test cases.
     {{message}}
   {% endfor %}
 {% endif %}
+
+{% if q['undefined'] %}
+<h4 class="alert alert-warning">Not Found</h4>
+  {% for message in q['undefined'] %}
+    {{message}}
+  {% endfor %}
+{% endif %}
   </div><!--collapse-->
   <!-- TODO: also show exception messages if any -->
 </section>

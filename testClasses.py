@@ -120,6 +120,10 @@ class NumberPassedQuestion(Question):
     def execute(self, grades):
         grades.addPoints([f(grades) for _, f in self.testCases].count(True))
 
+#TODO: make it hapen
+class UngradedImageQuestion(Question):
+    def execute(self):
+        return None
 
 class WeightedCasesQuestion(Question):
     """Grade is sum of weights of test cases passed"""
