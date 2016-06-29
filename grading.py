@@ -27,7 +27,7 @@ import webbrowser
 
 class Grades:
   "A data structure for project grades, along with formatting code to display them"
-  def __init__(self, projectName, questionsAndMaxesList, htmlOutput=False, logOutput=False):
+  def __init__(self, projectName, questionsAndMaxesList, htmlOutput=False, logOutput=False, timeout=30):
     """
     Defines the grading scheme for a project
       projectName: project name
@@ -44,6 +44,7 @@ class Grades:
     self.htmlOutput = htmlOutput
     self.log = logOutput
     self.prereqs = defaultdict(set)
+    self.timeout = timeout  # max time for any of the questions
 
     self.printedMessage = 'Starting on %d-%d at %d:%02d:%02d' % self.start
 
@@ -77,8 +78,7 @@ class Grades:
           continue
 
       try:
-        util.TimeoutFunction(getattr(gradingModule, q),30)(self) # Call the question's function
-        #TimeoutFunction(getattr(gradingModule, q),1200)(self) # Call the question's function
+        util.TimeoutFunction(getattr(gradingModule, q), self.timeout)(self) # Call the question's function
       except Exception, inst:
         self.addExceptionMessage(q, inst, traceback)
         self.addErrorHints(exceptionMap, inst, q[1])
@@ -115,7 +115,6 @@ class Grades:
             ctr = 0
         with open(os.path.join('logs', 'log.'+str(ctr)), 'w') as o:
             o.write(self.printedMessage)
-
 
   def addExceptionMessage(self, q, inst, traceback):
     """

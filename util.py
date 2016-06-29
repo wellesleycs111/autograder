@@ -590,6 +590,7 @@ def lookup(name, namespace):
     Get a method or class from any imported module from its name.
     Usage: lookup(functionName, globals())
     """
+    #TODO: can we use this to detect missing or duplicate functions?
     dots = name.count('.')
     if dots > 0:
         moduleName, objName = '.'.join(name.split('.')[:-1]), name.split('.')[-1]
@@ -621,9 +622,13 @@ def pause():
 #
 import signal
 import time
+
 class TimeoutFunctionException(Exception):
     """Exception to raise on a timeout"""
-    pass
+    def __init__(self, timeout):
+        self.message = 'Your code should terminate within {0} seconds. Can you find a simpler solution?'.format(timeout)
+    def __str__(self):
+        return repr(self.message)
 
 
 class TimeoutFunction:
@@ -632,7 +637,7 @@ class TimeoutFunction:
         self.function = function
 
     def handle_timeout(self, signum, frame):
-        raise TimeoutFunctionException()
+        raise TimeoutFunctionException(self.timeout)
 
     def __call__(self, *args, **keyArgs):
         # If we have SIGALRM signal, use it to cause an exception if and

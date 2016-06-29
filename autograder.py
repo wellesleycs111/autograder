@@ -310,7 +310,7 @@ def evaluate(generateSolutions, testRoot, moduleDict, exceptionMap=ERROR_HINT_MA
         setattr(sys.modules[__name__], q, makefun(question))
         questions.append((q, question.getMaxPoints()))
 
-    grades = grading.Grades(projectParams.PROJECT_NAME, questions, htmlOutput=htmlOutput, logOutput=logOutput)
+    grades = grading.Grades(projectParams.PROJECT_NAME, questions, htmlOutput=htmlOutput, logOutput=logOutput, timeout=projectParams.TIME_OUT)
     if questionToGrade == None:
         for q in questionDicts:
             for prereq in questionDicts[q].get('depends', '').split():
