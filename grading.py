@@ -23,9 +23,6 @@ from collections import defaultdict
 import util
 import os
 import webbrowser
-from pygments import highlight
-from pygments.lexers import PythonLexer
-from pygments.formatters import HtmlFormatter
 
 
 class Grades:
@@ -60,7 +57,6 @@ class Grades:
     """
 
     self.undefined = funcNotDefined
-    print self.undefined
     completedQuestions = set([])
     for q in self.questions:
       self.printedMessage += '\nQuestion %s\n' % q
@@ -81,7 +77,7 @@ class Grades:
           continue
 
       try:
-        util.TimeoutFunction(getattr(gradingModule, q),300)(self) # Call the question's function
+        util.TimeoutFunction(getattr(gradingModule, q),30)(self) # Call the question's function
         #TimeoutFunction(getattr(gradingModule, q),1200)(self) # Call the question's function
       except Exception, inst:
         self.addExceptionMessage(q, inst, traceback)
@@ -179,8 +175,8 @@ class Grades:
 
         score=self.points[q]
         qmax=self.maxes[q]
-        passedcases = [highlight(message[6:], PythonLexer(), HtmlFormatter()) for message in self.messages[q] if message.startswith('PASS')]
-        failedcases = [highlight(message[6:], PythonLexer(), HtmlFormatter()) for message in self.messages[q] if message.startswith('FAIL')]
+        passedcases = [util.codeHighlight(message[6:]) for message in self.messages[q] if message.startswith('PASS')]
+        failedcases = [util.codeHighlight(message[6:]) for message in self.messages[q] if message.startswith('FAIL')]
         undefined = ['<pre>Function %s() is not defined.</pre>' % message for message in self.undefined[q]]
         paramsDict['questions'].append({'num':num,'correctness':correctness,'score':score,'max':qmax,'passedcases':passedcases,'failedcases':failedcases, 'undefined': undefined})
 

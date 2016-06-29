@@ -21,6 +21,10 @@ import inspect
 import heapq, random
 import cStringIO
 import jinja2
+from pygments import highlight
+from pygments.lexers import PythonLexer
+from pygments.formatters import HtmlFormatter
+import re
 
 def capturePrint(func, arglist):
     """Redirect print output from func and return it alongwith the actual return value"""
@@ -32,6 +36,12 @@ def capturePrint(func, arglist):
     printval = result.getvalue()
     sys.stdout = old_stdout
     return returnval, printval
+
+def codeHighlight(message, delimiter='!'):
+    # TODO: highlight string, but don't highlight escaped portion (between ! !)
+    #escregex = '({0}[^{0}]+{0})'.format(delimiter)
+    #splitMessage = re.split(escregex, message)
+    return highlight(message, PythonLexer(), HtmlFormatter())
 
 def fillHTMLTemplate(templateString, paramsDict):
     """Invokes the jinja2 methods to fill in the slots
