@@ -15,3 +15,5 @@ q2,scrabbleScore,wordprops,the scrabble value (int) of the word,12,3,'Dyonisus'
 q2,isTopRow,wordprops,True if word uses only letters on the first row of the keyboard; False otherwise,True,1,'pretty'
 q2,isTopRow,wordprops,True if word uses only letters on the first row of the keyboard; False otherwise,True,3,'TyPeWrItEr'
 q2,isTopRow,wordprops,True if word uses only letters on the first row of the keyboard; False otherwise,False,1,'jessica jones'
+q3,quilt1,quilt, the blue quilt,bluequilt.png,0,
+q3,quilt2,quilt, the red quilt, redquilt.png,0,

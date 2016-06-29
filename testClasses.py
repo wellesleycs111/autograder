@@ -120,11 +120,6 @@ class NumberPassedQuestion(Question):
     def execute(self, grades):
         grades.addPoints([f(grades) for _, f in self.testCases].count(True))
 
-#TODO: make it hapen
-class UngradedImageQuestion(Question):
-    def execute(self, grades):
-        return None
-
 class WeightedCasesQuestion(Question):
     """Grade is sum of weights of test cases passed"""
     def execute(self,grades):
@@ -202,7 +197,9 @@ class EvalTest(TestCase): # moved from tutorialTestClasses
     def __init__(self, question, testDict):
         super(EvalTest, self).__init__(question, testDict)
         self.preamble = compile(testDict.get('preamble', ""), "%s.preamble" % self.getPath(), 'exec')
+        #print self.preamble
         self.test = compile(testDict['test'], "%s.test" % self.getPath(), 'eval')
+        #print self.test
         self.success = testDict['success']
         self.failure = testDict['failure']
 
@@ -213,10 +210,10 @@ class EvalTest(TestCase): # moved from tutorialTestClasses
 
     def execute(self, grades, moduleDict, solutionDict):
         result = self.evalCode(moduleDict)
-        if isinstance(self.question, UngradedImageQuestion):
-            grades.addMessage('IMAGE: {0}\n\tExpected image: <img src={1}>\n\tStudent image: <img src={2}>'.format(self.path, solutionDict['result'],result))
-            return True
-        elif result == solutionDict['result']:
+        #if isinstance(self.question, UngradedImageQuestion):
+        #    grades.addMessage('IMAGE: {0}\n\tExpected image: <img src={1}>\n\tStudent image: <img src={2}>'.format(self.path, solutionDict['result'],result))
+        #    return True
+        if result == solutionDict['result']:
             grades.addMessage('PASS: {0}\n\t{1}\n\tscore: {2}'.format(self.path, self.success, self.weight+'/'+self.weight))
             return True
         else:
@@ -230,4 +227,11 @@ class EvalTest(TestCase): # moved from tutorialTestClasses
 
         handle.write('result: "%s"\n' % self.evalCode(moduleDict))
         handle.close()
+        return True
+
+class ImageTest(EvalTest):
+
+    def execute(self,grades,moduleDict,solutionDict):
+        result = self.evalCode(moduleDict)
+        grades.addMessage('IMAGE,{0},{1},{2}'.format(self.path, solutionDict['result'],result))
         return True

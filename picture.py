@@ -24,6 +24,7 @@ def displayPic (pic,filename=None):
     frame.add(framedPic)
     if filename is not None:
         frame.saveToFile(filename)
+        return filename
 
 def closeAllPics():
     global frameList

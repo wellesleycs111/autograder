@@ -167,7 +167,10 @@ class Grades:
 
     for q in self.questions:
         num = str(self.questions.index(q)+1)
-        if self.points[q] == self.maxes[q]:
+        if self.maxes[q] == 0:
+            correctness='info'
+
+        elif self.points[q] == self.maxes[q]:
             correctness='success'
 
         elif self.points[q] == 0:
@@ -178,10 +181,14 @@ class Grades:
 
         score=self.points[q]
         qmax=self.maxes[q]
+        badge = str(score)+"/"+str(qmax)
         passedcases = [highlight(message[6:], PythonLexer(), HtmlFormatter()) for message in self.messages[q] if message.startswith('PASS')]
         failedcases = [highlight(message[6:], PythonLexer(), HtmlFormatter()) for message in self.messages[q] if message.startswith('FAIL')]
         undefined = ['<pre>Function %s() is not defined.</pre>' % message for message in self.undefined[q]]
-        paramsDict['questions'].append({'num':num,'correctness':correctness,'score':score,'max':qmax,'passedcases':passedcases,'failedcases':failedcases, 'undefined': undefined})
+        images = ['<pre>{0}\nExpected image:\n<img src={1}>\nYour image:\n<img src={2}></pre>'.format(message.split(',')[1],message.split(',')[2],message.split(',')[3]) for message in self.messages[q] if message.startswith('IMAGE')]
+        if len(images)>0:
+            badge="Image Test"
+        paramsDict['questions'].append({'num':num,'correctness':correctness,'badge':badge,'passedcases':passedcases,'failedcases':failedcases, 'undefined': undefined, 'images': images})
 
     with open('grader_result.html', 'w') as o:
           o.write(util.fillHTMLTemplate(open('jinjatemplate.html').read(), paramsDict))

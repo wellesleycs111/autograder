@@ -19,7 +19,10 @@ def generateTestFile(caseList,filename):
     arguments = caseList[6:] #stores test case arguments as a list
     with open(filename,'w') as f:
         #writes test file with information from the list
-        f.write("class: \"EvalTest\"\n");
+        if caseList[4].endswith('.png'):
+            f.write("class: \"ImageTest\"\n")
+        else:
+            f.write("class: \"EvalTest\"\n")
         f.write("success: \""+caseList[1]+"("+','.join(arguments)+") returns "+caseList[3]+"\"\n")
         f.write("failure: \""+caseList[1]+"("+','.join(arguments)+") must return "+caseList[3]+"\"\n")
         f.write("\n# A python expression to be evaluated.  This expression must return the\n")
@@ -56,7 +59,7 @@ def main():
         line=line.split(',')
         amountOfSolutionsDict[line[1]] = amountOfSolutionsDict.get(line[1],0)+1
         testsPerQDict[line[0]]=testsPerQDict.get(line[0],0)+int(line[5])
-        testFile=os.path.join('test_cases', line[0], line[1]+str(amountOfSolutionsDict[line[1]]))
+        testFile=os.path.join('test_cases', line[0], line[1]+'_'+str(amountOfSolutionsDict[line[1]]))
         generateTestFile(line,testFile+".test")
         generateSolutionFile(line,testFile+".solution")
     for key in testsPerQDict:
