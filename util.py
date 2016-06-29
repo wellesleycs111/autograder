@@ -21,6 +21,10 @@ import inspect
 import heapq, random
 import cStringIO
 import jinja2
+from pygments import highlight
+from pygments.lexers import PythonLexer
+from pygments.formatters import HtmlFormatter
+import re
 
 def capturePrint(func, arglist):
     """Redirect print output from func and return it alongwith the actual return value"""
@@ -32,6 +36,12 @@ def capturePrint(func, arglist):
     printval = result.getvalue()
     sys.stdout = old_stdout
     return returnval, printval
+
+def codeHighlight(message, delimiter='!'):
+    # TODO: highlight string, but don't highlight escaped portion (between ! !)
+    #escregex = '({0}[^{0}]+{0})'.format(delimiter)
+    #splitMessage = re.split(escregex, message)
+    return highlight(message, PythonLexer(), HtmlFormatter())
 
 def fillHTMLTemplate(templateString, paramsDict):
     """Invokes the jinja2 methods to fill in the slots
@@ -580,6 +590,7 @@ def lookup(name, namespace):
     Get a method or class from any imported module from its name.
     Usage: lookup(functionName, globals())
     """
+    #TODO: can we use this to detect missing or duplicate functions?
     dots = name.count('.')
     if dots > 0:
         moduleName, objName = '.'.join(name.split('.')[:-1]), name.split('.')[-1]
@@ -611,9 +622,13 @@ def pause():
 #
 import signal
 import time
+
 class TimeoutFunctionException(Exception):
     """Exception to raise on a timeout"""
-    pass
+    def __init__(self, timeout):
+        self.message = 'Your code should terminate within {0} seconds. Can you find a simpler solution?'.format(timeout)
+    def __str__(self):
+        return repr(self.message)
 
 
 class TimeoutFunction:
@@ -622,7 +637,7 @@ class TimeoutFunction:
         self.function = function
 
     def handle_timeout(self, signum, frame):
-        raise TimeoutFunctionException()
+        raise TimeoutFunctionException(self.timeout)
 
     def __call__(self, *args, **keyArgs):
         # If we have SIGALRM signal, use it to cause an exception if and

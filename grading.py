@@ -23,14 +23,11 @@ from collections import defaultdict
 import util
 import os
 import webbrowser
-from pygments import highlight
-from pygments.lexers import PythonLexer
-from pygments.formatters import HtmlFormatter
 
 
 class Grades:
   "A data structure for project grades, along with formatting code to display them"
-  def __init__(self, projectName, questionsAndMaxesList, htmlOutput=False, logOutput=False):
+  def __init__(self, projectName, questionsAndMaxesList, htmlOutput=False, logOutput=False, timeout=30):
     """
     Defines the grading scheme for a project
       projectName: project name
@@ -47,6 +44,7 @@ class Grades:
     self.htmlOutput = htmlOutput
     self.log = logOutput
     self.prereqs = defaultdict(set)
+    self.timeout = timeout  # max time for any of the questions
 
     self.printedMessage = 'Starting on %d-%d at %d:%02d:%02d' % self.start
 
@@ -80,8 +78,7 @@ class Grades:
           continue
 
       try:
-        util.TimeoutFunction(getattr(gradingModule, q),300)(self) # Call the question's function
-        #TimeoutFunction(getattr(gradingModule, q),1200)(self) # Call the question's function
+        util.TimeoutFunction(getattr(gradingModule, q), self.timeout)(self) # Call the question's function
       except Exception, inst:
         self.addExceptionMessage(q, inst, traceback)
         self.addErrorHints(exceptionMap, inst, q[1])
@@ -118,7 +115,6 @@ class Grades:
             ctr = 0
         with open(os.path.join('logs', 'log.'+str(ctr)), 'w') as o:
             o.write(self.printedMessage)
-
 
   def addExceptionMessage(self, q, inst, traceback):
     """
@@ -182,8 +178,8 @@ class Grades:
         score=self.points[q]
         qmax=self.maxes[q]
         badge = str(score)+"/"+str(qmax)
-        passedcases = [highlight(message[6:], PythonLexer(), HtmlFormatter()) for message in self.messages[q] if message.startswith('PASS')]
-        failedcases = [highlight(message[6:], PythonLexer(), HtmlFormatter()) for message in self.messages[q] if message.startswith('FAIL')]
+        passedcases = [util.codeHighlight(message[6:]) for message in self.messages[q] if message.startswith('PASS')]
+        failedcases = [util.codeHighlight(message[6:]) for message in self.messages[q] if message.startswith('FAIL')]
         undefined = ['<pre>Function %s() is not defined.</pre>' % message for message in self.undefined[q]]
         images = ['<pre>{0}\nExpected image:\n<img src={1}>\nYour image:\n<img src={2}></pre>'.format(message.split(',')[1],message.split(',')[2],message.split(',')[3]) for message in self.messages[q] if message.startswith('IMAGE')]
         if len(images)>0:
