@@ -1,19 +1,20 @@
-directory,functionname,modulename,description,result,weight,arg1,arg2,etc
-q1,beats,rock_paper_scissors,True if gesture1 beats gesture2; False otherwise,True,1,'rock','scissors'
-q2,isPalindrome,wordprops,True if word is a palindrome; False otherwise,False,1,'pepe'
-q2,isPalindrome,wordprops,True if word is a palindrome; False otherwise,False,1,'homestuck'
-q1,beats,rock_paper_scissors,True if gesture1 beats gesture2; False otherwise,False,2,'scissors','rock'
-q1,beats,rock_paper_scissors,True if gesture1 beats gesture2; False otherwise,True,2,'paper','rock'
-q1,isValidGesture,rock_paper_scissors,True if gesture is one of 'rock' 'paper' or 'scissors'; False otherwise,True,1,'rock'
-q1,isValidGesture,rock_paper_scissors,True if gesture is one of 'rock' 'paper' or 'scissors'; False otherwise,False,1,'spock'
-q2,isPalindrome,wordprops,True if word is a palindrome; False otherwise,True,3,'civic'
-q2,isPalindrome,wordprops,True if word is a palindrome; False otherwise,True,2,'Noon'
-q2,scrabbleScore,wordprops,the scrabble value (int) of the word,25,2,'juxtapose'
-q2,scrabbleScore,wordprops,the scrabble value (int) of the word,22,1,'quiz'
-q2,scrabbleScore,wordprops,the scrabble value (int) of the word,15,3,'Wellesley'
-q2,scrabbleScore,wordprops,the scrabble value (int) of the word,12,3,'Dyonisus'
-q2,isTopRow,wordprops,True if word uses only letters on the first row of the keyboard; False otherwise,True,1,'pretty'
-q2,isTopRow,wordprops,True if word uses only letters on the first row of the keyboard; False otherwise,True,3,'TyPeWrItEr'
-q2,isTopRow,wordprops,True if word uses only letters on the first row of the keyboard; False otherwise,False,1,'jessica jones'
-q3,quilt1,quilt, the blue quilt,bluequilt.png,0,
-q3,quilt2,quilt, the red quilt, redquilt.png,0,
+directory|functionname|modulename|description|result|weight|arg1|arg2|etc
+q1|beats|rock_paper_scissors|True if gesture1 beats gesture2; False otherwise|True|1|'rock'|'scissors'
+q2|isPalindrome|wordprops|True if word is a palindrome; False otherwise|False|1|'pepe'
+q2|isPalindrome|wordprops|True if word is a palindrome; False otherwise|False|1|'homestuck'
+q1|beats|rock_paper_scissors|True if gesture1 beats gesture2; False otherwise|False|2|'scissors'|'rock'
+q1|beats|rock_paper_scissors|True if gesture1 beats gesture2; False otherwise|True|2|'paper'|'rock'
+q1|isValidGesture|rock_paper_scissors|True if gesture is one of 'rock' 'paper' or 'scissors'; False otherwise|True|1|'rock'
+q1|isValidGesture|rock_paper_scissors|True if gesture is one of 'rock' 'paper' or 'scissors'; False otherwise|False|1|'spock'
+q2|isPalindrome|wordprops|True if word is a palindrome; False otherwise|True|3|'civic'
+q2|isPalindrome|wordprops|True if word is a palindrome; False otherwise|True|2|'Noon'
+q2|scrabbleScore|wordprops|the scrabble value (int) of the word|25|2|'juxtapose'
+q2|scrabbleScore|wordprops|the scrabble value (int) of the word|22|1|'quiz'
+q2|scrabbleScore|wordprops|the scrabble value (int) of the word|15|3|'Wellesley'
+q2|scrabbleScore|wordprops|the scrabble value (int) of the word|12|3|'Dyonisus'
+q2|isTopRow|wordprops|True if word uses only letters on the first row of the keyboard; False otherwise|True|1|'pretty'
+q2|isTopRow|wordprops|True if word uses only letters on the first row of the keyboard; False otherwise|True|3|'TyPeWrItEr'
+q2|isTopRow|wordprops|True if word uses only letters on the first row of the keyboard; False otherwise|False|1|'jessica jones'
+q3|quilt1|quilt|the blue quilt|bluequilt.png|0|
+q3|quilt2|quilt|the red quilt| redquilt.png|0|
+q4|drawDiamonds|diamonds|draw diamond what do u want me 2 tell u man|(None,'*****')|2|p

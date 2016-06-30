@@ -1,6 +1,6 @@
 class: "ImageTest"
-success: "quilt1() returns  the blue quilt"
-failure: "quilt1() must return  the blue quilt"
+success: "quilt1() returns the blue quilt"
+failure: "quilt1() must return the blue quilt"
 
 # A python expression to be evaluated.  This expression must return the
 # same result for the student and instructor's code.

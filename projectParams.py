@@ -12,7 +12,7 @@
 # Pieter Abbeel (pabbeel@cs.berkeley.edu).
 
 STUDENT_CODE_DIR = '../psetsolutions'
-STUDENT_CODE_LIST = 'rock_paper_scissors.py,wordprops.py,quilt.py,picture.py'
+STUDENT_CODE_LIST = 'rock_paper_scissors.py,wordprops.py,quilt.py,picture.py,util.py'
 PROJECT_TEST_CLASSES = 'testClasses.py'
 PROJECT_NAME = 'Project 3: Rock Paper Scissors & Word Properties'
 BONUS_PIC = True

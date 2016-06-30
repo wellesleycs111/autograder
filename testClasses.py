@@ -16,6 +16,7 @@
 import inspect
 import re
 import sys
+import util
 
 
 # Class which models a question in a project.  Note that questions have a
@@ -196,23 +197,23 @@ class EvalTest(TestCase): # moved from tutorialTestClasses
 
     def __init__(self, question, testDict):
         super(EvalTest, self).__init__(question, testDict)
+        testDict['test']='util.capturePrint('+testDict['test'].split('(')[0]+','+testDict['test'][:-1].split('(')[1]+')'
+        print testDict['test']
         self.preamble = compile(testDict.get('preamble', ""), "%s.preamble" % self.getPath(), 'exec')
-        #print self.preamble
         self.test = compile(testDict['test'], "%s.test" % self.getPath(), 'eval')
-        #print self.test
+        print self.test
         self.success = testDict['success']
         self.failure = testDict['failure']
 
     def evalCode(self, moduleDict):
+        print 'hey'
         bindings = dict(moduleDict)
         exec self.preamble in bindings
+        print eval(self.test,bindings)
         return str(eval(self.test, bindings))
 
     def execute(self, grades, moduleDict, solutionDict):
         result = self.evalCode(moduleDict)
-        #if isinstance(self.question, UngradedImageQuestion):
-        #    grades.addMessage('IMAGE: {0}\n\tExpected image: <img src={1}>\n\tStudent image: <img src={2}>'.format(self.path, solutionDict['result'],result))
-        #    return True
         if result == solutionDict['result']:
             grades.addMessage('PASS: {0}\n\t{1}\n\tscore: {2}'.format(self.path, self.success, self.weight+'/'+self.weight))
             return True
@@ -224,7 +225,6 @@ class EvalTest(TestCase): # moved from tutorialTestClasses
         handle = open(filePath, 'w')
         handle.write('# This is the solution file for %s.\n' % self.path)
         handle.write('# The result of evaluating the test must equal the below when cast to a string.\n')
-
         handle.write('result: "%s"\n' % self.evalCode(moduleDict))
         handle.close()
         return True
@@ -235,3 +235,14 @@ class ImageTest(EvalTest):
         result = self.evalCode(moduleDict)
         grades.addMessage('IMAGE,{0},{1},{2}'.format(self.path, solutionDict['result'],result))
         return True
+
+
+class PrintTest(EvalTest):
+
+    def __init__(self,question,testDict):
+        testDict['test']='util.capturePrint('+testDict['test'].split('(')[0]+','+testDict['test'][:-1].split('(')[1]+')'
+
+    def evalCode(self,moduleDict):
+        bindings = dict(moduleDict)
+        exec self.preamble in bindings
+        return str(eval(self.test, bindings))

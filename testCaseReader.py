@@ -13,7 +13,7 @@ def linesFromFile(filename):
         strippedLines = [line.strip() for line in inputFile.readlines()][1:] # skip header row
     return strippedLines
 
-def generateTestFile(caseList,filename):
+def generateTestFile(caseList,filename,printcase=False):
     '''Creates a .test file from a single list containing information about
     the case'''
     arguments = caseList[6:] #stores test case arguments as a list
@@ -21,6 +21,8 @@ def generateTestFile(caseList,filename):
         #writes test file with information from the list
         if caseList[4].endswith('.png'):
             f.write("class: \"ImageTest\"\n")
+        elif printcase:
+            f.write("class: \"PrintTest\"\n")
         else:
             f.write("class: \"EvalTest\"\n")
         f.write("success: \""+caseList[1]+"("+','.join(arguments)+") returns "+caseList[3]+"\"\n")
@@ -56,11 +58,15 @@ def main():
     #(so we don't overwrite the same solution file a buncha times)
     testsPerQDict={}
     for line in caseList:
-        line=line.split(',')
+        line=line.split('|')
+        printcase=False
+        if line[-1]=='p':
+            printcase=True
+            line.pop()
         amountOfSolutionsDict[line[1]] = amountOfSolutionsDict.get(line[1],0)+1
         testsPerQDict[line[0]]=testsPerQDict.get(line[0],0)+int(line[5])
         testFile=os.path.join('test_cases', line[0], line[1]+'_'+str(amountOfSolutionsDict[line[1]]))
-        generateTestFile(line,testFile+".test")
+        generateTestFile(line,testFile+".test",printcase)
         generateSolutionFile(line,testFile+".solution")
     for key in testsPerQDict:
         generateCONFIGFile(key,testsPerQDict[key])
