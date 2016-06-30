@@ -4,7 +4,7 @@ for student in ashen rkim8 myang5 kchen7 ssong3 hmurayam aklufas mshen2 cverish 
     mkdir Desktop/spring16ps/$student/autograder/;
     mkdir Desktop/spring16ps/$student/psetsolutions/;
     mv Desktop/spring16ps/$student/*.py Desktop/spring16ps/$student/psetsolutions/;
-    cp -r Desktop/spring16ps/cbuffo/autograder/ Desktop/spring16ps/$student/autograder/ ;
+    cp -r autograder/ Desktop/spring16ps/$student/autograder/ ;
     cd Desktop/spring16ps/$student/autograder/;
     python autograder.py;
     cd ../../../../
