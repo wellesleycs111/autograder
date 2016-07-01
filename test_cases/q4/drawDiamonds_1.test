@@ -1,6 +1,6 @@
 class: "PrintTest"
-success: "drawDiamonds() returns draw diamond what do u want me 2 tell u man"
-failure: "drawDiamonds() must return draw diamond what do u want me 2 tell u man"
+success: "drawDiamonds() returns None and print a series of diamonds"
+failure: "drawDiamonds() must return None and print a series of diamonds"
 
 # A python expression to be evaluated.  This expression must return the
 # same result for the student and instructor's code.

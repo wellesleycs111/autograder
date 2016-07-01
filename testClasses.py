@@ -197,19 +197,14 @@ class EvalTest(TestCase): # moved from tutorialTestClasses
 
     def __init__(self, question, testDict):
         super(EvalTest, self).__init__(question, testDict)
-        testDict['test']='util.capturePrint('+testDict['test'].split('(')[0]+','+testDict['test'][:-1].split('(')[1]+')'
-        print testDict['test']
         self.preamble = compile(testDict.get('preamble', ""), "%s.preamble" % self.getPath(), 'exec')
         self.test = compile(testDict['test'], "%s.test" % self.getPath(), 'eval')
-        print self.test
         self.success = testDict['success']
         self.failure = testDict['failure']
 
     def evalCode(self, moduleDict):
-        print 'hey'
         bindings = dict(moduleDict)
         exec self.preamble in bindings
-        print eval(self.test,bindings)
         return str(eval(self.test, bindings))
 
     def execute(self, grades, moduleDict, solutionDict):
@@ -240,9 +235,5 @@ class ImageTest(EvalTest):
 class PrintTest(EvalTest):
 
     def __init__(self,question,testDict):
-        testDict['test']='util.capturePrint('+testDict['test'].split('(')[0]+','+testDict['test'][:-1].split('(')[1]+')'
-
-    def evalCode(self,moduleDict):
-        bindings = dict(moduleDict)
-        exec self.preamble in bindings
-        return str(eval(self.test, bindings))
+        testDict['test']='util.capturePrint('+testDict['test'].split('(')[0]+',['+testDict['test'][:-1].split('(')[1]+'])'
+        super(PrintTest, self).__init__(question, testDict)
