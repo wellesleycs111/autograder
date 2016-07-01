@@ -18,7 +18,9 @@
 </div>
 
 <div class="container">
+  {% if showGrades %}
   <h3>Total score: {{totalscore}}/{{totalpossible}}</h3>
+  {% endif %}
 <div class="test">
 <section>
 <p>Click each question for a detailed analysis of passed and failed
@@ -29,7 +31,7 @@ test cases.
 {% for q in questions %}
 <div class="shortform">
   <button type="button" class="btn btn-{{q['correctness']}}" data-toggle="collapse" data-target="#q{{q['num']}}">Question {{q['num']}}
-    <span class="badge">{{q['badge']}}</span>
+    {% if showGrades %}<span class="badge">{{q['badge']}}</span>{% endif %}
   </button>
 </div>
   <div class="collapse" id="q{{q['num']}}">

@@ -146,7 +146,7 @@ class TestCase(object):
     def __str__(self):
         self.raiseNotDefined()
 
-    def execute(self, grades, moduleDict, solutionDict):
+    def execute(self, grades, moduleDict, solutionDict, showGrades):
         self.raiseNotDefined()
 
     def writeSolution(self, moduleDict, filePath):
@@ -207,13 +207,19 @@ class EvalTest(TestCase): # moved from tutorialTestClasses
         exec self.preamble in bindings
         return str(eval(self.test, bindings))
 
-    def execute(self, grades, moduleDict, solutionDict):
+    def execute(self, grades, moduleDict, solutionDict, showGrades):
         result = self.evalCode(moduleDict)
         if result == solutionDict['result']:
-            grades.addMessage('PASS: {0}\n\t{1}\n\tscore: {2}'.format(self.path, self.success, self.weight+'/'+self.weight))
+            if showGrades:
+                grades.addMessage('PASS: {0}\n\t{1}\n\tscore: {2}'.format(self.path, self.success, self.weight+'/'+self.weight))
+            else:
+                grades.addMessage('PASS: {0}\n\t{1}\n'.format(self.path, self.success))
             return True
         else:
-            grades.addMessage('FAIL: {0}\n\t{1}\n\tstudent result: {2}\n\tcorrect result: {3}\n\tscore: {4}'.format(self.path, self.failure, result, solutionDict['result'],'0/'+self.weight))
+            if showGrades:
+                grades.addMessage('FAIL: {0}\n\t{1}\n\tstudent result: {2}\n\tcorrect result: {3}\n\tscore: {4}'.format(self.path, self.failure, result, solutionDict['result'],'0/'+self.weight))
+            else:
+                grades.addMessage('FAIL: {0}\n\t{1}\n\tstudent result: {2}\n\tcorrect result: {3}\n'.format(self.path, self.failure, result, solutionDict['result']))
         return False
 
     def writeSolution(self, moduleDict, filePath):
