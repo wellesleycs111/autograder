@@ -16,7 +16,19 @@
 import inspect
 import re
 import sys
-import util
+
+import cStringIO
+
+def capturePrint(func, arglist):
+    """Redirect print output from func and return it alongwith the actual return value"""
+    # apapted from https://wrongsideofmemphis.wordpress.com/2010/03/01/store-standard-output-on-a-variable-in-python/
+    old_stdout = sys.stdout
+    result = cStringIO.StringIO()
+    sys.stdout = result
+    returnval = func(*arglist)  # call the function
+    printval = result.getvalue()
+    sys.stdout = old_stdout
+    return returnval, printval
 
 
 # Class which models a question in a project.  Note that questions have a
@@ -235,5 +247,5 @@ class ImageTest(EvalTest):
 class PrintTest(EvalTest):
 
     def __init__(self,question,testDict):
-        testDict['test']='util.capturePrint('+testDict['test'].split('(')[0]+',['+testDict['test'][:-1].split('(')[1]+'])'
+        testDict['test']='projectTestClasses.capturePrint('+testDict['test'].split('(')[0]+',['+testDict['test'][:-1].split('(')[1]+'])'
         super(PrintTest, self).__init__(question, testDict)

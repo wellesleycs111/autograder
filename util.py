@@ -19,23 +19,11 @@
 import sys
 import inspect
 import heapq, random
-import cStringIO
 import jinja2
 from pygments import highlight
 from pygments.lexers import PythonLexer
 from pygments.formatters import HtmlFormatter
 import re
-
-def capturePrint(func, arglist):
-    """Redirect print output from func and return it alongwith the actual return value"""
-    # apapted from https://wrongsideofmemphis.wordpress.com/2010/03/01/store-standard-output-on-a-variable-in-python/
-    old_stdout = sys.stdout
-    result = cStringIO.StringIO()
-    sys.stdout = result
-    returnval = func(*arglist)  # call the function
-    printval = result.getvalue()
-    sys.stdout = old_stdout
-    return returnval, printval
 
 def codeHighlight(message, delimiter='!'):
     # TODO: highlight string, but don't highlight escaped portion (between ! !)
