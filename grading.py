@@ -27,7 +27,7 @@ import webbrowser
 
 class Grades:
   "A data structure for project grades, along with formatting code to display them"
-  def __init__(self, projectName, questionsAndMaxesList, htmlOutput=False, logOutput=False, timeout=30):
+  def __init__(self, projectName, questionsAndMaxesList, htmlOutput=False, logOutput=False, timeout=30, showGrades=True):
     """
     Defines the grading scheme for a project
       projectName: project name
@@ -45,6 +45,7 @@ class Grades:
     self.log = logOutput
     self.prereqs = defaultdict(set)
     self.timeout = timeout  # max time for any of the questions
+    self.showGrades = showGrades #toggle to show/not show grades on html output
 
     self.printedMessage = 'Starting on %d-%d at %d:%02d:%02d' % self.start
 
@@ -159,6 +160,7 @@ class Grades:
 
     paramsDict['totalpossible'] = sum(self.maxes.values())
     paramsDict['totalscore'] = sum(self.points.values())
+    paramsDict['showGrades'] = self.showGrades
     paramsDict['questions']=[]
 
     for q in self.questions:

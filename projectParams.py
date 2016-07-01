@@ -15,5 +15,6 @@ STUDENT_CODE_DIR = '../psetsolutions'
 STUDENT_CODE_LIST = 'rock_paper_scissors.py,wordprops.py,quilt.py,picture.py,diamonds.py'
 PROJECT_TEST_CLASSES = 'testClasses.py'
 PROJECT_NAME = 'Project 3: Rock Paper Scissors & Word Properties'
+SHOW_GRADES = False
 BONUS_PIC = True
 TIME_OUT = 60
