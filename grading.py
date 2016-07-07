@@ -176,8 +176,8 @@ class Grades:
         score=self.points[q]
         qmax=self.maxes[q]
         badge = str(score)+"/"+str(qmax)
-        passedcases = [util.codeHighlight(message[6:]) for message in self.messages[q] if message.startswith('PASS')]
-        failedcases = [util.codeHighlight(message[6:]) for message in self.messages[q] if message.startswith('FAIL')]
+        passedcases = [util.codeHighlight(message[6:]).replace(r"\n","<br>") for message in self.messages[q] if message.startswith('PASS')]
+        failedcases = [util.codeHighlight(message[6:]).replace(r"\n","<br>") for message in self.messages[q] if message.startswith('FAIL')]
         undefined = ['<pre>Function %s() is not defined.</pre>' % message for message in self.undefined[q]]
         images = ['<pre>{0}\nExpected image:\n<img src={1}>\nYour image:\n<img src={2}></pre>'.format(message.split(',')[1],message.split(',')[2],message.split(',')[3]) for message in self.messages[q] if message.startswith('IMAGE')]
         if len(images)>0:
