@@ -321,7 +321,7 @@ def evaluate(generateSolutions, testRoot, moduleDict, exceptionMap=ERROR_HINT_MA
             for prereq in questionDicts[q].get('depends', '').split():
                 grades.addPrereq(q, prereq)
 
-    grades.grade(sys.modules[__name__], funcNotDefined, bonusPic = projectParams.BONUS_PIC)
+    grades.grade(sys.modules[__name__], funcNotDefined, exceptionMap = ERROR_HINT_MAP,bonusPic = projectParams.BONUS_PIC)
     return grades.points
 
 
@@ -354,7 +354,7 @@ if __name__ == '__main__':
         moduleDict[moduleName] = loadModuleFile(moduleName, os.path.join(options.codeRoot, cp))
     moduleName = re.match('.*?([^/]*)\.py', options.testCaseCode).group(1)
     moduleDict['projectTestClasses'] = loadModuleFile(moduleName, options.testCaseCode)
-    
+
     if options.runTest != None:
         runTest(options.runTest, moduleDict, printTestCase=options.printTestCase, display=getDisplay(True, options))
     else:

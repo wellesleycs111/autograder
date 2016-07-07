@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+   <!DOCTYPE html>
 <html>
 <head>
 <title>CS111 Autograder Results</title>
@@ -17,7 +17,7 @@
 
 <div class="container">
   
-  <h3>Total score: 17/30</h3>
+  <h3>Total score: 16/30</h3>
   
 <div class="test">
 <section>
@@ -28,41 +28,46 @@ test cases.
 
 
 <div class="shortform">
-  <button type="button" class="btn btn-warning" data-toggle="collapse" data-target="#q1">Question 1
-    <span class="badge">Image Test</span>
+  <button type="button" class="btn btn-danger" data-toggle="collapse" data-target="#q1">Question 1
+    <span class="badge">0/7</span>
   </button>
 </div>
   <div class="collapse" id="q1">
 
 
-<h4 class="alert alert-info">Images</h4>
-  
-    <img src=bandana1.ps >
-  
 
-
-
-<h4 class="alert alert-success">Passed</h4>
-  
-    <div class="highlight"><pre><span class="n">test_cases</span><span class="o">/</span><span class="n">q1</span><span class="o">/</span><span class="n">isValidGesture_1</span><span class="o">.</span><span class="n">test</span>
-	<span class="n">isValidGesture</span><span class="p">(</span><span class="s">&#39;rock&#39;</span><span class="p">)</span> <span class="n">returns</span> <span class="bp">True</span> <span class="k">if</span> <span class="n">gesture</span> <span class="ow">is</span> <span class="n">one</span> <span class="n">of</span> <span class="s">&#39;rock&#39;</span> <span class="s">&#39;paper&#39;</span> <span class="ow">or</span> <span class="s">&#39;scissors&#39;</span><span class="p">;</span> <span class="bp">False</span> <span class="n">otherwise</span>
-	<span class="n">score</span><span class="p">:</span> <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>
-</pre></div>
-
-  
 
 
 
 <h4 class="alert alert-danger">Failed</h4>
   
-    <div class="highlight"><pre><span class="n">test_cases</span><span class="o">/</span><span class="n">q1</span><span class="o">/</span><span class="n">isValidGesture_2</span><span class="o">.</span><span class="n">test</span>
-	<span class="n">isValidGesture</span><span class="p">(</span><span class="s">&#39;spock&#39;</span><span class="p">)</span> <span class="n">must</span> <span class="k">return</span> <span class="bp">True</span> <span class="k">if</span> <span class="n">gesture</span> <span class="ow">is</span> <span class="n">one</span> <span class="n">of</span> <span class="s">&#39;rock&#39;</span> <span class="s">&#39;paper&#39;</span> <span class="ow">or</span> <span class="s">&#39;scissors&#39;</span><span class="p">;</span> <span class="bp">False</span> <span class="n">otherwise</span>
-	<span class="n">student</span> <span class="n">result</span><span class="p">:</span> <span class="bp">True</span>
-	<span class="n">correct</span> <span class="n">result</span><span class="p">:</span> <span class="bp">False</span>
-	<span class="n">score</span><span class="p">:</span> <span class="mi">0</span><span class="o">/</span><span class="mi">1</span>
+    <div class="highlight"><pre><span class="ne">Exception</span> <span class="n">raised</span><span class="p">:</span> <span class="nb">list</span> <span class="n">index</span> <span class="n">out</span> <span class="n">of</span> <span class="nb">range</span>
 </pre></div>
 
   
+
+
+
+<div class="bs-callout bs-callout-info">
+<h4>Hints</h4>
+  
+    
+  
+          We noticed that your project threw an IndexError on q1.
+  
+          While many things may cause this, it may have been from
+  
+          assuming a certain number of successors from a state space
+  
+          or assuming a certain number of actions available from a given
+  
+          state. Try making your code more general (no hardcoded indices)
+  
+          and submit again!
+  
+        
+  
+</div>
 
 
 
@@ -78,16 +83,11 @@ test cases.
 
 <div class="shortform">
   <button type="button" class="btn btn-warning" data-toggle="collapse" data-target="#q2">Question 2
-    <span class="badge">Image Test</span>
+    <span class="badge">14/21</span>
   </button>
 </div>
   <div class="collapse" id="q2">
 
-
-<h4 class="alert alert-info">Images</h4>
-  
-    <img src=bandana1.ps >
-  
 
 
 
@@ -140,6 +140,8 @@ test cases.
 
 
 
+
+
 <h4 class="alert alert-warning">Not Found</h4>
   
     <pre>Function isPalindrome() is not defined.</pre>
@@ -151,48 +153,12 @@ test cases.
 <br>
 
 <div class="shortform">
-  <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#q3">Question 3
-    <span class="badge">Image Test</span>
+  <button type="button" class="btn btn-success" data-toggle="collapse" data-target="#q3">Question 3
+    <span class="badge">2/2</span>
   </button>
 </div>
   <div class="collapse" id="q3">
 
-
-<h4 class="alert alert-info">Images</h4>
-  
-    <img src=bandana1.ps >
-  
-
-
-
-
-
-<h4 class="alert alert-danger">Failed</h4>
-  
-    <div class="highlight"><pre><span class="ne">Exception</span> <span class="n">raised</span><span class="p">:</span> <span class="s">&#39;border color&#39;</span>
-</pre></div>
-
-  
-
-
-
-  </div><!--collapse-->
-  <!-- TODO: also show exception messages if any -->
-</section>
-<br>
-
-<div class="shortform">
-  <button type="button" class="btn btn-success" data-toggle="collapse" data-target="#q4">Question 4
-    <span class="badge">Image Test</span>
-  </button>
-</div>
-  <div class="collapse" id="q4">
-
-
-<h4 class="alert alert-info">Images</h4>
-  
-    <img src=bandana1.ps >
-  
 
 
 
@@ -204,6 +170,8 @@ test cases.
 </pre></div>
 
   
+
+
 
 
 

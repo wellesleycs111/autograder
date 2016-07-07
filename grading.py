@@ -46,6 +46,7 @@ class Grades:
     self.prereqs = defaultdict(set)
     self.timeout = timeout  # max time for any of the questions
     self.showGrades = showGrades #toggle to show/not show grades on html output
+    self.errorHints = {}
 
     self.printedMessage = 'Starting on %d-%d at %d:%02d:%02d' % self.start
 
@@ -61,6 +62,7 @@ class Grades:
     self.undefined = funcNotDefined
     completedQuestions = set([])
     for q in self.questions:
+      self.errorHints[q]=[]
       self.printedMessage += '\nQuestion %s\n' % q
       self.printedMessage += '=' * (9 + len(q))
       self.printedMessage += '\n'
@@ -128,6 +130,7 @@ class Grades:
         self.addMessage(line)
 
   def addErrorHints(self, exceptionMap, errorInstance, questionNum):
+    print 'adding error hint'
     typeOf = str(type(errorInstance))
     questionName = 'q' + questionNum
     errorHint = ''
@@ -143,11 +146,12 @@ class Grades:
       errorHint = exceptionMap.get(typeOf)
 
     # dont include the HTML if we have no error hint
-    if not errorHint:
+    if errorHint=='':
       return ''
 
     for line in errorHint.split('\n'):
-      self.addMessage(line)
+      self.errorHints[questionName].append(line)
+    print self.errorHints
 
   def produceOutput(self):
     """Passes dictionary of parameters to fill in the Jinja template,
@@ -186,7 +190,7 @@ class Grades:
         images = ['<pre>{0}\nExpected image:\n<img src={1}>\nYour image:\n<img src={2}></pre>'.format(message.split(',')[1],message.split(',')[2],message.split(',')[3]) for message in self.messages[q] if message.startswith('IMAGE')]
         if len(images)>0:
             badge="Image Test"
-        paramsDict['questions'].append({'num':num,'correctness':correctness,'badge':badge,'passedcases':passedcases,'failedcases':failedcases, 'undefined': undefined, 'images': images})
+        paramsDict['questions'].append({'num':num,'correctness':correctness,'badge':badge,'passedcases':passedcases,'failedcases':failedcases, 'undefined': undefined, 'images': images, 'hints': self.errorHints[q]})
 
     with open('grader_result.html', 'w') as o:
           o.write(util.fillHTMLTemplate(open('jinjatemplate.html').read(), paramsDict))
