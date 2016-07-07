@@ -244,7 +244,7 @@ class EvalTest(TestCase): # moved from tutorialTestClasses
 
 class ImageTest(EvalTest):
 
-    def execute(self,grades,moduleDict,solutionDict):
+    def execute(self,grades,moduleDict,solutionDict,showGrades):
         result = self.evalCode(moduleDict)
         grades.addMessage('IMAGE,{0},{1},{2}'.format(self.path, solutionDict['result'],result))
         return True

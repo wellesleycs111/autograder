@@ -4,5 +4,5 @@ failure: "quilt2() must return the red quilt"
 
 # A python expression to be evaluated.  This expression must return the
 # same result for the student and instructor's code.
-test: "quilt.quilt2()"
+test: "quilt.quilt1()"
 weight: "0"
