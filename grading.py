@@ -142,10 +142,6 @@ class Grades:
     if (exceptionMap.get(typeOf)):
       errorHint = exceptionMap.get(typeOf)
 
-    # dont include the HTML if we have no error hint
-    if not errorHint:
-      return ''
-
     for line in errorHint.split('\n'):
       self.addMessage(line)
 

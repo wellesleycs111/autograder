@@ -26,6 +26,7 @@ import sys
 import projectParams
 import random
 import util
+from hintmap import ERROR_HINT_MAP
 random.seed(0)
 try:
     from pacman import GameState
@@ -148,34 +149,6 @@ def readFile(path, root=""):
         return handle.read()
 
 
-#######################################################################
-# Error Hint Map
-#######################################################################
-
-# TODO: use these
-ERROR_HINT_MAP = {
-  'q1': {
-    "<type 'exceptions.IndexError'>": """
-      We noticed that your project threw an IndexError on q1.
-      While many things may cause this, it may have been from
-      assuming a certain number of successors from a state space
-      or assuming a certain number of actions available from a given
-      state. Try making your code more general (no hardcoded indices)
-      and submit again!
-    """
-  },
-  'q3': {
-      "<type 'exceptions.AttributeError'>": """
-        We noticed that your project threw an AttributeError on q3.
-        While many things may cause this, it may have been from assuming
-        a certain size or structure to the state space. For example, if you have
-        a line of code assuming that the state is (x, y) and we run your code
-        on a state space with (x, y, z), this error could be thrown. Try
-        making your code more general and submit again!
-
-    """
-  }
-}
 
 import pprint
 
@@ -321,7 +294,7 @@ def evaluate(generateSolutions, testRoot, moduleDict, exceptionMap=ERROR_HINT_MA
             for prereq in questionDicts[q].get('depends', '').split():
                 grades.addPrereq(q, prereq)
 
-    grades.grade(sys.modules[__name__], funcNotDefined, bonusPic = projectParams.BONUS_PIC)
+    grades.grade(sys.modules[__name__], funcNotDefined, exceptionMap = ERROR_HINT_MAP, bonusPic = projectParams.BONUS_PIC)
     return grades.points
 
 
@@ -354,7 +327,7 @@ if __name__ == '__main__':
         moduleDict[moduleName] = loadModuleFile(moduleName, os.path.join(options.codeRoot, cp))
     moduleName = re.match('.*?([^/]*)\.py', options.testCaseCode).group(1)
     moduleDict['projectTestClasses'] = loadModuleFile(moduleName, options.testCaseCode)
-    
+
     if options.runTest != None:
         runTest(options.runTest, moduleDict, printTestCase=options.printTestCase, display=getDisplay(True, options))
     else:
