@@ -12,9 +12,9 @@
 # Pieter Abbeel (pabbeel@cs.berkeley.edu).
 
 STUDENT_CODE_DIR = '../psetsolutions'
-STUDENT_CODE_LIST = 'rock_paper_scissors.py,wordprops.py,quilt.py,picture.py,diamonds.py'
+STUDENT_CODE_LIST = 'rock_paper_scissors.py,wordprops.py,hourglass.py'
 PROJECT_TEST_CLASSES = 'testClasses.py'
 PROJECT_NAME = 'Project 3: Rock Paper Scissors & Word Properties'
-SHOW_GRADES = False
+SHOW_GRADES = True
 BONUS_PIC = True
 TIME_OUT = 60

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+   <!DOCTYPE html>
 <html>
 <head>
 <title>CS111 Autograder Results</title>
@@ -55,6 +55,15 @@ test cases.
   {% for message in q['failedcases'] %}
     {{message}}
   {% endfor %}
+{% endif %}
+
+{% if q['hints'] %}
+<div class="bs-callout bs-callout-info">
+<h4>Hints</h4>
+  {% for message in q['hints'] %}
+    {{message}}
+  {% endfor %}
+</div>
 {% endif %}
 
 {% if q['undefined'] %}

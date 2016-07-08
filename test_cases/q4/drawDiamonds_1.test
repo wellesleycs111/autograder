@@ -1,8 +1,0 @@
-class: "PrintTest"
-success: "drawDiamonds() returns None and print a series of diamonds"
-failure: "drawDiamonds() must return None and print a series of diamonds"
-
-# A python expression to be evaluated.  This expression must return the
-# same result for the student and instructor's code.
-test: "diamonds.drawDiamonds()"
-weight: "2"
