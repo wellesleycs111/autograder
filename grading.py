@@ -130,7 +130,6 @@ class Grades:
         self.addMessage(line)
 
   def addErrorHints(self, exceptionMap, errorInstance, questionNum):
-    print 'adding error hint'
     typeOf = str(type(errorInstance))
     questionName = 'q' + questionNum
     errorHint = ''
@@ -151,7 +150,6 @@ class Grades:
 
     for line in errorHint.split('\n'):
       self.errorHints[questionName].append(line)
-    print self.errorHints
 
   def produceOutput(self):
     """Passes dictionary of parameters to fill in the Jinja template,
