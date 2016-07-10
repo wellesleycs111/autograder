@@ -217,11 +217,11 @@ class EvalTest(TestCase): # moved from tutorialTestClasses
     def evalCode(self, moduleDict):
         bindings = dict(moduleDict)
         exec self.preamble in bindings
-        return str(eval(self.test, bindings))
+        return eval(self.test, bindings)
 
     def execute(self, grades, moduleDict, solutionDict, showGrades):
         result = self.evalCode(moduleDict)
-        if result == solutionDict['result']:
+        if result == eval(solutionDict['result']):
             if showGrades:
                 grades.addMessage('PASS: {0}\n\t{1}\n\tscore: {2}'.format(self.path, self.success, self.weight+'/'+self.weight))
             else:

@@ -6,12 +6,11 @@ Error Hint Map
 ERROR_HINT_MAP = {
   'q1': {
     "<type 'exceptions.IndexError'>": """
-      We noticed that your project threw an IndexError on q1.
+      We noticed that your program threw an IndexError.
       While many things may cause this, it may have been from
-      assuming a certain number of successors from a state space
-      or assuming a certain number of actions available from a given
-      state. Try making your code more general (no hardcoded indices)
-      and submit again!
+      trying to access an index that's larger than the length of
+      the list or string.
+      Remember that indexing starts from 0.
     """
   },
   'q3': {

@@ -12,8 +12,8 @@
 
   <div class="container">
   <h1>{{psid}} Autochecker Results
-    {% if studentname!='x' %}
-    for {{ studentname }}
+    {% if YourFullName is defined and YourFullName != '' %}
+    for {{ YourFullName }}
     {% endif %}</h1>
 </div>
 
@@ -85,10 +85,20 @@ test cases.
   turn it in by running <code>hwsubmit.py</code>.
 </p>
 
-{% if studentname=='x' %}
+{% if YourFullName is not defined %}
 <p>
-  It seems that your coversheet information is incomplete.
-  Please fill it out before you make your final submission.
+  It seems that your honor code form is formatted incorrectly.
+  Please correct any errors before you make your final submission.
+</p>
+{% elif missing != [] %}
+<p>
+  You have not filled out the following values in your honor code form.
+  Please fill them out before you make your final submission.
+  <ul>
+  {% for missingvalue in missing %}
+      <li> {{ missingvalue }}
+  {% endfor %}
+</ul>
 </p>
 {% endif %}
 </p>

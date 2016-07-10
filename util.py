@@ -677,7 +677,21 @@ def unmutePrint():
     sys.stdout = _ORIGINAL_STDOUT
     #sys.stderr = _ORIGINAL_STDERR
 
+def parseCoverPy():
+    try:
+        import honorcode
+        info = honorcode.__dict__
+        map(info.pop, ['__builtins__', '__doc__', '__file__', '__name__', '__package__']) # remove built-ins
+
+        info['missing'] = filter(lambda field: info[field]=='', ['YourFullName', 'YourUsername', 'PartnerFullName', 'PartnerUsername']) + filter(lambda field: info[field]==0, [fieldname for fieldname in info.keys() if fieldname.startswith('Time') or fieldname=='HowWeWorked'])
+
+        return info
+    except: # something wrong in file formatting
+        return False
+
 def parseCoverSheet():
+    """Parse the plaintext coversheet"""
+    # deprecated?
     info = {}
     for line in open('coversheet.txt').readlines():
         line = line.split(':')

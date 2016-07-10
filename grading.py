@@ -157,8 +157,9 @@ class Grades:
     paramsDict = {}
 
     paramsDict['psid'] = open('psid.txt').read().strip().upper()
-    studentinfo = util.parseCoverSheet()
-    paramsDict['studentname'] = studentinfo['studentname']
+    studentinfo = util.parseCoverPy()
+    if studentinfo:
+        paramsDict.update(studentinfo) # not passing keys signifies something's wrong    
 
     paramsDict['totalpossible'] = sum(self.maxes.values())
     paramsDict['totalscore'] = sum(self.points.values())
