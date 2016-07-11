@@ -1,0 +1,8 @@
+class: "EvalTest"
+success: "makeUnjumbleDictionary('tinyWordList.txt') returns a dictionary where each value is a list of anagram word from the file and the key is the unjumble key for all these words"
+failure: "makeUnjumbleDictionary('tinyWordList.txt') must return a dictionary where each value is a list of anagram word from the file and the key is the unjumble key for all these words"
+
+# A python expression to be evaluated.  This expression must return the
+# same result for the student and instructor's code.
+test: "unjumble.makeUnjumbleDictionary('tinyWordList.txt')"
+weight: "3"

@@ -1,0 +1,3 @@
+# This is the solution file for test_cases/q6/makeUnjumbleDictionary_1.test.
+# The result of evaluating the test must equal the below when cast to a string.
+result: "{'acerst':['caster','caters','crates','reacts','recast','traces'],'aegilnrt':['alerting','altering','integral','relating','triangle'],'aeglr':['glare','lager','large','regal'],'aeinrrst':['restrain','retrains','strainer','terrains','trainers'],'arst':['arts','rats','star','tars','tsar'],'chiiinorsst':['histrionics','trichinosis'],'opst':['opts','post','pots','spot','stop','tops']}"

@@ -60,9 +60,11 @@ test cases.
 {% if q['hints'] %}
 <div class="bs-callout bs-callout-info">
 <h4>Hints</h4>
+
   {% for message in q['hints'] %}
     {{message}}
   {% endfor %}
+
 </div>
 {% endif %}
 
