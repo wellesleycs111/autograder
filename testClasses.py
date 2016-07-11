@@ -55,13 +55,9 @@ class Question(object):
         print 'Method not implemented: %s' % inspect.stack()[1][3]
         sys.exit(1)
 
-    def __init__(self, questionDict, display):
+    def __init__(self, questionDict):
         self.maxPoints = int(questionDict['max_points'])
         self.testCases = []
-        self.display = display
-
-    def getDisplay(self):
-        return self.display
 
     def getMaxPoints(self):
         return self.maxPoints

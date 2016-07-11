@@ -31,7 +31,7 @@ random.seed(0)
 # register arguments and set default values
 def readCommand(argv):
     parser = optparse.OptionParser(description = 'Run public tests on student code')
-    parser.set_defaults(generateSolutions=False, htmlOutput=True, logOutput=True, printTestCase=False, noGraphics=False, showGrades=True)
+    parser.set_defaults(generateSolutions=False, htmlOutput=True, logOutput=True, printTestCase=False, showGrades=True)
     parser.add_option('--test-directory',
                       dest = 'testRoot',
                       default = 'test_cases',
@@ -76,10 +76,6 @@ def readCommand(argv):
                     dest = 'gradeQuestion',
                     default = None,
                     help = 'Grade one particular question.')
-    parser.add_option('--no-graphics',
-                    dest = 'noGraphics',
-                    action = 'store_true',
-                    help = 'No graphics display for pacman games.')
     (options, args) = parser.parse_args(argv)
     return options
 
@@ -168,7 +164,7 @@ def printTest(testDict, solutionDict):
         print "   |", line
 
 
-def runTest(testName, moduleDict, printTestCase=False, display=None):
+def runTest(testName, moduleDict, printTestCase=False):
     import testParser
     import testClasses
     for module in moduleDict:
@@ -181,7 +177,7 @@ def runTest(testName, moduleDict, printTestCase=False, display=None):
     testClass = getattr(projectTestClasses, testDict['class'])
 
     questionClass = getattr(testClasses, 'Question')
-    question = questionClass({'max_points': 0}, display)
+    question = questionClass({'max_points': 0})
     testCase = testClass(question, testDict)
 
     if printTestCase:
@@ -218,7 +214,7 @@ def getTestSubdirs(testParser, testRoot, questionToGrade):
 
 # evaluate student code
 def evaluate(generateSolutions, testRoot, moduleDict, exceptionMap=ERROR_HINT_MAP, htmlOutput=False, logOutput=False,
-            printTestCase=False, questionToGrade=None, display=None):
+            printTestCase=False, questionToGrade=None):
     #TODO: this is ugly -- fix it
     # imports of testbench code.  note that the testClasses import must follow
     # the import of student code due to dependencies
@@ -240,7 +236,7 @@ def evaluate(generateSolutions, testRoot, moduleDict, exceptionMap=ERROR_HINT_MA
         # create a question object
         questionDict = testParser.TestParser(os.path.join(subdir_path, 'CONFIG')).parse()
         questionClass = getattr(testClasses, questionDict['class'])
-        question = questionClass(questionDict, display)
+        question = questionClass(questionDict)
         questionDicts[q] = questionDict
 
         # load test cases into question
@@ -295,22 +291,6 @@ def evaluate(generateSolutions, testRoot, moduleDict, exceptionMap=ERROR_HINT_MA
 
 
 
-def getDisplay(graphicsByDefault, options=None):
-    graphics = graphicsByDefault
-    if options is not None and options.noGraphics:
-        graphics = False
-    if graphics:
-        try:
-            import graphicsDisplay
-            return graphicsDisplay.PacmanGraphics(1, frameTime=.05)
-        except ImportError:
-            pass
-    import textDisplay
-    return textDisplay.NullGraphics()
-
-
-
-
 if __name__ == '__main__':
     options = readCommand(sys.argv)
     if options.generateSolutions:
@@ -325,8 +305,8 @@ if __name__ == '__main__':
     moduleDict['projectTestClasses'] = loadModuleFile(moduleName, options.testCaseCode)
 
     if options.runTest != None:
-        runTest(options.runTest, moduleDict, printTestCase=options.printTestCase, display=getDisplay(True, options))
+        runTest(options.runTest, moduleDict, printTestCase=options.printTestCase)
     else:
         evaluate(options.generateSolutions, options.testRoot, moduleDict,
             htmlOutput=options.htmlOutput, logOutput=options.logOutput, printTestCase=options.printTestCase,
-            questionToGrade=options.gradeQuestion, display=getDisplay(options.gradeQuestion!=None, options))
+            questionToGrade=options.gradeQuestion)
