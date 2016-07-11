@@ -16,6 +16,7 @@
 import inspect
 import re
 import sys
+import os
 
 import cStringIO
 
@@ -260,7 +261,10 @@ class ImageTest(EvalTest):
 
     def execute(self,grades,moduleDict,solutionDict,showGrades):
         result = self.evalCode(moduleDict)
-        grades.addMessage('IMAGE,{0},{1},{2}'.format(self.path, solutionDict['result'],result))
+        # result will be a cs1graphics Canvas
+        userimage = os.path.splitext(os.path.basename(self.path))[0]+'.png'
+        result.saveToFile(userimage)
+        grades.addMessage('IMAGE,{0},{1},{2}'.format(self.path, solutionDict['result'],userimage))
         return True
 
 
