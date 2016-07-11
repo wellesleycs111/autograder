@@ -83,9 +83,11 @@ class TestParser(object):
             if test['result'].endswith('.pickle'):
                 # load the data from this file
                 test['result'] = pickle.load(open(os.path.join(os.path.dirname(self.path), test['result'])))
+            elif test['result'].endswith('.png'):
+                test['result'] = os.path.join(os.path.dirname(self.path), test['result'])  # add directory path to image location
             else:
                 test['result'] = eval(test['result'])
-                
+
         return test
 
 

@@ -25,13 +25,8 @@ import re
 import sys
 import projectParams
 import random
-import util
 from hintmap import ERROR_HINT_MAP
 random.seed(0)
-try:
-    from pacman import GameState
-except:
-    pass
 
 # register arguments and set default values
 def readCommand(argv):
@@ -224,6 +219,7 @@ def getTestSubdirs(testParser, testRoot, questionToGrade):
 # evaluate student code
 def evaluate(generateSolutions, testRoot, moduleDict, exceptionMap=ERROR_HINT_MAP, htmlOutput=False, logOutput=False,
             printTestCase=False, questionToGrade=None, display=None):
+    #TODO: this is ugly -- fix it
     # imports of testbench code.  note that the testClasses import must follow
     # the import of student code due to dependencies
     import testParser
