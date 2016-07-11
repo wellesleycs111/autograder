@@ -307,7 +307,6 @@ if __name__ == '__main__':
     if options.runTest != None:
         runTest(options.runTest, moduleDict, printTestCase=options.printTestCase)
     else:
-        print 'evaluating'
         evaluate(options.generateSolutions, options.testRoot, moduleDict,
             htmlOutput=options.htmlOutput, logOutput=options.logOutput, printTestCase=options.printTestCase,
             questionToGrade=options.gradeQuestion)

@@ -70,7 +70,6 @@ class TestParser(object):
                 test['__emit__'].append(("multiline", m.group(1)))
                 i += 1
                 continue
-            print lines[i]
             print 'error parsing test file: %s' % self.path
             sys.exit(1)
 
@@ -90,6 +89,7 @@ class TestParser(object):
                 test['result'] = os.path.join(os.path.dirname(self.path), test['result'])  # add directory path to image location
             else:
                 test['result'] = eval(test['result'])
+        return test
 
 
 def emitTestDict(testDict, handle):

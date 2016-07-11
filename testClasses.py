@@ -221,7 +221,6 @@ class EvalTest(TestCase): # moved from tutorialTestClasses
     def __init__(self, question, testDict):
         super(EvalTest, self).__init__(question, testDict)
         self.preamble = compile(testDict.get('preamble', ""), "%s.preamble" % self.getPath(), 'exec')
-        print testDict['test']
         self.test = compile(testDict['test'], "%s.test" % self.getPath(), 'eval')
         self.success = testDict['success']
         self.failure = testDict['failure']
