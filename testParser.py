@@ -14,6 +14,8 @@
 
 import re
 import sys
+import os
+import pickle
 
 class TestParser(object):
 
@@ -76,7 +78,14 @@ class TestParser(object):
             funcName = funcCall.split('(')[0]
             test['module'] = moduleName
             test['func'] = funcName
-            
+
+        if 'result' in test:
+            if test['result'].endswith('.pickle'):
+                # load the data from this file
+                test['result'] = pickle.load(open(os.path.join(os.path.dirname(self.path), test['result'])))
+            else:
+                test['result'] = eval(test['result'])
+                
         return test
 
 

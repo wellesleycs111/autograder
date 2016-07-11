@@ -17,4 +17,4 @@ q2|isTopRow|wordprops|True if word uses only letters on the first row of the key
 q2|isTopRow|wordprops|True if word uses only letters on the first row of the keyboard; False otherwise|False|1|'jessica jones'
 q3|quilt1|quilt|the blue quilt|bluequilt.png|0|
 q3|quilt2|quilt|the red quilt|redquilt.png|0|
-q4|hourglass|hourglass|None and print an hourglass|(None, ' *****\n  %%%\n   *\n  %%%\n *****\n')|2|1|5|'*'|'%'|p
+q4|hourglass|hourglass|None and print an hourglass|hourglass.pickle|2|1|5|'*'|'%'|p

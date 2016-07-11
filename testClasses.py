@@ -21,12 +21,12 @@ import cStringIO
 
 def capturePrint(func, arglist):
     """Redirect print output from func and return it alongwith the actual return value"""
-    # apapted from https://wrongsideofmemphis.wordpress.com/2010/03/01/store-standard-output-on-a-variable-in-python/
+    # adapted from https://wrongsideofmemphis.wordpress.com/2010/03/01/store-standard-output-on-a-variable-in-python/
     old_stdout = sys.stdout
     result = cStringIO.StringIO()
     sys.stdout = result
     returnval = func(*arglist)  # call the function
-    printval = result.getvalue()
+    printval = result.getvalue().strip('\n')  # strip newlines from ends
     sys.stdout = old_stdout
     return returnval, printval
 
@@ -221,7 +221,7 @@ class EvalTest(TestCase): # moved from tutorialTestClasses
 
     def execute(self, grades, moduleDict, solutionDict, showGrades):
         result = self.evalCode(moduleDict)
-        if result == eval(solutionDict['result']):
+        if result == solutionDict['result']:
             if showGrades:
                 grades.addMessage('PASS: {0}\n\t{1}\n\tscore: {2}'.format(self.path, self.success, self.weight+'/'+self.weight))
             else:
