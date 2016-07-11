@@ -1,4 +1,11 @@
-(NS' *****\n  %%%\n   *\n  %%%\n *****'
+(itestClasses
+ReturnPrint
 p0
-tp1
-.
+(dp1
+S'printval'
+p2
+S' *****\n  %%%\n   *\n  %%%\n *****'
+p3
+sS'returnval'
+p4
+Nsb.

@@ -683,7 +683,12 @@ def parseCoverPy():
         info = honorcode.__dict__
         map(info.pop, ['__builtins__', '__doc__', '__file__', '__name__', '__package__']) # remove built-ins
 
-        info['missing'] = filter(lambda field: info[field]=='', ['YourFullName', 'YourUsername', 'PartnerFullName', 'PartnerUsername']) + filter(lambda field: info[field]==0, [fieldname for fieldname in info.keys() if fieldname.startswith('Time') or fieldname=='HowWeWorked'])
+        info['missing'] = filter(lambda field: info[field]=='',
+                                 ['YourFullName',
+                                  'YourUsername',
+                                  'PartnerFullName',
+                                  'PartnerUsername']) + filter(lambda field: info[field]==0,
+                                                               [fieldname for fieldname in info.keys() if fieldname.startswith('Time') or fieldname=='HowWeWorked'])
 
         return info
     except: # something wrong in file formatting

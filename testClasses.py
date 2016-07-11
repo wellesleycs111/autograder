@@ -19,6 +19,19 @@ import sys
 
 import cStringIO
 
+class ReturnPrint:
+    """Datatype returned by a function that also prints"""
+    def __init__(self, returnval, printval):
+        self.returnval = returnval
+        self.printval = printval
+    def __eq__(self, other):
+        return self.returnval==other.returnval and self.printval==other.printval
+    def __ne__(self, other):
+        return not self.__eq__(other)
+    def __str__(self):
+        return '\nReturned value: '+str(self.returnval)+'\n'+'Printed value:\n'+str(self.printval)
+
+
 def capturePrint(func, arglist):
     """Redirect print output from func and return it alongwith the actual return value"""
     # adapted from https://wrongsideofmemphis.wordpress.com/2010/03/01/store-standard-output-on-a-variable-in-python/
@@ -28,7 +41,8 @@ def capturePrint(func, arglist):
     returnval = func(*arglist)  # call the function
     printval = result.getvalue().strip('\n')  # strip newlines from ends
     sys.stdout = old_stdout
-    return returnval, printval
+    return ReturnPrint(returnval, printval)
+
 
 
 # Class which models a question in a project.  Note that questions have a
