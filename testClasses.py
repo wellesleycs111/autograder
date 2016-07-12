@@ -227,8 +227,12 @@ class EvalTest(TestCase): # moved from tutorialTestClasses
 
     def evalCode(self, moduleDict):
         bindings = dict(moduleDict)
-        exec self.preamble in bindings
-        return eval(self.test, bindings)
+        try:
+            exec self.preamble in bindings
+            return eval(self.test, bindings)
+        except Exception, inst:
+            self.inst=inst
+            return 'Exception was raised'
 
     def execute(self, grades, moduleDict, solutionDict, showGrades):
         result = self.evalCode(moduleDict)
@@ -239,10 +243,17 @@ class EvalTest(TestCase): # moved from tutorialTestClasses
                 grades.addMessage('PASS: {0}\n\t{1}\n'.format(self.path, self.success))
             return True
         else:
-            if showGrades:
-                grades.addMessage('FAIL: {0}\n\t{1}\n\tstudent result: {2}\n\tcorrect result: {3}\n\tscore: {4}'.format(self.path, self.failure, result, solutionDict['result'],'0/'+self.weight))
+            if result=='Exception was raised':
+                if showGrades:
+                    grades.addMessage('FAIL: {0}\n\t{1}\n\tException raised: {2}\n\tExpected result: {3}\n\tscore: {4}'.format(self.path,self.failure,self.inst,solutionDict['result'],'0/'+self.weight))
+                else:
+                    grades.addMessage('FAIL: {0}\n\t{1}\n\tException raised: {2}\n\tExpected result: {3}\n'.format(self.path,self.failure,result[2],solutionDict['result']))
+                grades.addErrorHints(self.inst)
             else:
-                grades.addMessage('FAIL: {0}\n\t{1}\n\tstudent result: {2}\n\tcorrect result: {3}\n'.format(self.path, self.failure, result, solutionDict['result']))
+                if showGrades:
+                    grades.addMessage('FAIL: {0}\n\t{1}\n\tstudent result: {2}\n\tcorrect result: {3}\n\tscore: {4}'.format(self.path, self.failure, result, solutionDict['result'],'0/'+self.weight))
+                else:
+                    grades.addMessage('FAIL: {0}\n\t{1}\n\tstudent result: {2}\n\tcorrect result: {3}\n'.format(self.path, self.failure, result, solutionDict['result']))
         return False
 
     def writeSolution(self, moduleDict, filePath):

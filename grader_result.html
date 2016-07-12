@@ -17,7 +17,7 @@
 
 <div class="container">
   
-  <h3>Total score: 19/19</h3>
+  <h3>Total score: 20/26</h3>
   
 <div class="test">
 <section>
@@ -28,11 +28,109 @@ test cases.
 
 
 <div class="shortform">
-  <button type="button" class="btn btn-success" data-toggle="collapse" data-target="#q1">Question 1
-    <span class="badge">2/2</span>
+  <button type="button" class="btn btn-warning" data-toggle="collapse" data-target="#q1">Question 1
+    <span class="badge">4/7</span>
   </button>
 </div>
   <div class="collapse" id="q1">
+
+
+
+
+<h4 class="alert alert-success">Passed</h4>
+  
+    <div class="highlight"><pre><span class="n">test_cases</span><span class="o">/</span><span class="n">q1</span><span class="o">/</span><span class="n">beats_2</span><span class="o">.</span><span class="n">test</span>
+	<span class="n">beats</span><span class="p">(</span><span class="s">&#39;scissors&#39;</span><span class="p">,</span><span class="s">&#39;rock&#39;</span><span class="p">)</span> <span class="n">returns</span> <span class="bp">True</span> <span class="k">if</span> <span class="n">gesture1</span> <span class="n">beats</span> <span class="n">gesture2</span><span class="p">;</span> <span class="bp">False</span> <span class="n">otherwise</span>
+	<span class="n">score</span><span class="p">:</span> <span class="mi">2</span><span class="o">/</span><span class="mi">2</span>
+</pre></div>
+
+  
+    <div class="highlight"><pre><span class="n">test_cases</span><span class="o">/</span><span class="n">q1</span><span class="o">/</span><span class="n">beats_3</span><span class="o">.</span><span class="n">test</span>
+	<span class="n">beats</span><span class="p">(</span><span class="s">&#39;paper&#39;</span><span class="p">,</span><span class="s">&#39;rock&#39;</span><span class="p">)</span> <span class="n">returns</span> <span class="bp">True</span> <span class="k">if</span> <span class="n">gesture1</span> <span class="n">beats</span> <span class="n">gesture2</span><span class="p">;</span> <span class="bp">False</span> <span class="n">otherwise</span>
+	<span class="n">score</span><span class="p">:</span> <span class="mi">2</span><span class="o">/</span><span class="mi">2</span>
+</pre></div>
+
+  
+
+
+
+<h4 class="alert alert-danger">Failed</h4>
+  
+    <div class="highlight"><pre><span class="n">test_cases</span><span class="o">/</span><span class="n">q1</span><span class="o">/</span><span class="n">beats_1</span><span class="o">.</span><span class="n">test</span>
+	<span class="n">beats</span><span class="p">(</span><span class="s">&#39;rock&#39;</span><span class="p">,</span><span class="s">&#39;scissors&#39;</span><span class="p">)</span> <span class="n">must</span> <span class="k">return</span> <span class="bp">True</span> <span class="k">if</span> <span class="n">gesture1</span> <span class="n">beats</span> <span class="n">gesture2</span><span class="p">;</span> <span class="bp">False</span> <span class="n">otherwise</span>
+	<span class="n">student</span> <span class="n">result</span><span class="p">:</span> <span class="bp">False</span>
+	<span class="n">correct</span> <span class="n">result</span><span class="p">:</span> <span class="bp">True</span>
+	<span class="n">score</span><span class="p">:</span> <span class="mi">0</span><span class="o">/</span><span class="mi">1</span>
+</pre></div>
+
+  
+    <div class="highlight"><pre><span class="n">test_cases</span><span class="o">/</span><span class="n">q1</span><span class="o">/</span><span class="n">isValidGesture_1</span><span class="o">.</span><span class="n">test</span>
+	<span class="n">isValidGesture</span><span class="p">(</span><span class="s">&#39;rock&#39;</span><span class="p">)</span> <span class="n">must</span> <span class="k">return</span> <span class="bp">True</span> <span class="k">if</span> <span class="n">gesture</span> <span class="ow">is</span> <span class="n">one</span> <span class="n">of</span> <span class="s">&#39;rock&#39;</span> <span class="s">&#39;paper&#39;</span> <span class="ow">or</span> <span class="s">&#39;scissors&#39;</span><span class="p">;</span> <span class="bp">False</span> <span class="n">otherwise</span>
+	<span class="ne">Exception</span> <span class="n">raised</span><span class="p">:</span> <span class="nb">list</span> <span class="n">index</span> <span class="n">out</span> <span class="n">of</span> <span class="nb">range</span>
+	<span class="n">Expected</span> <span class="n">result</span><span class="p">:</span> <span class="bp">True</span>
+	<span class="n">score</span><span class="p">:</span> <span class="mi">0</span><span class="o">/</span><span class="mi">1</span>
+</pre></div>
+
+  
+    <div class="highlight"><pre><span class="n">test_cases</span><span class="o">/</span><span class="n">q1</span><span class="o">/</span><span class="n">isValidGesture_2</span><span class="o">.</span><span class="n">test</span>
+	<span class="n">isValidGesture</span><span class="p">(</span><span class="s">&#39;spock&#39;</span><span class="p">)</span> <span class="n">must</span> <span class="k">return</span> <span class="bp">True</span> <span class="k">if</span> <span class="n">gesture</span> <span class="ow">is</span> <span class="n">one</span> <span class="n">of</span> <span class="s">&#39;rock&#39;</span> <span class="s">&#39;paper&#39;</span> <span class="ow">or</span> <span class="s">&#39;scissors&#39;</span><span class="p">;</span> <span class="bp">False</span> <span class="n">otherwise</span>
+	<span class="ne">Exception</span> <span class="n">raised</span><span class="p">:</span> <span class="nb">list</span> <span class="n">index</span> <span class="n">out</span> <span class="n">of</span> <span class="nb">range</span>
+	<span class="n">Expected</span> <span class="n">result</span><span class="p">:</span> <span class="bp">False</span>
+	<span class="n">score</span><span class="p">:</span> <span class="mi">0</span><span class="o">/</span><span class="mi">1</span>
+</pre></div>
+
+  
+
+
+
+<div class="bs-callout bs-callout-info">
+<h4>Hints</h4>
+
+  
+    
+  
+          We noticed that your program threw an IndexError.
+  
+          While many things may cause this, it may have been from
+  
+          trying to access an index that's larger than the length of
+  
+          the list or string.
+  
+          Remember that indexing starts from 0.
+  
+        
+  
+    
+  
+          We noticed that your program threw an IndexError.
+  
+          While many things may cause this, it may have been from
+  
+          trying to access an index that's larger than the length of
+  
+          the list or string.
+  
+          Remember that indexing starts from 0.
+  
+        
+  
+
+</div>
+
+
+
+  </div><!--collapse-->
+  <!-- TODO: also show exception messages if any -->
+</section>
+<br>
+
+<div class="shortform">
+  <button type="button" class="btn btn-success" data-toggle="collapse" data-target="#q2">Question 2
+    <span class="badge">2/2</span>
+  </button>
+</div>
+  <div class="collapse" id="q2">
 
 
 
@@ -58,11 +156,11 @@ test cases.
 <br>
 
 <div class="shortform">
-  <button type="button" class="btn btn-success" data-toggle="collapse" data-target="#q2">Question 2
-    <span class="badge">7/7</span>
+  <button type="button" class="btn btn-warning" data-toggle="collapse" data-target="#q3">Question 3
+    <span class="badge">4/7</span>
   </button>
 </div>
-  <div class="collapse" id="q2">
+  <div class="collapse" id="q3">
 
 
 
@@ -81,16 +179,42 @@ test cases.
 </pre></div>
 
   
+
+
+
+<h4 class="alert alert-danger">Failed</h4>
+  
     <div class="highlight"><pre><span class="n">test_cases</span><span class="o">/</span><span class="n">q6</span><span class="o">/</span><span class="n">unjumble_1</span><span class="o">.</span><span class="n">test</span>
-	<span class="n">unjumble</span><span class="p">({</span><span class="s">&#39;acerst&#39;</span><span class="p">:[</span><span class="s">&#39;caster&#39;</span><span class="p">,</span><span class="s">&#39;caters&#39;</span><span class="p">,</span><span class="s">&#39;crates&#39;</span><span class="p">,</span><span class="s">&#39;reacts&#39;</span><span class="p">,</span><span class="s">&#39;recast&#39;</span><span class="p">,</span><span class="s">&#39;traces&#39;</span><span class="p">],</span><span class="s">&#39;aegilnrt&#39;</span><span class="p">:[</span><span class="s">&#39;alerting&#39;</span><span class="p">,</span><span class="s">&#39;altering&#39;</span><span class="p">,</span><span class="s">&#39;integral&#39;</span><span class="p">,</span><span class="s">&#39;relating&#39;</span><span class="p">,</span><span class="s">&#39;triangle&#39;</span><span class="p">],</span><span class="s">&#39;aeglr&#39;</span><span class="p">:[</span><span class="s">&#39;glare&#39;</span><span class="p">,</span><span class="s">&#39;lager&#39;</span><span class="p">,</span><span class="s">&#39;large&#39;</span><span class="p">,</span><span class="s">&#39;regal&#39;</span><span class="p">],</span><span class="s">&#39;aeinrrst&#39;</span><span class="p">:[</span><span class="s">&#39;restrain&#39;</span><span class="p">,</span><span class="s">&#39;retains&#39;</span><span class="p">,</span><span class="s">&#39;strainer&#39;</span><span class="p">,</span><span class="s">&#39;terrains&#39;</span><span class="p">,</span><span class="s">&#39;trainers&#39;</span><span class="p">],</span><span class="s">&#39;arst&#39;</span><span class="p">:[</span><span class="s">&#39;arts&#39;</span><span class="p">,</span><span class="s">&#39;rats&#39;</span><span class="p">,</span><span class="s">&#39;star&#39;</span><span class="p">,</span><span class="s">&#39;tars&#39;</span><span class="p">,</span><span class="s">&#39;tsar&#39;</span><span class="p">],</span><span class="s">&#39;chiiinorsst&#39;</span><span class="p">:[</span><span class="s">&#39;histrionics&#39;</span><span class="p">,</span><span class="s">&#39;trichinosis&#39;</span><span class="p">],</span><span class="s">&#39;opst&#39;</span><span class="p">:[</span><span class="s">&#39;opts&#39;</span><span class="p">,</span><span class="s">&#39;post&#39;</span><span class="p">,</span><span class="s">&#39;pots&#39;</span><span class="p">,</span><span class="s">&#39;spot&#39;</span><span class="p">,</span><span class="s">&#39;stop&#39;</span><span class="p">,</span><span class="s">&#39;tops&#39;</span><span class="p">]},</span><span class="s">&#39;esrat&#39;</span><span class="p">)</span> <span class="n">returns</span> <span class="n">a</span> <span class="nb">list</span> <span class="n">of</span> <span class="n">anagrams</span> <span class="k">for</span> <span class="n">a</span> <span class="n">given</span> <span class="n">word</span>
-	<span class="n">score</span><span class="p">:</span> <span class="mi">3</span><span class="o">/</span><span class="mi">3</span>
+	<span class="n">unjumble</span><span class="p">({</span><span class="s">&#39;acerst&#39;</span><span class="p">:[</span><span class="s">&#39;caster&#39;</span><span class="p">,</span><span class="s">&#39;caters&#39;</span><span class="p">,</span><span class="s">&#39;crates&#39;</span><span class="p">,</span><span class="s">&#39;reacts&#39;</span><span class="p">,</span><span class="s">&#39;recast&#39;</span><span class="p">,</span><span class="s">&#39;traces&#39;</span><span class="p">],</span><span class="s">&#39;aegilnrt&#39;</span><span class="p">:[</span><span class="s">&#39;alerting&#39;</span><span class="p">,</span><span class="s">&#39;altering&#39;</span><span class="p">,</span><span class="s">&#39;integral&#39;</span><span class="p">,</span><span class="s">&#39;relating&#39;</span><span class="p">,</span><span class="s">&#39;triangle&#39;</span><span class="p">],</span><span class="s">&#39;aeglr&#39;</span><span class="p">:[</span><span class="s">&#39;glare&#39;</span><span class="p">,</span><span class="s">&#39;lager&#39;</span><span class="p">,</span><span class="s">&#39;large&#39;</span><span class="p">,</span><span class="s">&#39;regal&#39;</span><span class="p">],</span><span class="s">&#39;aeinrrst&#39;</span><span class="p">:[</span><span class="s">&#39;restrain&#39;</span><span class="p">,</span><span class="s">&#39;retains&#39;</span><span class="p">,</span><span class="s">&#39;strainer&#39;</span><span class="p">,</span><span class="s">&#39;terrains&#39;</span><span class="p">,</span><span class="s">&#39;trainers&#39;</span><span class="p">],</span><span class="s">&#39;arst&#39;</span><span class="p">:[</span><span class="s">&#39;arts&#39;</span><span class="p">,</span><span class="s">&#39;rats&#39;</span><span class="p">,</span><span class="s">&#39;star&#39;</span><span class="p">,</span><span class="s">&#39;tars&#39;</span><span class="p">,</span><span class="s">&#39;tsar&#39;</span><span class="p">],</span><span class="s">&#39;chiiinorsst&#39;</span><span class="p">:[</span><span class="s">&#39;histrionics&#39;</span><span class="p">,</span><span class="s">&#39;trichinosis&#39;</span><span class="p">],</span><span class="s">&#39;opst&#39;</span><span class="p">:[</span><span class="s">&#39;opts&#39;</span><span class="p">,</span><span class="s">&#39;post&#39;</span><span class="p">,</span><span class="s">&#39;pots&#39;</span><span class="p">,</span><span class="s">&#39;spot&#39;</span><span class="p">,</span><span class="s">&#39;stop&#39;</span><span class="p">,</span><span class="s">&#39;tops&#39;</span><span class="p">]},</span><span class="s">&#39;esrat&#39;</span><span class="p">)</span> <span class="n">must</span> <span class="k">return</span> <span class="n">a</span> <span class="nb">list</span> <span class="n">of</span> <span class="n">anagrams</span> <span class="k">for</span> <span class="n">a</span> <span class="n">given</span> <span class="n">word</span>
+	<span class="ne">Exception</span> <span class="n">raised</span><span class="p">:</span> <span class="k">global</span> <span class="n">name</span> <span class="s">&#39;varname&#39;</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">defined</span>
+	<span class="n">Expected</span> <span class="n">result</span><span class="p">:</span> <span class="p">[]</span>
+	<span class="n">score</span><span class="p">:</span> <span class="mi">0</span><span class="o">/</span><span class="mi">3</span>
 </pre></div>
 
   
 
 
 
+<div class="bs-callout bs-callout-info">
+<h4>Hints</h4>
 
+  
+    
+  
+        We noticed that your program threw a NameError.
+  
+        This is generally caused by trying to do something with a variable that
+  
+        does not exist. While this can have many causes, you may have used a variable
+  
+        before defining it, or you might have defined a variable inside an if clause
+  
+        then tried to use it out of the clause.
+  
+      
+  
+
+</div>
 
 
 
@@ -100,11 +224,11 @@ test cases.
 <br>
 
 <div class="shortform">
-  <button type="button" class="btn btn-success" data-toggle="collapse" data-target="#q3">Question 3
+  <button type="button" class="btn btn-success" data-toggle="collapse" data-target="#q4">Question 4
     <span class="badge">10/10</span>
   </button>
 </div>
-  <div class="collapse" id="q3">
+  <div class="collapse" id="q4">
 
 
 

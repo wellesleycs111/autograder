@@ -60,6 +60,7 @@ class Grades:
     """
 
     self.undefined = funcNotDefined
+    self.exceptionMap=exceptionMap
     completedQuestions = set([])
     for q in self.questions:
       self.errorHints[q]=[]
@@ -83,8 +84,9 @@ class Grades:
       try:
         util.TimeoutFunction(getattr(gradingModule, q), self.timeout)(self) # Call the question's function
       except Exception, inst:
-        self.addExceptionMessage(q, inst, traceback)
-        self.addErrorHints(exceptionMap, inst, q[1])
+        #self.addExceptionMessage(q, inst, traceback)
+        #self.addErrorHints(inst, q[1])
+        print Exception, inst
       except:
         self.fail('FAIL: Terminated with a string exception.')
 
@@ -124,32 +126,32 @@ class Grades:
     Method to format the exception message, this is more complicated because
     we need to cgi.escape the traceback but wrap the exception in a <pre> tag
     """
-    self.fail('FAIL: Exception raised: %s' % inst)
+    #self.fail('FAIL: Exception raised: %s' % inst)
     self.addMessage('')
     for line in traceback.format_exc().split('\n'):
         self.addMessage(line)
 
-  def addErrorHints(self, exceptionMap, errorInstance, questionNum):
+  def addErrorHints(self,errorInstance):
     typeOf = str(type(errorInstance))
-    questionName = 'q' + questionNum
+    #questionName = 'q' + questionNum
     errorHint = ''
 
     # question specific error hints
-    if exceptionMap.get(questionName):
-      questionMap = exceptionMap.get(questionName)
+    if self.exceptionMap.get(self.currentQuestion):
+      questionMap = self.exceptionMap.get(self.currentQuestion)
       if (questionMap.get(typeOf)):
         errorHint = questionMap.get(typeOf)
     # fall back to general error messages if a question specific
     # one does not exist
-    if (exceptionMap.get(typeOf)):
-      errorHint = exceptionMap.get(typeOf)
+    elif (self.exceptionMap.get(typeOf)):
+      errorHint = self.exceptionMap.get(typeOf)
 
     # dont include the HTML if we have no error hint
     if errorHint=='':
       return ''
 
     for line in errorHint.split('\n'):
-      self.errorHints[questionName].append(line)
+      self.errorHints[self.currentQuestion].append(line)
 
   def produceOutput(self):
     """Passes dictionary of parameters to fill in the Jinja template,
@@ -159,7 +161,7 @@ class Grades:
     paramsDict['psid'] = open('psid.txt').read().strip().upper()
     studentinfo = util.parseCoverPy()
     if studentinfo:
-        paramsDict.update(studentinfo) # not passing keys signifies something's wrong    
+        paramsDict.update(studentinfo) # not passing keys signifies something's wrong
 
     paramsDict['totalpossible'] = sum(self.maxes.values())
     paramsDict['totalscore'] = sum(self.points.values())
@@ -258,7 +260,6 @@ class Grades:
   def fail(self, message, raw=False):
     "Sets sanity check bit to false and outputs a message"
     self.sane = False
-    self.assignZeroCredit()
     self.addMessage(message, raw)
 
   def assignZeroCredit(self):

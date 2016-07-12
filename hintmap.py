@@ -23,5 +23,12 @@ ERROR_HINT_MAP = {
         making your code more general and submit again!
 
     """
-  }
+  },
+  "<type 'exceptions.NameError'>": """
+    We noticed that your program threw a NameError.
+    This is generally caused by trying to do something with a variable that
+    does not exist. While this can have many causes, you may have used a variable
+    before defining it, or you might have defined a variable inside an if clause
+    then tried to use it out of the clause.
+  """
 }
