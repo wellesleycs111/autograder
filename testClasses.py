@@ -26,7 +26,10 @@ class ReturnPrint:
         self.returnval = returnval
         self.printval = printval
     def __eq__(self, other):
-        return self.returnval==other.returnval and self.printval==other.printval
+        if type(self)==type(other):
+            return self.returnval==other.returnval and self.printval==other.printval
+        else:
+            return False
     def __ne__(self, other):
         return not self.__eq__(other)
     def __str__(self):
@@ -236,20 +239,20 @@ class EvalTest(TestCase): # moved from tutorialTestClasses
 
     def execute(self, grades, moduleDict, solutionDict, showGrades):
         result = self.evalCode(moduleDict)
-        if result == solutionDict['result']:
+        if result=='Exception was raised':
+            if showGrades:
+                grades.addMessage('FAIL: {0}\n\t{1}\n\tException raised: {2}\n\tExpected result: {3}\n\tscore: {4}'.format(self.path,self.failure,self.inst,solutionDict['result'],'0/'+self.weight))
+            else:
+                grades.addMessage('FAIL: {0}\n\t{1}\n\tException raised: {2}\n\tExpected result: {3}\n'.format(self.path,self.failure,result[2],solutionDict['result']))
+            grades.addErrorHints(self.inst)
+            return False
+        elif result == solutionDict['result']:
             if showGrades:
                 grades.addMessage('PASS: {0}\n\t{1}\n\tscore: {2}'.format(self.path, self.success, self.weight+'/'+self.weight))
             else:
                 grades.addMessage('PASS: {0}\n\t{1}\n'.format(self.path, self.success))
             return True
         else:
-            if result=='Exception was raised':
-                if showGrades:
-                    grades.addMessage('FAIL: {0}\n\t{1}\n\tException raised: {2}\n\tExpected result: {3}\n\tscore: {4}'.format(self.path,self.failure,self.inst,solutionDict['result'],'0/'+self.weight))
-                else:
-                    grades.addMessage('FAIL: {0}\n\t{1}\n\tException raised: {2}\n\tExpected result: {3}\n'.format(self.path,self.failure,result[2],solutionDict['result']))
-                grades.addErrorHints(self.inst)
-            else:
                 if showGrades:
                     grades.addMessage('FAIL: {0}\n\t{1}\n\tstudent result: {2}\n\tcorrect result: {3}\n\tscore: {4}'.format(self.path, self.failure, result, solutionDict['result'],'0/'+self.weight))
                 else:
