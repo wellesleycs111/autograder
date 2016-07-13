@@ -12,8 +12,8 @@
 
   <div class="container">
   <h1>{{psid}} Autochecker Results
-    {% if YourFullName is defined and YourFullName != '' %}
-    for {{ YourFullName }}
+    {% if studentinfo is defined and studentinfo['YourFullName'] != '' %}
+    for {{ studentinfo['YourFullName'] }}
     {% endif %}</h1>
 </div>
 
@@ -21,7 +21,9 @@
   {% if showGrades %}
   <h3>Total score: {{totalscore}}/{{totalpossible}}</h3>
   {% endif %}
+
 <div class="test">
+
 <section>
 <p>Click each question for a detailed analysis of passed and failed
 test cases.
@@ -80,35 +82,75 @@ test cases.
   {% endfor %}
 {% endif %}
   </div><!--collapse-->
-  <!-- TODO: also show exception messages if any -->
-</section>
+
 <br>
 {% endfor%}
+
+<div class="shortform">
+  <button type="button" class="btn btn-{{coversheet['correctness']}}" data-toggle="collapse" data-target="#coversheet">
+    <span class="glyphicon glyphicon-menu-down"></span>
+    Honor Code Form
+    {% if showGrades and coversheet['correctness'] != "info"%}
+    <span class="badge">{{coversheet['badge']}}</span>
+    {% endif %}
+  </button>
+</div>
+
+<div class="collapse" id="coversheet">
+
+{% if studentinfo is not defined %}
+  <h4 class="alert alert-danger">Missing</h4>
+
+  <div class="panel panel-default"><div class="panel-body">
+    It seems that your honor code form is formatted incorrectly.
+    Please correct any errors before you make your final submission.
+  </div></div> <!--panel-->
+
+{% else %}
+
+{% if studentinfo['filled'] != [] %}
+    <h4 class="alert alert-success">Filled</h4>
+<div class="panel panel-default"><div class="panel-body">
+    <ul>
+    {% for filledvalue in studentinfo['filled'] %}
+        <li> <strong>{{ filledvalue }}</strong>: {{ studentinfo[filledvalue] }}
+    {% endfor %}
+  </ul>
+  </div></div> <!--panel-->
+{% endif %}
+
+{% if studentinfo['missing'] != [] %}
+<h4 class="alert alert-danger">Missing</h4>
+<p>
+  You have not filled out the following values in your honor code form.
+  Please complete them before you make your final submission.
+</p>
+<div class="panel panel-default"><div class="panel-body">
+<ul>
+  {% for missingvalue in studentinfo['missing'] %}
+      <li> {{ missingvalue }}
+  {% endfor %}
+</ul>
+</pre>
+</div></div> <!--panel-->
+{% endif %}
+
+{% endif %}
+
+
+</div> <!--coversheet-->
+
+</section>
 </div><!--test-->
+
 <div class="container">
+<br>
   <p>This output is for your information only.
   You may fix mistakes and re-run the autochecker as many times as you like.
   Once you are satisfied with your code,
   turn it in to your <code>drop</code> folder.
 </p>
 
-{% if YourFullName is not defined %}
-<p>
-  It seems that your honor code form is formatted incorrectly.
-  Please correct any errors before you make your final submission.
-</p>
-{% elif missing != [] %}
-<p>
-  You have not filled out the following values in your honor code form.
-  Please fill them out before you make your final submission.
-  <ul>
-  {% for missingvalue in missing %}
-      <li> {{ missingvalue }}
-  {% endfor %}
-</ul>
-</p>
-{% endif %}
-</p>
 
 </div>
 

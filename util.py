@@ -31,6 +31,15 @@ def codeHighlight(message, delimiter='!'):
     #splitMessage = re.split(escregex, message)
     return highlight(message, PythonLexer(), HtmlFormatter())
 
+def correctnessColor(pt, mx):
+    if mx == 0:
+        return 'info'
+    elif pt == mx:
+        return 'success'
+    elif pt == 0:
+        return 'danger'
+    return 'warning'
+
 def fillHTMLTemplate(templateString, paramsDict):
     """Invokes the jinja2 methods to fill in the slots
        in the template.
@@ -693,6 +702,9 @@ def parseCoverPy():
                               'PartnerFullName',
                               'PartnerUsername']) + filter(lambda field: info[field]==0,
                                                            [fieldname for fieldname in info.keys() if fieldname.startswith('Time') or fieldname=='HowWeWorked'])
+
+    info['filled'] = filter(lambda field: info[field]!='' and info[field]!=0 and field!='missing', info.keys())
+
     return info
 
 def parseCoverSheet():

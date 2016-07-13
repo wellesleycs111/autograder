@@ -27,7 +27,7 @@ import webbrowser
 
 class Grades:
   "A data structure for project grades, along with formatting code to display them"
-  def __init__(self, projectName, questionsAndMaxesList, htmlOutput=False, logOutput=False, timeout=30, showGrades=True):
+  def __init__(self, projectName, questionsAndMaxesList, htmlOutput=False, logOutput=False, timeout=30, showGrades=True, coverSheetScore=0):
     """
     Defines the grading scheme for a project
       projectName: project name
@@ -35,6 +35,9 @@ class Grades:
     """
     self.questions = [el[0] for el in questionsAndMaxesList]
     self.maxes = dict(questionsAndMaxesList)
+
+    self.maxes['coversheet'] = coverSheetScore
+
     self.points = Counter()
     self.messages = dict([(q, []) for q in self.questions])
     self.project = projectName
@@ -163,26 +166,23 @@ class Grades:
 
     studentinfo = util.parseCoverPy()
     if studentinfo:
-        paramsDict.update(studentinfo) # not passing keys signifies something's wrong
+        paramsDict['studentinfo'] = studentinfo
+        if self.maxes['coversheet']:
+            self.points['coversheet'] = int(self.maxes['coversheet']*len(studentinfo['filled'])/float(len(studentinfo)-2))
+    else:
+        if self.maxes['coversheet']:
+            self.points['coversheet'] = 0
 
     paramsDict['totalpossible'] = sum(self.maxes.values())
     paramsDict['totalscore'] = sum(self.points.values())
     paramsDict['showGrades'] = self.showGrades
+
     paramsDict['questions']=[]
 
     for q in self.questions:
         num = str(self.questions.index(q)+1)
-        if self.maxes[q] == 0:
-            correctness='info'
 
-        elif self.points[q] == self.maxes[q]:
-            correctness='success'
-
-        elif self.points[q] == 0:
-            correctness='danger'
-
-        else:
-            correctness='warning'
+        correctness = util.correctnessColor(self.points[q], self.maxes[q])
 
         score=self.points[q]
         qmax=self.maxes[q]
@@ -193,7 +193,18 @@ class Grades:
         images = ['<pre>{0}\nExpected image:\n<img src={1}>\nYour image:\n<img src={2}></pre>'.format(message.split(',')[1],message.split(',')[2],message.split(',')[3]) for message in self.messages[q] if message.startswith('IMAGE')]
         if len(images)>0:
             badge="Image Test"
-        paramsDict['questions'].append({'num':num,'correctness':correctness,'badge':badge,'passedcases':passedcases,'failedcases':failedcases, 'undefined': undefined, 'images': images, 'hints': self.errorHints[q], 'url': urlDict[q]})
+        paramsDict['questions'].append({'num':num,
+                                        'correctness':correctness,
+                                        'badge':badge,
+                                        'passedcases':passedcases,
+                                        'failedcases':failedcases,
+                                        'undefined': undefined,
+                                        'images': images,
+                                        'hints': self.errorHints[q],
+                                        'url': urlDict[q]})
+
+    paramsDict['coversheet'] = {'correctness': util.correctnessColor(self.points['coversheet'], self.maxes['coversheet']),
+                                'badge': str(self.points['coversheet'])+"/"+str(self.maxes['coversheet'])}
 
     with open('grader_result.html', 'w') as o:
           o.write(util.fillHTMLTemplate(open('jinjatemplate.html').read(), paramsDict))
@@ -202,62 +213,6 @@ class Grades:
         o.write(str(self.points.totalCount()))
 
     webbrowser.open(os.path.join('file:' + os.getcwd(), 'grader_result.html'))
-
-  def produceOutputOld(self):  # archived the original
-    htmlOutput = open('grader_result.html', 'w')
-    htmlOutput.write("<div>")
-
-    # first sum
-    total_possible = sum(self.maxes.values())
-    total_score = sum(self.points.values())
-    checkOrX = '<span class="incorrect"/>'
-    if (total_score >= total_possible):
-        checkOrX = '<span class="correct"/>'
-    header = """
-        <h3>
-            Total score ({total_score} / {total_possible})
-        </h3>
-    """.format(total_score = total_score,
-      total_possible = total_possible,
-      checkOrX = checkOrX
-    )
-    htmlOutput.write(header)
-
-    for q in self.questions:
-      if len(q) == 2:
-          name = q[1]
-      else:
-          name = q
-      checkOrX = '<span class="incorrect"/>'
-      if (self.points[q] == self.maxes[q]):
-        checkOrX = '<span class="correct"/>'
-      #messages = '\n<br/>\n'.join(self.messages[q])
-      messages = "<pre>%s</pre>" % '\n'.join(self.messages[q])
-      output = """
-        <div class="test">
-          <section>
-          <div class="shortform">
-            Question {q} ({points}/{max}) {checkOrX}
-          </div>
-        <div class="longform">
-          {messages}
-        </div>
-        </section>
-      </div>
-      """.format(q = name,
-        max = self.maxes[q],
-        messages = messages,
-        checkOrX = checkOrX,
-        points = self.points[q]
-      )
-      # print "*** output for Question %s " % q[1]
-      # print output
-      htmlOutput.write(output)
-    htmlOutput.write("</div>")
-    htmlOutput.close()
-    htmlOutput = open('grade', 'w')
-    htmlOutput.write(str(self.points.totalCount()))
-    htmlOutput.close()
 
   def fail(self, message, raw=False):
     "Sets sanity check bit to false and outputs a message"

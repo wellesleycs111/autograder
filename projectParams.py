@@ -18,3 +18,4 @@ PROJECT_NAME = 'Project 3: Rock Paper Scissors & Word Properties'
 SHOW_GRADES = True
 BONUS_PIC = True
 TIME_OUT = 60
+COVERSHEET = 5

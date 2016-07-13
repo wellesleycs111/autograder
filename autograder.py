@@ -31,7 +31,7 @@ random.seed(0)
 # register arguments and set default values
 def readCommand(argv):
     parser = optparse.OptionParser(description = 'Run public tests on student code')
-    parser.set_defaults(generateSolutions=False, htmlOutput=True, logOutput=True, printTestCase=False, showGrades=True)
+    parser.set_defaults(generateSolutions=False, htmlOutput=True, logOutput=True, printTestCase=False)
     parser.add_option('--test-directory',
                       dest = 'testRoot',
                       default = 'test_cases',
@@ -50,6 +50,7 @@ def readCommand(argv):
                       help = 'class containing testClass classes for this project')
     parser.add_option('--no-grades',
                         dest = 'showGrades',
+                        default = projectParams.SHOW_GRADES,
                         action = 'store_false',
                         help = 'Won\'t show grades on html output')
     parser.add_option('--generate-solutions',
@@ -184,7 +185,7 @@ def runTest(testName, moduleDict, printTestCase=False):
         printTest(testDict, solutionDict)
 
     # This is a fragile hack to create a stub grades object
-    grades = grading.Grades(projectParams.PROJECT_NAME, [(None,0)], showGrades=projectParams.SHOW_GRADES)
+    grades = grading.Grades(projectParams.PROJECT_NAME, [(None,0)], showGrades=projectParams.SHOW_GRADES, coverSheetScore=projectParams.COVERSHEET)
     testCase.execute(grades, moduleDict, solutionDict)
 
 
@@ -280,7 +281,13 @@ def evaluate(generateSolutions, testRoot, moduleDict, exceptionMap=ERROR_HINT_MA
         setattr(sys.modules[__name__], q, makefun(question))
         questions.append((q, question.getMaxPoints()))
 
-    grades = grading.Grades(projectParams.PROJECT_NAME, questions, htmlOutput=htmlOutput, logOutput=logOutput, timeout=projectParams.TIME_OUT, showGrades=projectParams.SHOW_GRADES)
+    grades = grading.Grades(projectParams.PROJECT_NAME,
+                            questions,
+                            htmlOutput=htmlOutput,
+                            logOutput=logOutput,
+                            timeout=projectParams.TIME_OUT,
+                            showGrades=projectParams.SHOW_GRADES,
+                            coverSheetScore=projectParams.COVERSHEET)
     if questionToGrade == None:
         for q in questionDicts:
             for prereq in questionDicts[q].get('depends', '').split():
