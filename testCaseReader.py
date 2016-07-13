@@ -4,6 +4,7 @@
 import sys
 import os
 import optparse
+import pickle
 
 def dataFromFile(filename):
     '''Returns a list of dictionaries corresponding to each line in the file,
@@ -19,6 +20,9 @@ def generateTestFile(caseDict,filename):
     '''Creates a .test file from a single dictionary containing information about
     the case'''
     arguments = caseDict['arguments'] #stores test case arguments as a list
+    if arguments.endswith(".pickle'"):
+        #load data from pickle file
+        arguments = pickle.load(open(os.path.join('test_cases/',caseDict['directory'],arguments)))
     with open(filename,'w') as f:
         #writes test file with information from the list
         if caseDict['result'].endswith('.png'):
