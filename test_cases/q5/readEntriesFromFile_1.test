@@ -1,6 +1,6 @@
 class: "EvalTest"
-success: "readEntriesFromFile('sampletracks.csv') returns a list of track entries from a  csv file"
-failure: "readEntriesFromFile('sampletracks.csv') must return a list of track entries from a  csv file"
+success: "readEntriesFromFile('sampletracks.csv') returns readentries.pickle"
+failure: "readEntriesFromFile('sampletracks.csv') must return readentries.pickle"
 
 # A python expression to be evaluated.  This expression must return the
 # same result for the student and instructor's code.

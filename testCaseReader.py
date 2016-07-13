@@ -4,42 +4,45 @@
 
 import sys
 import os
+import optparse
 
-def linesFromFile(filename):
-    '''Returns a list of all the lines from a file with the given filename.
-       In each line, the terminating newline has been removed.'''
-    with open(filename, 'r') as inputFile: # open the file
-        # read each line in the file
-        strippedLines = [line.strip() for line in inputFile.readlines()][1:] # skip header row
-    return strippedLines
+def dataFromFile(filename):
+    '''Returns a list of dictionaries corresponding to each line in the file,
+    with header attribute mapped to data
+    '''
+    with open(filename, 'r') as inputFile:
+        header = inputFile.readline().strip().split('|')
+        caseRawList = [line.strip().split('|') for line in inputFile.readlines()]
+        caseDictList = [dict(zip(header, line)) for line in caseRawList if len(line)==len(header)]
+    return caseDictList
 
-def generateTestFile(caseList,filename,printcase=False):
-    '''Creates a .test file from a single list containing information about
+def generateTestFile(caseDict,filename):
+    '''Creates a .test file from a single dictionary containing information about
     the case'''
-    arguments = caseList[6:] #stores test case arguments as a list
+    arguments = caseDict['arguments'] #stores test case arguments as a list
     with open(filename,'w') as f:
         #writes test file with information from the list
-        if caseList[4].endswith('.png'):
+        if caseDict['result'].endswith('.png'):
             f.write("class: \"ImageTest\"\n")
-        elif printcase:
+        elif eval(caseDict['print']):
             f.write("class: \"PrintTest\"\n")
         else:
             f.write("class: \"EvalTest\"\n")
-        f.write("success: \""+caseList[1]+"("+','.join(arguments)+") returns "+caseList[3]+"\"\n")
-        f.write("failure: \""+caseList[1]+"("+','.join(arguments)+") must return "+caseList[3]+"\"\n")
+        f.write("success: \""+caseDict['functionname']+"("+caseDict['arguments']+") returns "+caseDict['result']+"\"\n")
+        f.write("failure: \""+caseDict['functionname']+"("+caseDict['arguments']+") must return "+caseDict['result']+"\"\n")
         f.write("\n# A python expression to be evaluated.  This expression must return the\n")
         f.write("# same result for the student and instructor's code.\n")
-        f.write("test: \""+caseList[2]+"."+caseList[1]+'('+','.join(arguments)+')\"\n')
-        f.write("weight: \""+caseList[5]+"\"")
+        f.write("test: \""+caseDict['modulename']+"."+caseDict['functionname']+'('+caseDict['arguments']+')\"\n')
+        f.write("weight: \""+caseDict['weight']+"\"")
 
-def generateSolutionFile(caseList,filename):
+def generateSolutionFile(caseDict,filename):
     '''Creates a .test file from a single list containing information about
     the case'''
     with open(filename,'w') as f:
         #writes the solution file with information from the list
         f.write("# This is the solution file for "+filename.split('.')[0]+'.test.\n')
-        f.write("# The result of evaluating the test must equal the below when cast to a string.\n")
-        f.write("result: \""+caseList[4]+"\"\n")
+        f.write("# The result of evaluating the test must equal the value below.\n")
+        f.write("result: \""+caseDict['result']+"\"\n")
 
 def generateCONFIGFile(directory,numPoints):
     '''Creates a CONFIG file for each folder to indicate number of points'''
@@ -49,27 +52,30 @@ def generateCONFIGFile(directory,numPoints):
         f.write("class: \"WeightedCasesQuestion\"")
 
 def main():
-    caseList=[]
-    if len(sys.argv)>1:
-        caseList=linesFromFile(sys.argv[1]) #if user provides argument, use that
-    else:
-        caseList=linesFromFile("casefile_creator.txt") #default file otherwise
+    parser = optparse.OptionParser(description = 'Convert list of test cases provided by problem set designer')
+    parser.add_option('--casefile',
+                      dest = 'casefile',
+                      default = 'casefile_creator.txt',
+                      help = 'Filename with test cases')
+    parser.add_option('--urlfile',
+                      dest = 'urlfile',
+                      default = 'urls.txt',
+                      help = 'map from tasks to description URLs')
+    options, _ = parser.parse_args(sys.argv)
+
     amountOfSolutionsDict={} #will store how many solutions a certain function has
     #(so we don't overwrite the same solution file a buncha times)
     testsPerQDict={}
-    for line in caseList:
-        line=line.split('|')
-        printcase=False
-        if line[-1]=='p':
-            printcase=True
-            line.pop()
-        amountOfSolutionsDict[line[1]] = amountOfSolutionsDict.get(line[1],0)+1
-        testsPerQDict[line[0]]=testsPerQDict.get(line[0],0)+int(line[5])
-        testFile=os.path.join('test_cases', line[0], line[1]+'_'+str(amountOfSolutionsDict[line[1]]))
-        generateTestFile(line,testFile+".test",printcase)
-        generateSolutionFile(line,testFile+".solution")
-    for key in testsPerQDict:
-        generateCONFIGFile(key,testsPerQDict[key])
+
+    caseDictList = dataFromFile(options.casefile)
+    for caseDict in caseDictList:
+        amountOfSolutionsDict[caseDict['functionname']] = amountOfSolutionsDict.get(caseDict['functionname'],0)+1
+        testsPerQDict[caseDict['directory']]=testsPerQDict.get(caseDict['directory'],0)+int(caseDict['weight'])
+        testFile=os.path.join('test_cases', caseDict['directory'], caseDict['functionname']+'_'+str(amountOfSolutionsDict[caseDict['functionname']]))
+        generateTestFile(caseDict,testFile+".test")
+        generateSolutionFile(caseDict,testFile+".solution")
+    for question in testsPerQDict:
+        generateCONFIGFile(question,testsPerQDict[question])
 
 if __name__=='__main__':
     main()

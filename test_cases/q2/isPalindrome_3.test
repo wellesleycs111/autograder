@@ -1,6 +1,6 @@
 class: "EvalTest"
-success: "isPalindrome('civic') returns True if word is a palindrome; False otherwise"
-failure: "isPalindrome('civic') must return True if word is a palindrome; False otherwise"
+success: "isPalindrome('civic') returns True"
+failure: "isPalindrome('civic') must return True"
 
 # A python expression to be evaluated.  This expression must return the
 # same result for the student and instructor's code.

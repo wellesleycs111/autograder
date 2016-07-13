@@ -1,0 +1,8 @@
+class: "EvalTest"
+success: "unjumble({'acerst':['caster','caters','crates','reacts','recast','traces'],'aegilnrt':['alerting','altering','integral','relating','triangle'],'aeglr':['glare','lager','large','regal'],'aeinrrst':['restrain','retains','strainer','terrains','trainers'],'arst':['arts','rats','star','tars','tsar'],'chiiinorsst':['histrionics','trichinosis'],'opst':['opts','post','pots','spot','stop','tops']},'post') returns ['opts','post','pots','spot','stop','tops']"
+failure: "unjumble({'acerst':['caster','caters','crates','reacts','recast','traces'],'aegilnrt':['alerting','altering','integral','relating','triangle'],'aeglr':['glare','lager','large','regal'],'aeinrrst':['restrain','retains','strainer','terrains','trainers'],'arst':['arts','rats','star','tars','tsar'],'chiiinorsst':['histrionics','trichinosis'],'opst':['opts','post','pots','spot','stop','tops']},'post') must return ['opts','post','pots','spot','stop','tops']"
+
+# A python expression to be evaluated.  This expression must return the
+# same result for the student and instructor's code.
+test: "unjumble.unjumble({'acerst':['caster','caters','crates','reacts','recast','traces'],'aegilnrt':['alerting','altering','integral','relating','triangle'],'aeglr':['glare','lager','large','regal'],'aeinrrst':['restrain','retains','strainer','terrains','trainers'],'arst':['arts','rats','star','tars','tsar'],'chiiinorsst':['histrionics','trichinosis'],'opst':['opts','post','pots','spot','stop','tops']},'post')"
+weight: "3"

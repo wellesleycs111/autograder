@@ -1,6 +1,6 @@
 class: "ImageTest"
-success: "blueblock() returns the blue quilt"
-failure: "blueblock() must return the blue quilt"
+success: "blueblock() returns blueblock.png"
+failure: "blueblock() must return blueblock.png"
 
 # A python expression to be evaluated.  This expression must return the
 # same result for the student and instructor's code.

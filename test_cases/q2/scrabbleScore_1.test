@@ -1,6 +1,6 @@
 class: "EvalTest"
-success: "scrabbleScore('juxtapose') returns the scrabble value (int) of the word"
-failure: "scrabbleScore('juxtapose') must return the scrabble value (int) of the word"
+success: "scrabbleScore('juxtapose') returns 25"
+failure: "scrabbleScore('juxtapose') must return 25"
 
 # A python expression to be evaluated.  This expression must return the
 # same result for the student and instructor's code.
