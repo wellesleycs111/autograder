@@ -30,12 +30,17 @@ test cases.
 
 {% for q in questions %}
 <div class="shortform">
-  <button type="button" class="btn btn-{{q['correctness']}}" data-toggle="collapse" data-target="#q{{q['num']}}">Question {{q['num']}}
+  <button type="button" class="btn btn-{{q['correctness']}}" data-toggle="collapse" data-target="#q{{q['num']}}">
+    <span class="glyphicon glyphicon-menu-down"></span>
+    Question {{q['num']}}
     {% if showGrades %}<span class="badge">{{q['badge']}}</span>{% endif %}
   </button>
-</div>
+  </div>
   <div class="collapse" id="q{{q['num']}}">
-
+<br>
+<p>
+  <a href="{{q['url']}}" target="_blank">Task description <span class="glyphicon glyphicon-share-alt"></span></a>
+</p>
 {% if q['images'] %}
 <h4 class="alert alert-info">Images</h4>
   {% for message in q['images'] %}

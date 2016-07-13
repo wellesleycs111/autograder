@@ -1,5 +1,9 @@
 # testParser.py
 # -------------
+# This autograder was developed by Sravana Reddy (sravana.reddy@wellesley.edu)
+# and Daniela Kreimerman (dkreimer@wellesley.edu), built upon the framework
+# provided by the Berkeley AI autograding scripts. See below.
+
 # Licensing Information:  You are free to use or extend these projects for
 # educational purposes provided that (1) you do not distribute or publish
 # solutions, (2) you retain this notice, and (3) you provide clear
@@ -24,15 +28,8 @@ class TestParser(object):
         self.path = path
 
     def removeComments(self, rawlines):
-        # remove any portion of a line following a '#' symbol
-        fixed_lines = []
-        for l in rawlines:
-            idx = l.find('#')
-            if idx == -1:
-                fixed_lines.append(l)
-            else:
-                fixed_lines.append(l[0:idx])
-        return '\n'.join(fixed_lines)
+        # remove all lines starting with #
+        return filter(lambda line: not line.startswith('#'), rawlines)
 
     def parse(self):
         # read in the test case and remove comments
@@ -40,11 +37,11 @@ class TestParser(object):
         with open(self.path) as handle:
             raw_lines = handle.read().split('\n')
 
-        test_text = self.removeComments(raw_lines)
+        lines = self.removeComments(raw_lines)
         test['__raw_lines__'] = raw_lines
         test['path'] = self.path
         test['__emit__'] = []
-        lines = test_text.split('\n')
+
         i = 0
         # read a property in each loop cycle
         while(i < len(lines)):
@@ -89,6 +86,7 @@ class TestParser(object):
                 test['result'] = os.path.join(os.path.dirname(self.path), test['result'])  # add directory path to image location
             else:
                 test['result'] = eval(test['result'])
+
         return test
 
 

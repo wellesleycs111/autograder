@@ -1,5 +1,4 @@
-# Author: Daniela Kreimerman Arroyo
-# linesFromFile function from CS111 materials
+# Author: Daniela Kreimerman Arroyo and Sravana Reddy
 # Created to allow easy input for test cases in CS111 autograder
 
 import sys
@@ -49,7 +48,7 @@ def generateCONFIGFile(directory,numPoints):
     filename = os.path.join('test_cases',directory,'CONFIG')
     with open(filename,'w')as f:
         f.write("max_points: \""+str(numPoints)+"\"\n")
-        f.write("class: \"WeightedCasesQuestion\"")
+        f.write("class: \"WeightedCasesQuestion\"\n")
 
 def main():
     parser = optparse.OptionParser(description = 'Convert list of test cases provided by problem set designer')
@@ -57,10 +56,6 @@ def main():
                       dest = 'casefile',
                       default = 'casefile_creator.txt',
                       help = 'Filename with test cases')
-    parser.add_option('--urlfile',
-                      dest = 'urlfile',
-                      default = 'urls.txt',
-                      help = 'map from tasks to description URLs')
     options, _ = parser.parse_args(sys.argv)
 
     amountOfSolutionsDict={} #will store how many solutions a certain function has
@@ -68,14 +63,16 @@ def main():
     testsPerQDict={}
 
     caseDictList = dataFromFile(options.casefile)
+
     for caseDict in caseDictList:
         amountOfSolutionsDict[caseDict['functionname']] = amountOfSolutionsDict.get(caseDict['functionname'],0)+1
         testsPerQDict[caseDict['directory']]=testsPerQDict.get(caseDict['directory'],0)+int(caseDict['weight'])
         testFile=os.path.join('test_cases', caseDict['directory'], caseDict['functionname']+'_'+str(amountOfSolutionsDict[caseDict['functionname']]))
         generateTestFile(caseDict,testFile+".test")
         generateSolutionFile(caseDict,testFile+".solution")
+
     for question in testsPerQDict:
-        generateCONFIGFile(question,testsPerQDict[question])
+        generateCONFIGFile(question, testsPerQDict[question])
 
 if __name__=='__main__':
     main()

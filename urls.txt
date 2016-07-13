@@ -1,0 +1,6 @@
+q1 http://cs.wellesley.edu/~cs111/spring16/assignments/ps3/ps3.html#task1
+q2 http://cs.wellesley.edu/~cs111/spring16/assignments/ps4/ps4.html#task2
+q3 http://cs.wellesley.edu/~cs111/spring16/assignments/ps3/ps3.html#task2
+q4 http://cs.wellesley.edu/~cs111/spring16/assignments/ps7/ps7.html#task1
+q5 http://cs111.wellesley.edu/spring16/assignments/ps6/ps6.html#task2
+q6 http://cs111.wellesley.edu/spring16/assignments/ps6/ps6.html#task1

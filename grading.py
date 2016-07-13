@@ -159,6 +159,8 @@ class Grades:
     paramsDict = {}
 
     paramsDict['psid'] = open('psid.txt').read().strip().upper()
+    urlDict = dict([line.split() for line in open('urls.txt').readlines()])  # mapping from question numbers to URLs
+
     studentinfo = util.parseCoverPy()
     if studentinfo:
         paramsDict.update(studentinfo) # not passing keys signifies something's wrong
@@ -191,7 +193,7 @@ class Grades:
         images = ['<pre>{0}\nExpected image:\n<img src={1}>\nYour image:\n<img src={2}></pre>'.format(message.split(',')[1],message.split(',')[2],message.split(',')[3]) for message in self.messages[q] if message.startswith('IMAGE')]
         if len(images)>0:
             badge="Image Test"
-        paramsDict['questions'].append({'num':num,'correctness':correctness,'badge':badge,'passedcases':passedcases,'failedcases':failedcases, 'undefined': undefined, 'images': images, 'hints': self.errorHints[q]})
+        paramsDict['questions'].append({'num':num,'correctness':correctness,'badge':badge,'passedcases':passedcases,'failedcases':failedcases, 'undefined': undefined, 'images': images, 'hints': self.errorHints[q], 'url': urlDict[q]})
 
     with open('grader_result.html', 'w') as o:
           o.write(util.fillHTMLTemplate(open('jinjatemplate.html').read(), paramsDict))
