@@ -19,7 +19,7 @@ import time
 import sys
 import traceback
 import pdb
-from collections import defaultdict
+from collections import defaultdict, Counter
 import util
 import os
 import webbrowser
@@ -105,7 +105,7 @@ class Grades:
     for q in self.questions:
       self.printedMessage += 'Question %s: %d/%d\n' % (q, self.points[q], self.maxes[q])
     self.printedMessage += '------------------\n'
-    self.printedMessage += 'Total: %d/%d\n' % (self.points.totalCount(), sum(self.maxes.values()))
+    self.printedMessage += 'Total: %d/%d\n' % (sum(self.points.values()), sum(self.maxes.values()))
 
     if self.htmlOutput:
         self.produceOutput()
@@ -206,7 +206,7 @@ class Grades:
           o.write(util.fillHTMLTemplate(open('jinjatemplate.html').read(), paramsDict))
 
     with open('grade', 'w') as o:
-        o.write(str(self.points.totalCount()))
+        o.write(str(sum(self.points.values())))
 
     webbrowser.open(os.path.join('file:' + os.getcwd(), 'grader_result.html'))
 
@@ -235,22 +235,3 @@ class Grades:
         self.printedMessage += '*** ' + message + '\n'
         message = cgi.escape(message)
     self.messages[self.currentQuestion].append(message)
-
-
-
-
-class Counter(dict):
-  """
-  Dict with default 0
-  """
-  def __getitem__(self, idx):
-    try:
-      return dict.__getitem__(self, idx)
-    except KeyError:
-      return 0
-
-  def totalCount(self):
-    """
-    Returns the sum of counts for all keys.
-    """
-    return sum(self.values())
