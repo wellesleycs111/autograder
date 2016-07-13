@@ -293,7 +293,7 @@ def evaluate(generateSolutions, testRoot, moduleDict, exceptionMap=ERROR_HINT_MA
             for prereq in questionDicts[q].get('depends', '').split():
                 grades.addPrereq(q, prereq)
 
-    grades.grade(sys.modules[__name__], funcNotDefined, exceptionMap = ERROR_HINT_MAP,bonusPic = projectParams.BONUS_PIC)
+    grades.grade(sys.modules[__name__], funcNotDefined, exceptionMap, bonusPic = projectParams.BONUS_PIC)
     return grades.points
 
 

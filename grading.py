@@ -66,7 +66,7 @@ class Grades:
     self.exceptionMap=exceptionMap
     completedQuestions = set([])
     for q in self.questions:
-      self.errorHints[q]=[]
+      self.errorHints[q]={}
       self.printedMessage += '\nQuestion %s\n' % q
       self.printedMessage += '=' * (9 + len(q))
       self.printedMessage += '\n'
@@ -136,25 +136,21 @@ class Grades:
 
   def addErrorHints(self,errorInstance):
     typeOf = str(type(errorInstance))
+    if typeOf in self.errorHints[self.currentQuestion]:
+        # no need to add hint twice
+        return
+
     #questionName = 'q' + questionNum
     errorHint = ''
 
     # question specific error hints
-    if self.exceptionMap.get(self.currentQuestion):
-      questionMap = self.exceptionMap.get(self.currentQuestion)
-      if (questionMap.get(typeOf)):
+    questionMap = self.exceptionMap.get(self.currentQuestion, self.exceptionMap['general'])
+    if questionMap.get(typeOf):
         errorHint = questionMap.get(typeOf)
-    # fall back to general error messages if a question specific
-    # one does not exist
-    elif (self.exceptionMap.get(typeOf)):
-      errorHint = self.exceptionMap.get(typeOf)
+    else:
+        errorHint = ''
 
-    # dont include the HTML if we have no error hint
-    if errorHint=='':
-      return ''
-
-    for line in errorHint.split('\n'):
-      self.errorHints[self.currentQuestion].append(line)
+    self.errorHints[self.currentQuestion][typeOf] = errorHint
 
   def produceOutput(self):
     """Passes dictionary of parameters to fill in the Jinja template,
@@ -239,14 +235,6 @@ class Grades:
         self.printedMessage += '*** ' + message + '\n'
         message = cgi.escape(message)
     self.messages[self.currentQuestion].append(message)
-
-  def addMessageToEmail(self, message):
-    print "WARNING**** addMessageToEmail is deprecated %s" % message
-    for line in message.split('\n'):
-      pass
-      #print '%%% ' + line + ' %%%'
-      #self.messages[self.currentQuestion].append(line)
-
 
 
 

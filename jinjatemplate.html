@@ -68,9 +68,11 @@ test cases.
 <div class="bs-callout bs-callout-info">
 <h4>Hints</h4>
 
-  {% for message in q['hints'] %}
-    {{message}}
+<ul>
+  {% for typeOfError in q['hints'] %}
+    <li> {{ q['hints'][typeOfError] }}
   {% endfor %}
+</ul>
 
 </div>
 {% endif %}
