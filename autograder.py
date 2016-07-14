@@ -110,9 +110,14 @@ def loadModuleString(moduleSource):
 import py_compile
 
 def loadModuleFile(moduleName, filePath):
-    with open(filePath, 'r') as f:
-        return imp.load_module(moduleName, f, "%s.py" % moduleName, (".py", "r", imp.PY_SOURCE))
-
+    try:
+        with open(filePath, 'r') as f:
+            return imp.load_module(moduleName, f, "%s.py" % moduleName, (".py", "r", imp.PY_SOURCE))
+    except IOError, inst:
+        print 'File not found', inst
+    except SyntaxError, inst:
+        print 'Syntax error in', moduleName, inst
+    #TODO: propagate this down to the output
 
 def readFile(path, root=""):
     "Read file from disk at specified path and return as string"
