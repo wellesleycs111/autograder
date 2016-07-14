@@ -177,7 +177,7 @@ def parseCoverPy():
                               'PartnerUsername']) + filter(lambda field: info[field]==0,
                                                            [fieldname for fieldname in info.keys() if fieldname.startswith('Time') or fieldname=='HowWeWorked'])
 
-    info['filled'] = filter(lambda field: info[field]!='' and info[field]!=0 and field!='missing', info.keys())
+    info['filled'] = filter(lambda field: info[field]!='' and info[field]!=0 and field!='missing' and field!='filled', info.keys())
 
     return info
 
