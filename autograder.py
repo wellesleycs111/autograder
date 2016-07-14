@@ -32,7 +32,7 @@ random.seed(0)
 # register arguments and set default values
 def readCommand(argv):
     parser = optparse.OptionParser(description = 'Run public tests on student code')
-    parser.set_defaults(generateSolutions=False, htmlOutput=True, logOutput=True, printTestCase=False)
+    parser.set_defaults(htmlOutput=True, logOutput=True, printTestCase=False)
     parser.add_option('--test-directory',
                       dest = 'testRoot',
                       default = 'test_cases',
@@ -54,10 +54,6 @@ def readCommand(argv):
                         default = projectParams.SHOW_GRADES,
                         action = 'store_false',
                         help = 'Won\'t show grades on html output')
-    parser.add_option('--generate-solutions',
-                      dest = 'generateSolutions',
-                      action = 'store_true',
-                      help = 'Write solutions generated to .solution file')
     parser.add_option('--html',
                     dest = 'htmlOutput',
                     action = 'store_true',
@@ -82,26 +78,12 @@ def readCommand(argv):
     return options
 
 
-# confirm we should author solution files
-def confirmGenerate():
-    print 'WARNING: this action will overwrite any solution files.'
-    print 'Are you sure you want to proceed? (yes/no)'
-    while True:
-        ans = sys.stdin.readline().strip()
-        if ans == 'yes':
-            break
-        elif ans == 'no':
-            sys.exit(0)
-        else:
-            print 'please answer either "yes" or "no"'
-
-
 # TODO: Fix this so that it tracebacks work correctly
 # Looking at source of the traceback module, presuming it works
 # the same as the intepreters, it uses co_filename.  This is,
 # however, a readonly attribute.
 def setModuleName(module, filename):
-    functionType = type(confirmGenerate)
+    functionType = type(readCommand)  #TODO: hacky
     classType = type(optparse.Option)
 
     for i in dir(module):
@@ -215,7 +197,7 @@ def getTestSubdirs(testParser, testRoot, questionToGrade):
 
 
 # evaluate student code
-def evaluate(generateSolutions, testRoot, moduleDict, exceptionMap=ERROR_HINT_MAP, htmlOutput=False, logOutput=False,
+def evaluate(testRoot, moduleDict, exceptionMap=ERROR_HINT_MAP, htmlOutput=False, logOutput=False,
             printTestCase=False, questionToGrade=None):
     #TODO: this is ugly -- fix it
     # imports of testbench code.  note that the testClasses import must follow
@@ -261,17 +243,13 @@ def evaluate(generateSolutions, testRoot, moduleDict, exceptionMap=ERROR_HINT_MA
             testClass = getattr(projectTestClasses, testDict['class'])
             testCase = testClass(question, testDict)
             def makefun(testCase, solution_file):
-                if generateSolutions:
-                    # write solution file to disk
-                    return lambda grades: testCase.writeSolution(moduleDict, solution_file)
+                # read in solution dictionary and pass as an argument
+                testDict = testParser.TestParser(test_file).parse()
+                solutionDict = testParser.TestParser(solution_file).parse()
+                if printTestCase:
+                    return lambda grades: printTest(testDict, solutionDict) or testCase.execute(grades, moduleDict, solutionDict,projectParams.SHOW_GRADES)
                 else:
-                    # read in solution dictionary and pass as an argument
-                    testDict = testParser.TestParser(test_file).parse()
-                    solutionDict = testParser.TestParser(solution_file).parse()
-                    if printTestCase:
-                        return lambda grades: printTest(testDict, solutionDict) or testCase.execute(grades, moduleDict, solutionDict,projectParams.SHOW_GRADES)
-                    else:
-                        return lambda grades: testCase.execute(grades, moduleDict, solutionDict, projectParams.SHOW_GRADES)
+                    return lambda grades: testCase.execute(grades, moduleDict, solutionDict, projectParams.SHOW_GRADES)
             question.addTestCase(testCase, makefun(testCase, solution_file))
 
         # Note extra function is necessary for scoping reasons
@@ -303,8 +281,6 @@ def evaluate(generateSolutions, testRoot, moduleDict, exceptionMap=ERROR_HINT_MA
 
 if __name__ == '__main__':
     options = readCommand(sys.argv)
-    if options.generateSolutions:
-        confirmGenerate()
     codePaths = options.studentCode.split(',')
 
     moduleDict = {}
@@ -317,6 +293,6 @@ if __name__ == '__main__':
     if options.runTest != None:
         runTest(options.runTest, moduleDict, printTestCase=options.printTestCase)
     else:
-        evaluate(options.generateSolutions, options.testRoot, moduleDict,
+        evaluate(options.testRoot, moduleDict,
             htmlOutput=options.htmlOutput, logOutput=options.logOutput, printTestCase=options.printTestCase,
             questionToGrade=options.gradeQuestion)
