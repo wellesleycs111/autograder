@@ -160,9 +160,8 @@ def unmutePrint():
     sys.stdout = _ORIGINAL_STDOUT
     #sys.stderr = _ORIGINAL_STDERR
 
-def parseCoverPy():
+def parseCoverPy(honorcode):
     try:
-        import honorcode
         info = honorcode.__dict__
     except: # something wrong in file formatting
         return False

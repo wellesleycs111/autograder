@@ -25,6 +25,7 @@ import re
 import sys
 import projectParams
 import random
+import util
 from hintmap import ERROR_HINT_MAP
 random.seed(0)
 
@@ -185,7 +186,7 @@ def runTest(testName, moduleDict, printTestCase=False):
         printTest(testDict, solutionDict)
 
     # This is a fragile hack to create a stub grades object
-    grades = grading.Grades(projectParams.PROJECT_NAME, [(None,0)], showGrades=projectParams.SHOW_GRADES, coverSheetScore=projectParams.COVERSHEET)
+    grades = grading.Grades(projectParams.PROJECT_NAME, [(None,0)], showGrades=projectParams.SHOW_GRADES, coverSheetScore=projectParams.COVERSHEET, studentinfo=None)
     testCase.execute(grades, moduleDict, solutionDict)
 
 
@@ -281,19 +282,21 @@ def evaluate(generateSolutions, testRoot, moduleDict, exceptionMap=ERROR_HINT_MA
         setattr(sys.modules[__name__], q, makefun(question))
         questions.append((q, question.getMaxPoints()))
 
+    studentinfo = util.parseCoverPy(moduleDict['honorcode'])
     grades = grading.Grades(projectParams.PROJECT_NAME,
                             questions,
                             htmlOutput=htmlOutput,
                             logOutput=logOutput,
                             timeout=projectParams.TIME_OUT,
                             showGrades=projectParams.SHOW_GRADES,
-                            coverSheetScore=projectParams.COVERSHEET)
+                            coverSheetScore=projectParams.COVERSHEET,
+                            studentinfo=studentinfo)
     if questionToGrade == None:
         for q in questionDicts:
             for prereq in questionDicts[q].get('depends', '').split():
                 grades.addPrereq(q, prereq)
 
-    grades.grade(sys.modules[__name__], funcNotDefined, exceptionMap, bonusPic = projectParams.BONUS_PIC)
+    grades.grade(sys.modules[__name__], funcNotDefined, exceptionMap, bonusPic = False)
     return grades.points
 
 

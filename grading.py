@@ -27,12 +27,14 @@ import webbrowser
 
 class Grades:
   "A data structure for project grades, along with formatting code to display them"
-  def __init__(self, projectName, questionsAndMaxesList, htmlOutput=False, logOutput=False, timeout=30, showGrades=True, coverSheetScore=0):
+  def __init__(self, projectName, questionsAndMaxesList, htmlOutput=False, logOutput=False, timeout=30, showGrades=True, coverSheetScore=0, studentinfo = None):
     """
     Defines the grading scheme for a project
       projectName: project name
       questionsAndMaxesDict: a list of (question name, max points per question)
     """
+    self.studentinfo = studentinfo
+    
     self.questions = [el[0] for el in questionsAndMaxesList]
     self.maxes = dict(questionsAndMaxesList)
 
@@ -160,11 +162,10 @@ class Grades:
     paramsDict['psid'] = open('psid.txt').read().strip().upper()
     urlDict = dict([line.split() for line in open('urls.txt').readlines()])  # mapping from question numbers to URLs
 
-    studentinfo = util.parseCoverPy()
-    if studentinfo:
-        paramsDict['studentinfo'] = studentinfo
+    if self.studentinfo:
+        paramsDict['studentinfo'] = self.studentinfo
         if self.maxes['coversheet']:
-            self.points['coversheet'] = int(self.maxes['coversheet']*len(studentinfo['filled'])/float(len(studentinfo)-2))
+            self.points['coversheet'] = int(self.maxes['coversheet']*len(self.studentinfo['filled'])/float(len(self.studentinfo)-2))
     else:
         if self.maxes['coversheet']:
             self.points['coversheet'] = 0

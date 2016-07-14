@@ -12,7 +12,7 @@
 # Pieter Abbeel (pabbeel@cs.berkeley.edu).
 
 STUDENT_CODE_DIR = '../psetsolutions'
-STUDENT_CODE_LIST = 'rock_paper_scissors.py,wordprops.py,hourglass.py,analyzetracks.py,tracksHelper.py,unjumble.py'
+STUDENT_CODE_LIST = 'rock_paper_scissors.py,wordprops.py,hourglass.py,analyzetracks.py,tracksHelper.py,unjumble.py,honorcode.py'
 PROJECT_TEST_CLASSES = 'testClasses.py'
 PROJECT_NAME = 'Project 3: Rock Paper Scissors & Word Properties'
 SHOW_GRADES = True
