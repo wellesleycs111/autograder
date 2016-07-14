@@ -34,7 +34,7 @@ class Grades:
       questionsAndMaxesDict: a list of (question name, max points per question)
     """
     self.studentinfo = studentinfo
-    
+
     self.questions = [el[0] for el in questionsAndMaxesList]
     self.maxes = dict(questionsAndMaxesList)
 
@@ -209,7 +209,9 @@ class Grades:
     with open('grade', 'w') as o:
         o.write(str(sum(self.points.values())))
 
-    webbrowser.open(os.path.join('file:' + os.getcwd(), 'grader_result.html'))
+    webbrowser.open(os.path.join('file:' + os.getcwd(), 'grader_result.html'),
+                    new=0,
+                    autoraise=True)
 
   def fail(self, message, raw=False):
     "Sets sanity check bit to false and outputs a message"

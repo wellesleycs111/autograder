@@ -66,10 +66,6 @@ def readCommand(argv):
                     dest = 'printTestCase',
                     action = 'store_true',
                     help = 'Print each test case before running them.')
-    parser.add_option('--test', '-t',
-                      dest = 'runTest',
-                      default = None,
-                      help = 'Run one particular test.  Relative to test root.')
     parser.add_option('--question', '-q',
                     dest = 'gradeQuestion',
                     default = None,
@@ -146,31 +142,6 @@ def printTest(testDict, solutionDict):
     print "Solution:"
     for line in solutionDict["__raw_lines__"]:
         print "   |", line
-
-
-def runTest(testName, moduleDict, printTestCase=False):
-    import testParser
-    import testClasses
-    for module in moduleDict:
-        setattr(sys.modules[__name__], module, moduleDict[module])
-
-    testDict = testParser.TestParser(testName + ".test").parse()
-    solutionDict = testParser.TestParser(testName + ".solution").parse()
-    test_out_file = os.path.join('%s.test_output' % testName)
-    testDict['test_out_file'] = test_out_file
-    testClass = getattr(projectTestClasses, testDict['class'])
-
-    questionClass = getattr(testClasses, 'Question')
-    question = questionClass({'max_points': 0})
-    testCase = testClass(question, testDict)
-
-    if printTestCase:
-        printTest(testDict, solutionDict)
-
-    # This is a fragile hack to create a stub grades object
-    grades = grading.Grades(projectParams.PROJECT_NAME, [(None,0)], showGrades=projectParams.SHOW_GRADES, coverSheetScore=projectParams.COVERSHEET, studentinfo=None)
-    testCase.execute(grades, moduleDict, solutionDict)
-
 
 # returns all the tests you need to run in order to run question
 def getDepends(testParser, testRoot, question):
@@ -290,9 +261,6 @@ if __name__ == '__main__':
     moduleName = re.match('.*?([^/]*)\.py', options.testCaseCode).group(1)
     moduleDict['projectTestClasses'] = loadModuleFile(moduleName, options.testCaseCode)
 
-    if options.runTest != None:
-        runTest(options.runTest, moduleDict, printTestCase=options.printTestCase)
-    else:
-        evaluate(options.testRoot, moduleDict,
-            htmlOutput=options.htmlOutput, logOutput=options.logOutput, printTestCase=options.printTestCase,
-            questionToGrade=options.gradeQuestion)
+    evaluate(options.testRoot, moduleDict, htmlOutput=options.htmlOutput,
+             logOutput=options.logOutput, printTestCase=options.printTestCase,
+             questionToGrade=options.gradeQuestion)
