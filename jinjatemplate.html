@@ -18,11 +18,12 @@
 </div>
 
 <div class="container">
-  <p>Legend 
-    <button type="button" class="btn btn-sm btn-success">All correct</button>
-    <button type="button" class="btn btn-sm btn-warning">Partially correct</button>
-    <button type="button" class="btn btn-sm btn-danger">All incorrect</button>
-  </p>
+  <p>Legend
+    <span class="label label-success">All correct</span>
+    <span class="label label-warning">Partly correct</span>
+    <span class="label label-danger">Incorrect</span>
+
+        </p>
 
   {% if showGrades %}
   <h3>Total score: {{totalscore}}/{{totalpossible}}</h3>
