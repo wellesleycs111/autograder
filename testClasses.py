@@ -243,7 +243,7 @@ class EvalTest(TestCase): # moved from tutorialTestClasses
             if showGrades:
                 grades.addMessage('FAIL: {0}\n\t{1}\n\tException raised: {2}\n\tExpected result: {3}\n\tscore: {4}'.format(self.path,self.failure,self.inst,solutionDict['result'],'0/'+self.weight))
             else:
-                grades.addMessage('FAIL: {0}\n\t{1}\n\tException raised: {2}\n\tExpected result: {3}\n'.format(self.path,self.failure,result[2],solutionDict['result']))
+                grades.addMessage('FAIL: {0}\n\t{1}\n\tException raised: {2}\n\tExpected result: {3}\n'.format(self.path,self.failure,self.inst,solutionDict['result']))
             grades.addErrorHints(self.inst)
             return False
         elif result == solutionDict['result']:
