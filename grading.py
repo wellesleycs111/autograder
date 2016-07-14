@@ -116,7 +116,7 @@ class Grades:
         # Store results of current run
         if not os.path.isdir('logs'):
             os.mkdir('logs')
-        current = [int(filename.split('.')[-1]) for filename in os.listdir('logs')]
+        current = [int(filename.split('.')[-1]) for filename in os.listdir('logs') if filename.startswith('log')]
         if current:
             ctr = max(current)+1
         else:
