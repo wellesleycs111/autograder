@@ -58,7 +58,7 @@ class Grades:
   def addPrereq(self, question, prereq):
     self.prereqs[question].add(prereq)
 
-  def grade(self, gradingModule, funcNotDefined, exceptionMap = {}, bonusPic = False):
+  def grade(self, gradingModule, funcNotDefined, exceptionMap = {}):
     """
     Grades each question
       gradingModule: the module with all the grading functions (pass in with sys.modules[__name__])
@@ -206,8 +206,9 @@ class Grades:
     with open('grader_result.html', 'w') as o:
           o.write(util.fillHTMLTemplate(open('jinjatemplate.html').read(), paramsDict))
 
-    with open('grade', 'w') as o:
-        o.write(str(sum(self.points.values())))
+    if self.showGrades:
+        with open('grade', 'w') as o:
+            o.write(str(sum(self.points.values())))
 
     webbrowser.open(os.path.join('file:' + os.getcwd(), 'grader_result.html'),
                     new=0,
