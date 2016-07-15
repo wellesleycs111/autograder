@@ -18,7 +18,7 @@
 </div>
 
 <div class="container">
-  <p>Legend
+  <p><em>Legend:</em>
     <span class="label label-success">All correct</span>
     <span class="label label-warning">Partly correct</span>
     <span class="label label-danger">Incorrect</span>
@@ -130,13 +130,16 @@ test cases.
 {% else %}
 
 {% if studentinfo['filled'] != [] %}
-    <h4 class="alert alert-success">Filled</h4>
+    <h4 class="alert alert-success">Completed</h4>
 <div class="panel panel-default"><div class="panel-body">
-    <ul>
+    <table class="table">
     {% for filledvalue in studentinfo['filled'] %}
-        <li> <strong>{{ filledvalue }}</strong>: {{ studentinfo[filledvalue] }}
+        <tr>
+          <th>{{ filledvalue }}</th>
+          <td>{{ studentinfo[filledvalue] }}</td>
+        </tr>
     {% endfor %}
-  </ul>
+  </table>
   </div></div> <!--panel-->
 {% endif %}
 

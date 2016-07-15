@@ -58,13 +58,14 @@ class Grades:
   def addPrereq(self, question, prereq):
     self.prereqs[question].add(prereq)
 
-  def grade(self, gradingModule, funcNotDefined, exceptionMap = {}):
+  def grade(self, gradingModule, moduleErrors, funcNotDefined, exceptionMap = {}):
     """
     Grades each question
       gradingModule: the module with all the grading functions (pass in with sys.modules[__name__])
     """
+    self.moduleErrors = moduleErrors
+    self.funcNotDefined = funcNotDefined
 
-    self.undefined = funcNotDefined
     self.exceptionMap=exceptionMap
     completedQuestions = set([])
     for q in self.questions:
@@ -74,8 +75,8 @@ class Grades:
       self.printedMessage += '\n'
       self.currentQuestion = q
 
-      if q in self.undefined:
-          for func in self.undefined[q]:
+      if q in self.funcNotDefined:
+          for func in self.funcNotDefined[q]:
               self.printedMessage+= '***Function %s() not defined.\n' % func
 
       incompleted = self.prereqs[q].difference(completedQuestions)
@@ -184,9 +185,14 @@ class Grades:
         score=self.points[q]
         qmax=self.maxes[q]
         badge = str(score)+"/"+str(qmax)
+
         passedcases = [util.codeHighlight(message[6:]).replace(r"\n","<br>") for message in self.messages[q] if message.startswith('PASS')]
         failedcases = [util.codeHighlight(message[6:]).replace(r"\n","<br>") for message in self.messages[q] if message.startswith('FAIL')]
-        undefined = ['<pre>Function %s() is not defined.</pre>' % message for message in self.undefined[q]]
+
+        undefined = ['<pre>The function '+funcname+' is not defined.</pre>' for funcname in self.funcNotDefined[q]]
+        syntaxerrors = ['<pre>Error in {0}, line {1}, column {2}:<br>{3}</pre>'.format(error.filename, error.lineno, error.offset, util.codeHighlight(error.text))  # TODO: instead of showing offset column, highlight in HTML
+                        for error in self.moduleErrors[q]]
+
         images = ['<pre>{0}\nExpected image:\n<img src={1}>\nYour image:\n<img src={2}></pre>'.format(message.split(',')[1],message.split(',')[2],message.split(',')[3]) for message in self.messages[q] if message.startswith('IMAGE')]
         if len(images)>0:
             badge="Image Test"
@@ -195,7 +201,8 @@ class Grades:
                                         'badge':badge,
                                         'passedcases':passedcases,
                                         'failedcases':failedcases,
-                                        'undefined': undefined,
+                                        'funcNotDefined': undefined,
+                                        'moduleErrors': syntaxerrors,
                                         'images': images,
                                         'hints': self.errorHints[q],
                                         'url': urlDict[q]})
