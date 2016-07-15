@@ -215,7 +215,9 @@ class Grades:
 
     if self.showGrades:
         with open('grade', 'w') as o:
-            o.write(str(sum(self.points.values())))
+            for q in self.points:
+                o.write(q+':'+str(self.points[q])+'\n')
+            o.write('total:'+str(sum(self.points.values()))+'\n')
 
     webbrowser.open(os.path.join('file:' + os.getcwd(), 'grader_result.html'),
                     new=0,
