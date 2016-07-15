@@ -84,12 +84,24 @@ test cases.
 </div>
 {% endif %}
 
-{% if q['undefined'] %}
+{% if q['funcNotDefined'] %}
 <h4 class="alert alert-warning">Not Found</h4>
-  {% for message in q['undefined'] %}
+  {% for message in q['funcNotDefined'] %}
     {{message}}
   {% endfor %}
 {% endif %}
+
+{% if q['moduleErrors'] %}
+<h4 class="alert alert-danger">Syntax Errors</h4>
+<p>Your code cannot be evaluated until all your syntax errors are fixed.
+</p>
+
+  {% for message in q['moduleErrors'] %}
+      {{message}}
+  {% endfor %}
+{% endif %}
+
+
   </div><!--collapse-->
 
 <br>

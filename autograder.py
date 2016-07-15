@@ -27,6 +27,8 @@ import projectParams
 import random
 import util
 from hintmap import ERROR_HINT_MAP
+import pprint
+
 random.seed(0)
 
 # register arguments and set default values
@@ -114,19 +116,10 @@ def loadModuleFile(moduleName, filePath):
         with open(filePath, 'r') as f:
             return imp.load_module(moduleName, f, "%s.py" % moduleName, (".py", "r", imp.PY_SOURCE))
     except IOError, inst:
-        print 'File not found', inst
+        pass # TODO: handle
     except SyntaxError, inst:
-        print 'Syntax error in', moduleName, inst
+        return inst
     #TODO: propagate this down to the output
-
-def readFile(path, root=""):
-    "Read file from disk at specified path and return as string"
-    with open(os.path.join(root, path), 'r') as handle:
-        return handle.read()
-
-
-
-import pprint
 
 def splitStrings(d):
     d2 = dict(d)
@@ -187,8 +180,11 @@ def evaluate(testRoot, moduleDict, exceptionMap=ERROR_HINT_MAP, htmlOutput=False
     questionDicts = {}
     test_subdirs = getTestSubdirs(testParser, testRoot, questionToGrade)
     funcNotDefined={}
+    syntaxErrors = {}
     for q in test_subdirs:
         funcNotDefined[q]=[]
+        syntaxErrors[q] = set()
+
         subdir_path = os.path.join(testRoot, q)
         if not os.path.isdir(subdir_path) or q[0] == '.':
             continue
@@ -207,6 +203,10 @@ def evaluate(testRoot, moduleDict, exceptionMap=ERROR_HINT_MAP, htmlOutput=False
             solution_file = os.path.join(subdir_path, '%s.solution' % t)
             test_out_file = os.path.join(subdir_path, '%s.test_output' % t)
             testDict = testParser.TestParser(test_file).parse()
+
+            if isinstance(moduleDict[testDict['module']], SyntaxError):  # module has syntax errors
+                syntaxErrors[q].add(moduleDict[testDict['module']])
+                continue
 
             if testDict['func'] not in dir(moduleDict[testDict['module']]):
                 if testDict['func'] not in funcNotDefined[q]:
@@ -250,7 +250,7 @@ def evaluate(testRoot, moduleDict, exceptionMap=ERROR_HINT_MAP, htmlOutput=False
             for prereq in questionDicts[q].get('depends', '').split():
                 grades.addPrereq(q, prereq)
 
-    grades.grade(sys.modules[__name__], funcNotDefined, exceptionMap)
+    grades.grade(sys.modules[__name__], syntaxErrors, funcNotDefined, exceptionMap)
     return grades.points
 
 

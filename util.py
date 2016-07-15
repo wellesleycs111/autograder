@@ -48,6 +48,11 @@ def fillHTMLTemplate(templateString, paramsDict):
     htmlContent = templateObject.render(paramsDict)
     return htmlContent
 
+class ModuleError(object):
+    def __init__(self, exceptionType, detail):
+        self.exceptionType = exceptionType
+        self.detail = detail
+
 def raiseNotDefined():
     fileName = inspect.stack()[1][1]
     line = inspect.stack()[1][2]

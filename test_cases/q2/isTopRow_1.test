@@ -1,6 +1,6 @@
 class: "EvalTest"
-success: "isTopRow('pretty') returns True"
-failure: "isTopRow('pretty') must return True"
+success: "isTopRow('pretty') returns True if word uses only letters on the first row of the keyboard; False otherwise"
+failure: "isTopRow('pretty') must return True if word uses only letters on the first row of the keyboard; False otherwise"
 
 # A python expression to be evaluated.  This expression must return the
 # same result for the student and instructor's code.

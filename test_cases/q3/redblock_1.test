@@ -1,6 +1,6 @@
 class: "ImageTest"
-success: "redblock() returns redblock.png"
-failure: "redblock() must return redblock.png"
+success: "redblock() returns the red quilt"
+failure: "redblock() must return the red quilt"
 
 # A python expression to be evaluated.  This expression must return the
 # same result for the student and instructor's code.

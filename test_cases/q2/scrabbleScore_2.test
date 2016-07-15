@@ -1,6 +1,6 @@
 class: "EvalTest"
-success: "scrabbleScore('quiz') returns 22"
-failure: "scrabbleScore('quiz') must return 22"
+success: "scrabbleScore('quiz') returns the scrabble value (int) of the word"
+failure: "scrabbleScore('quiz') must return the scrabble value (int) of the word"
 
 # A python expression to be evaluated.  This expression must return the
 # same result for the student and instructor's code.
