@@ -23,13 +23,25 @@ import jinja2
 from pygments import highlight
 from pygments.lexers import PythonLexer
 from pygments.formatters import HtmlFormatter
+from pygments.token import Text, Error
 import re
 
-def codeHighlight(message, delimiter='!'):
-    # TODO: highlight string, but don't highlight escaped portion (between ! !)
-    #escregex = '({0}[^{0}]+{0})'.format(delimiter)
-    #splitMessage = re.split(escregex, message)
-    return highlight(message, PythonLexer(), HtmlFormatter())
+class MyPythonLexer(PythonLexer):
+    """Adds syntaxerror highlighting at offsets"""
+    def __init__(self, offset, delimiter='|'):
+        PythonLexer.__init__(self)
+        self.offset = offset
+        self.delimiter = delimiter  #TODO: use this to escape highlighting when desired
+
+    def get_tokens_unprocessed(self, text):
+        for index, token, value in PythonLexer.get_tokens_unprocessed(self, text):
+            if index==self.offset-1:  # need to shift by 1
+                yield index, Error, value
+            else:
+                yield index, token, value
+
+def codeHighlight(message, offset = -1):
+    return highlight(message, MyPythonLexer(offset), HtmlFormatter())
 
 def correctnessColor(pt, mx):
     if mx == 0:

@@ -191,7 +191,7 @@ class Grades:
 
         undefined = ['<pre>The function '+funcname+' is not defined.</pre>' for funcname in self.funcNotDefined[q]]
         syntaxerrors = ['<pre>Error in {0}, line {1}, column {2}:<br>{3}</pre>'.format(error.filename, error.lineno, error.offset,
-                        util.codeHighlight(error.text[:error.offset]+"errstart"+error.text[error.offset]+"errend"+error.text[error.offset+1:]).replace("errstart","<span class=\"err\">").replace("errend","</span>"))  # this line is a complete disaster but it works
+                        util.codeHighlight(error.text, error.offset))  
                         for error in self.moduleErrors[q]]
 
         images = ['<pre>{0}\nExpected image:\n<img src={1}>\nYour image:\n<img src={2}></pre>'.format(message.split(',')[1],message.split(',')[2],message.split(',')[3]) for message in self.messages[q] if message.startswith('IMAGE')]
