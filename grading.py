@@ -152,8 +152,8 @@ class Grades:
         errorHint = questionMap.get(typeOf)
     else:
         errorHint = ''
-
-    self.errorHints[self.currentQuestion][typeOf] = errorHint
+    if errorHint is not '':
+        self.errorHints[self.currentQuestion][typeOf] = errorHint
 
   def produceOutput(self):
     """Passes dictionary of parameters to fill in the Jinja template,

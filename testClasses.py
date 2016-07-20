@@ -276,6 +276,31 @@ class ImageTest(EvalTest):
         result.saveToFile(userimage)
         grades.addMessage('IMAGE,{0},{1},{2}'.format(self.path, solutionDict['result'],userimage))
         return True
+        
+class GradedImageTest(EvalTest):
+    
+    def execute(self,grades,moduleDict,solutionDict,showGrades):
+        result = self.evalCode(moduleDict)
+        # result is a cs1graphics frame
+        if result == 'Exception was raised':
+            if showGrades:
+                grades.addMessage('FAIL: {0}\n\t{1}\n\tException raised: {2}\n\tExpected result: {3}\n\tscore: {4}'.format(self.path,self.failure,self.inst,solutionDict['result'],'0/'+self.weight))
+            else:
+                grades.addMessage('FAIL: {0}\n\t{1}\n\tException raised: {2}\n\tExpected result: {3}\n'.format(self.path,self.failure,self.inst,solutionDict['result']))
+            grades.addErrorHints(self.inst)
+            return False
+        elif result.equals(solutionDict['result']):
+            if showGrades:
+                grades.addMessage('PASS: {0}\n\t{1}\n\tscore: {2}'.format(self.path, self.success, self.weight+'/'+self.weight))
+            else:
+                grades.addMessage('PASS: {0}\n\t{1}\n'.format(self.path, self.success))
+            return True
+        else:
+            if showGrades:
+                grades.addMessage('FAIL: {0}\n\t{1}\n\tstudent result: {2}\n\tcorrect result: {3}\n\tscore: {4}'.format(self.path, self.failure, result, solutionDict['result'],'0/'+self.weight))
+            else:
+                grades.addMessage('FAIL: {0}\n\t{1}\n\tstudent result: {2}\n\tcorrect result: {3}\n'.format(self.path, self.failure, result, solutionDict['result']))
+        return False
 
 
 class PrintTest(EvalTest):
