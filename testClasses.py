@@ -254,9 +254,16 @@ class EvalTest(TestCase): # moved from tutorialTestClasses
             return True
         else:
                 if showGrades:
-                    grades.addMessage('FAIL: {0}\n\t{1}\n\tstudent result: {2}\n\tcorrect result: {3}\n\tscore: {4}'.format(self.path, self.failure, result, solutionDict['result'],'0/'+self.weight))
+                    grades.addMessage('FAIL: {0}\n\t{1}\n\tstudent result: {2} ({5})\n\tcorrect result: {3} ({6})\n\tscore: {4}'.format(self.path, self.failure,
+                                                                                                                                result, solutionDict['result'],
+                                                                                                                                '0/'+self.weight,
+                                                                                                                                str(type(result)).strip('<>'),
+                                                                                                                                str(type(solutionDict['result'])).strip('<>')))
                 else:
-                    grades.addMessage('FAIL: {0}\n\t{1}\n\tstudent result: {2}\n\tcorrect result: {3}\n'.format(self.path, self.failure, result, solutionDict['result']))
+                    grades.addMessage('FAIL: {0}\n\t{1}\n\tstudent result: {2} ({4})\n\tcorrect result: {3} ({5})\n'.format(self.path, self.failure,
+                                                                                                                    result, solutionDict['result'],
+                                                                                                                    str(type(result)).strip('<>'),
+                                                                                                                    str(type(solutionDict['<>']))))
         return False
 
     def writeSolution(self, moduleDict, filePath):
@@ -276,9 +283,9 @@ class ImageTest(EvalTest):
         result.saveToFile(userimage)
         grades.addMessage('IMAGE,{0},{1},{2}'.format(self.path, solutionDict['result'],userimage))
         return True
-        
+
 class GradedImageTest(EvalTest):
-    
+
     def execute(self,grades,moduleDict,solutionDict,showGrades):
         result = self.evalCode(moduleDict)
         # result is a cs1graphics frame
