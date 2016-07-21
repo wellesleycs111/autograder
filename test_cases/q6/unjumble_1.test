@@ -1,6 +1,7 @@
 class: "EvalTest"
-success: "unjumble({'acerst':['caster','caters','crates','reacts','recast','traces'],'aegilnrt':['alerting','altering','integral','relating','triangle'],'aeglr':['glare','lager','large','regal'],'aeinrrst':['restrain','retains','strainer','terrains','trainers'],'arst':['arts','rats','star','tars','tsar'],'chiiinorsst':['histrionics','trichinosis'],'opst':['opts','post','pots','spot','stop','tops']},'esrat') returns a list of anagrams for a given word"
-failure: "unjumble({'acerst':['caster','caters','crates','reacts','recast','traces'],'aegilnrt':['alerting','altering','integral','relating','triangle'],'aeglr':['glare','lager','large','regal'],'aeinrrst':['restrain','retains','strainer','terrains','trainers'],'arst':['arts','rats','star','tars','tsar'],'chiiinorsst':['histrionics','trichinosis'],'opst':['opts','post','pots','spot','stop','tops']},'esrat') must return a list of anagrams for a given word"
+call: "unjumble({'acerst':['caster','caters','crates','reacts','recast','traces'],'aegilnrt':['alerting','altering','integral','relating','triangle'],'aeglr':['glare','lager','large','regal'],'aeinrrst':['restrain','retains','strainer','terrains','trainers'],'arst':['arts','rats','star','tars','tsar'],'chiiinorsst':['histrionics','trichinosis'],'opst':['opts','post','pots','spot','stop','tops']},'esrat')"
+success: "returns a list of anagrams for a given word"
+failure: "must return a list of anagrams for a given word"
 
 # A python expression to be evaluated.  This expression must return the
 # same result for the student and instructor's code.

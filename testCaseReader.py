@@ -31,8 +31,9 @@ def generateTestFile(caseDict,filename):
             f.write("class: \"PrintTest\"\n")
         else:
             f.write("class: \"EvalTest\"\n")
-        f.write("success: \""+caseDict['functionname']+"("+caseDict['arguments']+") returns "+caseDict['description']+"\"\n")
-        f.write("failure: \""+caseDict['functionname']+"("+caseDict['arguments']+") must return "+caseDict['description']+"\"\n")
+        f.write("call: \""+caseDict['functionname']+"("+caseDict['arguments']+")\"\n")
+        f.write("success: \"returns "+caseDict['description']+"\"\n")
+        f.write("failure: \"must return "+caseDict['description']+"\"\n")
         f.write("\n# A python expression to be evaluated.  This expression must return the\n")
         f.write("# same result for the student and instructor's code.\n")
         f.write("test: \""+caseDict['modulename']+"."+caseDict['functionname']+'('+caseDict['arguments']+')\"\n')

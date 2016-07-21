@@ -1,6 +1,7 @@
 class: "EvalTest"
-success: "unjumbleKey('argle') returns a hash key (string with the letters of the word in sorted order) for the given word"
-failure: "unjumbleKey('argle') must return a hash key (string with the letters of the word in sorted order) for the given word"
+call: "unjumbleKey('argle')"
+success: "returns a hash key (string with the letters of the word in sorted order) for the given word"
+failure: "must return a hash key (string with the letters of the word in sorted order) for the given word"
 
 # A python expression to be evaluated.  This expression must return the
 # same result for the student and instructor's code.
