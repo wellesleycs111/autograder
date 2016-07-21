@@ -225,8 +225,8 @@ class EvalTest(TestCase): # moved from tutorialTestClasses
         super(EvalTest, self).__init__(question, testDict)
         self.preamble = compile(testDict.get('preamble', ""), "%s.preamble" % self.getPath(), 'exec')
         self.test = compile(testDict['test'], "%s.test" % self.getPath(), 'eval')
-        self.success = testDict['success']
-        self.failure = testDict['failure']
+        self.success = testDict['call']+' '+testDict['success']
+        self.failure = testDict['call']+' '+testDict['failure']
 
     def evalCode(self, moduleDict):
         bindings = dict(moduleDict)
