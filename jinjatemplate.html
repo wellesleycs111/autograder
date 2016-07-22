@@ -52,23 +52,32 @@ test cases.
 </p>
 {% if q['images'] %}
 <h4 class="alert alert-info">Images</h4>
-  {% for message in q['images'] %}
+{% for funcname in q['images'] %}
+<h5>Function <tt>{{funcname}}</tt></h5>
+  {% for message in q['images'][funcname] %}
     {{message}}
   {% endfor %}
+{% endfor %}
 {% endif %}
 
 {% if q['passedcases'] %}
 <h4 class="alert alert-success">Passed</h4>
-  {% for message in q['passedcases'] %}
+{% for funcname in q['passedcases'] %}
+<h5>Function <tt>{{funcname}}</tt></h5>
+  {% for message in q['passedcases'][funcname] %}
     {{message}}
   {% endfor %}
+{% endfor %}
 {% endif %}
 
 {% if q['failedcases'] %}
 <h4 class="alert alert-danger">Failed</h4>
-  {% for message in q['failedcases'] %}
+{% for funcname in q['failedcases'] %}
+<h5>Function <tt>{{funcname}}</tt></h5>
+  {% for message in q['failedcases'][funcname] %}
     {{message}}
   {% endfor %}
+{% endfor %}
 {% endif %}
 
 {% if q['hints'] %}

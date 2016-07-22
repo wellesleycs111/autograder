@@ -73,74 +73,6 @@ class Question(object):
     def execute(self, grades):
         self.raiseNotDefined()
 
-# Question in which all test cases must be passed in order to receive credit
-class PassAllTestsQuestion(Question):
-
-    def execute(self, grades):
-        # TODO: is this the right way to use grades?  The autograder doesn't seem to use it.
-        testsFailed = False
-        grades.assignZeroCredit()
-        for _, f in self.testCases:
-            if not f(grades):
-                testsFailed = True
-        if testsFailed:
-            grades.fail("Tests failed.")
-        else:
-            grades.assignFullCredit()
-
-
-# Question in which predict credit is given for test cases with a ``points'' property.
-# All other tests are mandatory and must be passed.
-class HackedPartialCreditQuestion(Question):
-
-    def execute(self, grades):
-        # TODO: is this the right way to use grades?  The autograder doesn't seem to use it.
-        grades.assignZeroCredit()
-
-        points = 0
-        passed = True
-        for testCase, f in self.testCases:
-            testResult = f(grades)
-            if "points" in testCase.testDict:
-                if testResult: points += float(testCase.testDict["points"])
-            else:
-                passed = passed and testResult
-
-        ## FIXME: Below terrible hack to match q3's logic
-        if int(points) == self.maxPoints and not passed:
-            grades.assignZeroCredit()
-        else:
-            grades.addPoints(int(points))
-
-
-class Q6PartialCreditQuestion(Question):
-    """Fails any test which returns False, otherwise doesn't effect the grades object.
-    Partial credit tests will add the required points."""
-
-    def execute(self, grades):
-        grades.assignZeroCredit()
-
-        results = []
-        for _, f in self.testCases:
-            results.append(f(grades))
-        if False in results:
-            grades.assignZeroCredit()
-
-class PartialCreditQuestion(Question):
-    """Fails any test which returns False, otherwise doesn't effect the grades object.
-    Partial credit tests will add the required points."""
-
-    def execute(self, grades):
-        grades.assignZeroCredit()
-
-        for _, f in self.testCases:
-            if not f(grades):
-                grades.assignZeroCredit()
-                grades.fail("Tests failed.")
-                return False
-
-
-
 class NumberPassedQuestion(Question):
     """Grade is the number of test cases passed."""
 
@@ -179,43 +111,6 @@ class TestCase(object):
         self.raiseNotDefined()
         return True
 
-    # Tests should call the following messages for grading
-    # to ensure a uniform format for test output.
-    #
-    # TODO: this is hairy, but we need to fix grading.py's interface
-    # to get a nice hierarchical project - question - test structure,
-    # then these should be moved into Question proper.
-    def testPass(self, grades):
-        #turns out this func and the next are never called - a func in tutorial test classes is called instead
-        grades.addMessage('PASS: %s' % (self.path,))
-        #grades.addMessage('    score: %s/%s' % (self.weight,self.weight,))
-        for line in self.messages:
-            grades.addMessage('    %s' % (line,))
-        return True
-
-    def testFail(self, grades):
-        grades.addMessage('FAIL: %s' % (self.path,))
-        #grades.addMessage('    score: 0/%s' % (self.weight,))
-        for line in self.messages:
-            grades.addMessage('    %s' % (line,))
-        return False
-
-    # This should really be question level?
-    #
-    def testPartial(self, grades, points, maxPoints):
-        grades.addPoints(points)
-        extraCredit = max(0, points - maxPoints)
-        regularCredit = points - extraCredit
-
-        grades.addMessage('%s: %s (%s of %s points)' % ("PASS" if points >= maxPoints else "FAIL", self.path, regularCredit, maxPoints))
-        if extraCredit > 0:
-            grades.addMessage('EXTRA CREDIT: %s points' % (extraCredit,))
-
-        for line in self.messages:
-            grades.addMessage('    %s' % (line,))
-
-        return True
-
     def addMessage(self, message):
         self.messages.extend(message.split('\n'))
 
@@ -227,6 +122,9 @@ class EvalTest(TestCase): # moved from tutorialTestClasses
         self.test = compile(testDict['test'], "%s.test" % self.getPath(), 'eval')
         self.success = testDict['call']+' '+testDict['success']
         self.failure = testDict['call']+' '+testDict['failure']
+
+        basename = os.path.splitext(os.path.basename(self.path))[0]
+        self.funcname, self.casenum = basename.split('_')
 
     def evalCode(self, moduleDict):
         bindings = dict(moduleDict)
@@ -240,8 +138,6 @@ class EvalTest(TestCase): # moved from tutorialTestClasses
     def execute(self, grades, moduleDict, solutionDict, showGrades):
         result = self.evalCode(moduleDict)
 
-        testname = re.match(r'\A\S*\\q\S\\(\S*)_(\w*)\.test', str(self.path)).group(1)+" test "+re.match(r'\A\S*\\q\S\\(\S*)_(\w*)\.test', str(self.path)).group(2)
-
         if isinstance(solutionDict['result'], str):
             expected_result = '"{0}"'.format(solutionDict['result'])  # otherwise, "" are stripped
         else:
@@ -249,25 +145,25 @@ class EvalTest(TestCase): # moved from tutorialTestClasses
 
         # exception
         if result=='Exception was raised':
-            msg = 'FAIL: {0}\n\t{1}\n\tException raised: {2}\n\tExpected result: {3}'.format(testname,
-                                                                                             self.failure,
-                                                                                             self.inst,
-                                                                                             expected_result)
+            msg = 'Test Case {0}\n\t{1}\n\tException raised: {2}\n\tExpected result: {3}'.format(self.casenum,
+                                                                                                 self.failure,
+                                                                                                 self.inst,
+                                                                                                 expected_result)
             if showGrades:
                 msg += '\n\tscore: {0}/{1}'.format(0, self.weight)
 
-            grades.addMessage(msg)
+            grades.addMessage(('FAIL', self.funcname, msg))
             grades.addErrorHints(self.inst)
             return False
 
         # correct
         if result == solutionDict['result']:
-            msg = 'PASS: {0}\n\t{1}\n'.format(testname,
-                                              self.success)
+            msg = 'Test Case {0}\n\t{1}'.format(self.casenum,
+                                                self.success)
             if showGrades:
                 msg += '\n\tscore: {0}/{1}'.format(self.weight, self.weight)
 
-            grades.addMessage(msg)
+            grades.addMessage(('PASS', self.funcname, msg))
             return True
 
         # incorrect
@@ -276,61 +172,66 @@ class EvalTest(TestCase): # moved from tutorialTestClasses
         else:
             student_result = str(result)
 
-        msg = 'FAIL: {0}\n\t{1}\n\tstudent result: {2}\n\tcorrect result: {3}'.format(testname,
-                                                                                      self.failure,
-                                                                                      student_result,
-                                                                                      expected_result)
+        msg = 'Test Case {0}\n\t{1}\n\tstudent result: {2}\n\tcorrect result: {3}'.format(self.casenum,
+                                                                                          self.failure,
+                                                                                          student_result,
+                                                                                          expected_result)
         if showGrades:
             msg += '\n\tscore: {0}/{1}'.format(0, self.weight)
 
-        grades.addMessage(msg)
+        grades.addMessage(('FAIL', self.funcname, msg))
         return False
-
-    def writeSolution(self, moduleDict, filePath):
-        handle = open(filePath, 'w')
-        handle.write('# This is the solution file for %s.\n' % self.path)
-        handle.write('# The result of evaluating the test must equal the below when cast to a string.\n')
-        handle.write('result: "%s"\n' % self.evalCode(moduleDict))
-        handle.close()
-        return True
 
 class ImageTest(EvalTest):
 
     def execute(self,grades,moduleDict,solutionDict,showGrades):
         result = self.evalCode(moduleDict)
-        testname=re.match(r"\A\S*\\q\S\\(\S*)_(\w*)\.test", str(self.path)).group(1)+" test "+re.match(r'\A\S*\\q\S\\(\S*)_(\w*)\.test', str(self.path)).group(2)
+
         # result will be a cs1graphics Canvas
         userimage = os.path.splitext(os.path.basename(self.path))[0]+'.png'
         result.saveToFile(userimage)
-        grades.addMessage('IMAGE,{0},{1},{2}'.format(filename, solutionDict['result'],userimage))
+
+        msg = '<pre>Test Case {0}\n\tExpected image:\n<img src={1}>\n\tYour image:\n<img src={2}></pre>'.format(self.casenum,
+                                                                                                                solutionDict['result'],
+                                                                                                                userimage)
+        grades.addMessage(('IMAGE', self.funcname, msg))
         return True
 
 class GradedImageTest(EvalTest):
 
     def execute(self,grades,moduleDict,solutionDict,showGrades):
         result = self.evalCode(moduleDict)
-        testname=re.match(r"\A\S*\\q\S\\(\S*)_(\w*)\.test", str(self.path)).group(1)+" test "+re.match(r"\A\S*\\q\S\\(\S*)_(\w*)\.test", str(self.path)).group(2)
+
         # result is a cs1graphics frame
+
+        # exception
         if result == 'Exception was raised':
+            msg = 'Test Case {0}\n\t{1}\n\tException raised: {2}\n\tExpected result: {3}'.format(self.casenum,
+                                                                                                 self.failure,
+                                                                                                 self.inst,
+                                                                                                 solutionDict['result'])
             if showGrades:
-                grades.addMessage('FAIL: {0}\n\t{1}\n\tException raised: {2}\n\tExpected result: {3}\n\tscore: {4}'.format(testname,self.failure,self.inst,solutionDict['result'],'0/'+self.weight))
-            else:
-                grades.addMessage('FAIL: {0}\n\t{1}\n\tException raised: {2}\n\tExpected result: {3}\n'.format(testname,self.failure,self.inst,solutionDict['result']))
+                msg += '\n\tscore: {0}/{1}'.format(0, self.weight)
+            grades.addMessage(('FAIL', self.funcname, msg))
             grades.addErrorHints(self.inst)
             return False
-        elif result.equals(solutionDict['result']):
-            if showGrades:
-                grades.addMessage('PASS: {0}\n\t{1}\n\tscore: {2}'.format(testname, self.success, self.weight+'/'+self.weight))
-            else:
-                grades.addMessage('PASS: {0}\n\t{1}\n'.format(testname, self.success))
-            return True
-        else:
-            if showGrades:
-                grades.addMessage('FAIL: {0}\n\t{1}\n\tstudent result: {2}\n\tcorrect result: {3}\n\tscore: {4}'.format(testname, self.failure, result, solutionDict['result'],'0/'+self.weight))
-            else:
-                grades.addMessage('FAIL: {0}\n\t{1}\n\tstudent result: {2}\n\tcorrect result: {3}\n'.format(testname, self.failure, result, solutionDict['result']))
-        return False
 
+        # correct
+        if result.equals(solutionDict['result']):
+            msg = '\n\t{0}\n\tscore: {2}'.format(self.success)
+            if showGrades:
+                msg += '\n\tscore: {0}/{1}'.format(self.weight, self.weight)
+            grades.addMessage(('PASS', self.funcname, msg))
+            return True
+
+        # incorrect
+        msg = '{0}\n\tstudent result: {1}\n\tcorrect result: {2}'.format(self.failure,
+                                                                         result,
+                                                                         solutionDict['result'])
+        if showGrades:
+            msg += '\n\tscore: {0}/{1}'.format(0, self.weight)
+        grades.addMessage(('FAIL', self.funcname, msg))
+        return False
 
 class PrintTest(EvalTest):
 

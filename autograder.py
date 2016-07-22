@@ -34,7 +34,7 @@ random.seed(0)
 # register arguments and set default values
 def readCommand(argv):
     parser = optparse.OptionParser(description = 'Run public tests on student code')
-    parser.set_defaults(htmlOutput=True, logOutput=True, printTestCase=False)
+    parser.set_defaults(htmlOutput=True, logOutput=True)
     parser.add_option('--test-directory',
                       dest = 'testRoot',
                       default = 'test_cases',
@@ -64,10 +64,6 @@ def readCommand(argv):
                     dest = 'logOutput',
                     action = 'store_true',
                     help = 'Log autograder runs')
-    parser.add_option('--print-tests', '-p',
-                    dest = 'printTestCase',
-                    action = 'store_true',
-                    help = 'Print each test case before running them.')
     parser.add_option('--question', '-q',
                     dest = 'gradeQuestion',
                     default = None,
@@ -122,26 +118,6 @@ def loadModuleFile(moduleName, filePath):
         return inst
     #TODO: propagate this down to the output
 
-def splitStrings(d):
-    d2 = dict(d)
-    for k in d:
-        if k[0:2] == "__":
-            del d2[k]
-            continue
-        if d2[k].find("\n") >= 0:
-            d2[k] = d2[k].split("\n")
-    return d2
-
-
-def printTest(testDict, solutionDict):
-    pp = pprint.PrettyPrinter(indent=4)
-    print "Test case:"
-    for line in testDict["__raw_lines__"]:
-        print "   |", line
-    print "Solution:"
-    for line in solutionDict["__raw_lines__"]:
-        print "   |", line
-
 # returns all the tests you need to run in order to run question
 def getDepends(testParser, testRoot, question):
     allDeps = [question]
@@ -167,8 +143,7 @@ def getTestSubdirs(testParser, testRoot, questionToGrade):
 
 
 # evaluate student code
-def evaluate(testRoot, moduleDict, exceptionMap=ERROR_HINT_MAP, htmlOutput=False, logOutput=False,
-            printTestCase=False, questionToGrade=None):
+def evaluate(testRoot, moduleDict, exceptionMap=ERROR_HINT_MAP, htmlOutput=False, logOutput=False, questionToGrade=None):
     #TODO: this is ugly -- fix it
     # imports of testbench code.  note that the testClasses import must follow
     # the import of student code due to dependencies
@@ -223,10 +198,7 @@ def evaluate(testRoot, moduleDict, exceptionMap=ERROR_HINT_MAP, htmlOutput=False
                 # read in solution dictionary and pass as an argument
                 testDict = testParser.TestParser(test_file).parse()
                 solutionDict = testParser.TestParser(solution_file).parse()
-                if printTestCase:
-                    return lambda grades: printTest(testDict, solutionDict) or testCase.execute(grades, moduleDict, solutionDict,projectParams.SHOW_GRADES)
-                else:
-                    return lambda grades: testCase.execute(grades, moduleDict, solutionDict, projectParams.SHOW_GRADES)
+                return lambda grades: testCase.execute(grades, moduleDict, solutionDict, projectParams.SHOW_GRADES)
             question.addTestCase(testCase, makefun(testCase, solution_file))
 
         # Note extra function is necessary for scoping reasons
@@ -280,5 +252,4 @@ if __name__ == '__main__':
     moduleDict['projectTestClasses'] = loadModuleFile(moduleName, options.testCaseCode)
 
     evaluate(options.testRoot, moduleDict, htmlOutput=options.htmlOutput,
-             logOutput=options.logOutput, printTestCase=options.printTestCase,
-             questionToGrade=options.gradeQuestion)
+             logOutput=options.logOutput, questionToGrade=options.gradeQuestion)

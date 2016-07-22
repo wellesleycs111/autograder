@@ -41,11 +41,14 @@ class Grades:
     self.maxes['coversheet'] = coverSheetScore
 
     self.points = Counter()
-    self.messages = dict([(q, []) for q in self.questions])
+
+    self.messages = defaultdict(list)
+
     self.project = projectName
     self.start = time.localtime()[1:6]
-    self.sane = True # Sanity checks
+
     self.currentQuestion = None # Which question we're grading
+
     self.htmlOutput = htmlOutput
     self.log = logOutput
     self.prereqs = defaultdict(set)
@@ -68,6 +71,7 @@ class Grades:
 
     self.exceptionMap=exceptionMap
     completedQuestions = set([])
+
     for q in self.questions:
       self.errorHints[q]={}
       self.printedMessage += '\nQuestion %s\n' % q
@@ -90,11 +94,8 @@ class Grades:
       try:
         util.TimeoutFunction(getattr(gradingModule, q), self.timeout)(self) # Call the question's function
       except Exception, inst:
-        #self.addExceptionMessage(q, inst, traceback)
-        #self.addErrorHints(inst, q[1])
-        print Exception, inst
-      except:
-        self.fail('FAIL: Terminated with a string exception.')
+        self.addExceptionMessage(inst)
+        print Exception, inst  #TODO: handle this better?
 
       if self.points[q] >= self.maxes[q]:
         completedQuestions.add(q)
@@ -127,15 +128,10 @@ class Grades:
         with open(os.path.join('logs', 'log.'+str(ctr)), 'w') as o:
             o.write(self.printedMessage)
 
-  def addExceptionMessage(self, q, inst, traceback):
-    """
-    Method to format the exception message, this is more complicated because
-    we need to cgi.escape the traceback but wrap the exception in a <pre> tag
-    """
-    #self.fail('FAIL: Exception raised: %s' % inst)
-    self.addMessage('')
-    for line in traceback.format_exc().split('\n'):
-        self.addMessage(line)
+  def addExceptionMessage(self, inst):
+      msg = '*** Exception: {0}\n'.format(inst)
+      self.printedMessage += msg
+      self.messages[self.currentQuestion].append(msg)
 
   def addErrorHints(self,errorInstance):
     typeOf = str(type(errorInstance))
@@ -175,36 +171,44 @@ class Grades:
     paramsDict['totalscore'] = sum(self.points.values())
     paramsDict['showGrades'] = self.showGrades
 
-    paramsDict['questions']=[]
+    paramsDict['questions'] = []
 
     for q in self.questions:
+        passedcases = defaultdict(list)
+        failedcases = defaultdict(list)
+        images = defaultdict(list)
+
         num = str(self.questions.index(q)+1)
 
         correctness = util.correctnessColor(self.points[q], self.maxes[q])
 
         score=self.points[q]
         qmax=self.maxes[q]
-        badge = str(score)+"/"+str(qmax)
+        badge = '{0}/{1}'.format(score, qmax)
 
-        passedcases = [util.codeHighlight(message[6:]).replace(r"\n","<br>") for message in self.messages[q] if message.startswith('PASS')]
-        failedcases = [util.codeHighlight(message[6:]).replace(r"\n","<br>") for message in self.messages[q] if message.startswith('FAIL')]
+        for (status, funcname, desc) in self.messages[q]:
+            if status == 'PASS':
+                passedcases[funcname].append(util.codeHighlight(desc).replace(r"\n","<br>"))
+            elif status == 'FAIL':
+                failedcases[funcname].append(util.codeHighlight(desc).replace(r"\n","<br>"))
+            elif status == 'IMAGE':
+                images[funcname].append(desc.replace('\n', '<br>'))
+                badge="Image Test"
 
         undefined = ['<pre>The function '+funcname+' is not defined.</pre>' for funcname in self.funcNotDefined[q]]
+
         syntaxerrors = ['<pre>Error in {0}, line {1}, column {2}:<br>{3}</pre>'.format(error.filename, error.lineno, error.offset,
-                        util.codeHighlight(error.text, error.offset))  
+                        util.codeHighlight(error.text, error.offset))
                         for error in self.moduleErrors[q]]
 
-        images = ['<pre>{0}\nExpected image:\n<img src={1}>\nYour image:\n<img src={2}></pre>'.format(message.split(',')[1],message.split(',')[2],message.split(',')[3]) for message in self.messages[q] if message.startswith('IMAGE')]
-        if len(images)>0:
-            badge="Image Test"
         paramsDict['questions'].append({'num':num,
                                         'correctness':correctness,
                                         'badge':badge,
-                                        'passedcases':passedcases,
-                                        'failedcases':failedcases,
+                                        'passedcases':dict(passedcases),
+                                        'failedcases':dict(failedcases),
                                         'funcNotDefined': undefined,
                                         'moduleErrors': syntaxerrors,
-                                        'images': images,
+                                        'images': dict(images),
                                         'hints': self.errorHints[q],
                                         'url': urlDict[q]})
 
@@ -224,11 +228,6 @@ class Grades:
                     new=0,
                     autoraise=True)
 
-  def fail(self, message, raw=False):
-    "Sets sanity check bit to false and outputs a message"
-    self.sane = False
-    self.addMessage(message, raw)
-
   def assignZeroCredit(self):
     self.points[self.currentQuestion] = 0
 
@@ -238,14 +237,6 @@ class Grades:
   def deductPoints(self, amt):
     self.points[self.currentQuestion] -= amt
 
-  def assignFullCredit(self, message="", raw=False):
-    self.points[self.currentQuestion] = self.maxes[self.currentQuestion]
-    if message != "":
-      self.addMessage(message, raw)
-
-  def addMessage(self, message, raw=False):
-    if not raw:
-        # We assume raw messages, formatted for HTML, are printed separately
-        self.printedMessage += '*** ' + message + '\n'
-        message = cgi.escape(message)
+  def addMessage(self, message):
+    self.printedMessage += '*** {0}\n'.format(' / '.join(message))
     self.messages[self.currentQuestion].append(message)
