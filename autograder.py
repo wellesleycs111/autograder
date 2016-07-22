@@ -114,6 +114,7 @@ import py_compile
 def loadModuleFile(moduleName, filePath):
     try:
         with open(filePath, 'r') as f:
+            random.seed(0)
             return imp.load_module(moduleName, f, "%s.py" % moduleName, (".py", "r", imp.PY_SOURCE))
     except IOError, inst:
         pass # TODO: handle

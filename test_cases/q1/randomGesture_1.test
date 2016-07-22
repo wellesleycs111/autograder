@@ -1,0 +1,9 @@
+class: "EvalTest"
+call: "randomGesture()"
+success: "returns a random gesture"
+failure: "must return a random gesture"
+
+# A python expression to be evaluated.  This expression must return the
+# same result for the student and instructor's code.
+test: "rock_paper_scissors.randomGesture()"
+weight: "1"
