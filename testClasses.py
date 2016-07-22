@@ -245,45 +245,43 @@ class EvalTest(TestCase): # moved from tutorialTestClasses
         else:
             expected_result = str(solutionDict['result'])
 
+        # exception
         if result=='Exception was raised':
+            msg = 'FAIL: {0}\n\t{1}\n\tException raised: {2}\n\tExpected result: {3}'.format(self.path,
+                                                                                             self.failure,
+                                                                                             self.inst,
+                                                                                             expected_result)
             if showGrades:
-                grades.addMessage('FAIL: {0}\n\t{1}\n\tException raised: {2}\n\tExpected result: {3}\n\tscore: {4}'.format(self.path,
-                                                                                                                           self.failure,
-                                                                                                                           self.inst,
-                                                                                                                           expected_result,
-                                                                                                                           '0/'+self.weight))
-            else:
-                grades.addMessage('FAIL: {0}\n\t{1}\n\tException raised: {2}\n\tExpected result: {3}\n'.format(self.path,
-                                                                                                               self.failure,
-                                                                                                               self.inst,
-                                                                                                               expected_result))
+                msg += '\n\tscore: {0}/{1}'.format(0, self.weight)
+
+            grades.addMessage(msg) 
             grades.addErrorHints(self.inst)
             return False
-        elif result == solutionDict['result']:
+
+        # correct
+        if result == solutionDict['result']:
+            msg = 'PASS: {0}\n\t{1}\n'.format(self.path,
+                                              self.success)
             if showGrades:
-                grades.addMessage('PASS: {0}\n\t{1}\n\tscore: {2}'.format(self.path,
-                                                                          self.success,
-                                                                          self.weight+'/'+self.weight))
-            else:
-                grades.addMessage('PASS: {0}\n\t{1}\n'.format(self.path,
-                                                              self.success))
+                msg += '\n\tscore: {0}/{1}'.format(self.weight, self.weight)
+
+            grades.addMessage(msg)
             return True
+
+        # incorrect
+        if isinstance(result, str):
+            student_result = '"{0}"'.format(result)  # otherwise, "" are stripped
         else:
-            if isinstance(result, str):
-                student_result = '"{0}"'.format(result)  # otherwise, "" are stripped
-            else:
-                student_result = str(result)
-            if showGrades:
-                grades.addMessage('FAIL: {0}\n\t{1}\n\tstudent result: {2}\n\tcorrect result: {3}\n\tscore: {4}'.format(self.path,
-                                                                                                                        self.failure,
-                                                                                                                        student_result,
-                                                                                                                        expected_result,
-                                                                                                                        '0/'+self.weight))
-            else:
-                grades.addMessage('FAIL: {0}\n\t{1}\n\tstudent result: {2}\n\tcorrect result: {3}\n'.format(self.path,
-                                                                                                            self.failure,
-                                                                                                            student_result,
-                                                                                                            expected_result))
+            student_result = str(result)
+
+        msg = 'FAIL: {0}\n\t{1}\n\tstudent result: {2}\n\tcorrect result: {3}'.format(self.path,
+                                                                                      self.failure,
+                                                                                      student_result,
+                                                                                      expected_result)
+        if showGrades:
+            msg += '\n\tscore: {0}/{1}'.format(0, self.weight)
+
+        grades.addMessage(msg)
         return False
 
     def writeSolution(self, moduleDict, filePath):
