@@ -53,7 +53,7 @@ test cases.
 {% if q['images'] %}
 <h4 class="alert alert-info">Images</h4>
 {% for funcname in q['images'] %}
-<h5>Function <tt>{{funcname}}</tt></h5>
+<h5><span class="label label-info">{{funcname}}</span></h5>
   {% for message in q['images'][funcname] %}
     {{message}}
   {% endfor %}
@@ -63,7 +63,7 @@ test cases.
 {% if q['passedcases'] %}
 <h4 class="alert alert-success">Passed</h4>
 {% for funcname in q['passedcases'] %}
-<h5>Function <tt>{{funcname}}</tt></h5>
+<h5><span class="label label-success">{{funcname}}</span></h5>
   {% for message in q['passedcases'][funcname] %}
     {{message}}
   {% endfor %}
@@ -73,7 +73,7 @@ test cases.
 {% if q['failedcases'] %}
 <h4 class="alert alert-danger">Failed</h4>
 {% for funcname in q['failedcases'] %}
-<h5>Function <tt>{{funcname}}</tt></h5>
+<h5><span class="label label-danger">{{funcname}}</span></h5>
   {% for message in q['failedcases'][funcname] %}
     {{message}}
   {% endfor %}
