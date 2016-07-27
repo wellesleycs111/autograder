@@ -12,8 +12,6 @@
 
   <div class="container">
   <h1>PS03 Autochecker Results
-    
-    for Sravana Reddy
     </h1>
 </div>
 
@@ -22,11 +20,12 @@
     <span class="label label-success">All correct</span>
     <span class="label label-warning">Partly correct</span>
     <span class="label label-danger">Incorrect</span>
+    <span class="label label-info">Image Test (not graded)</span>
 
         </p>
 
   
-  <h3>Total score: 10/27</h3>
+  <h3>Total score: 13/36</h3>
   
 
 <div class="test">
@@ -42,7 +41,7 @@ test cases.
   <button type="button" class="btn btn-danger" data-toggle="collapse" data-target="#q1">
     <span class="glyphicon glyphicon-menu-down"></span>
     Question 1
-    <span class="badge">0/7</span>
+    <span class="badge">0/9</span>
   </button>
   </div>
   <div class="collapse" id="q1">
@@ -66,8 +65,7 @@ test cases.
 </p>
 
   
-      <pre>Error in rock_paper_scissors.py, line 5, column 61:<br><div class="highlight"><pre>    <span class="k">return</span> <span class="n">gesture</span> <span class="ow">in</span> <span class="p">[</span><span class="s">&#39;rock&#39;</span><span class="p">,</span> <span class="s">&#39;paper&#39;</span><span class="p">,</span> <span class="s">&#39;scissors&#39;</span><span class="p">,</span> <span class="s">&#39;spock&#39;</span><span class="p">]:</span><span class="n"><span class="err"></span>
-<span class="n"></span></span>
+      <pre>Error in rock_paper_scissors.py, line 7, column 61:<br><div class="highlight"><pre><span></span>    <span class="k">return</span> <span class="n">gesture</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;rock&#39;</span><span class="p">,</span> <span class="s1">&#39;paper&#39;</span><span class="p">,</span> <span class="s1">&#39;scissors&#39;</span><span class="p">,</span> <span class="s1">&#39;spock&#39;</span><span class="p">]</span><span class="err">:</span>
 </pre></div>
 </pre>
   
@@ -79,28 +77,143 @@ test cases.
 <br>
 
 <div class="shortform">
-  <button type="button" class="btn btn-success" data-toggle="collapse" data-target="#q2">
+  <button type="button" class="btn btn-warning" data-toggle="collapse" data-target="#q2">
     <span class="glyphicon glyphicon-menu-down"></span>
     Question 2
-    <span class="badge">5/5</span>
+    <span class="badge">4/14</span>
   </button>
   </div>
   <div class="collapse" id="q2">
 <br>
 <p>
-  <a href="http://cs.wellesley.edu/~cs111/spring16/assignments/ps7/ps7.html#task1" target="_blank">Task description <span class="glyphicon glyphicon-share-alt"></span></a>
+  <a href="http://cs.wellesley.edu/~cs111/spring16/assignments/ps4/ps4.html#task2" target="_blank">Task description <span class="glyphicon glyphicon-share-alt"></span></a>
 </p>
 
 
 
 <h4 class="alert alert-success">Passed</h4>
+
+<h5><span class="label label-success">isTopRow</span></h5>
   
-    <div class="highlight"><pre><span class="n">test_cases</span><span class="o">/</span><span class="n">q4</span><span class="o">/</span><span class="n">hourglass_1</span><span class="o">.</span><span class="n">test</span>
-	<span class="n">hourglass</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="s">&#39;*&#39;</span><span class="p">,</span><span class="s">&#39;%&#39;</span><span class="p">)</span> <span class="n">returns</span> <span class="bp">None</span> <span class="ow">and</span> <span class="k">print</span> <span class="n">an</span> <span class="n">hourglass</span>
-	<span class="n">score</span><span class="p">:</span> <span class="mi">5</span><span class="o">/</span><span class="mi">5</span>
+    <div class="highlight"><pre><span></span><span class="n">Test</span> <span class="n">Case</span> <span class="mi">1</span>
+	<span class="n">isTopRow</span><span class="p">(</span><span class="s1">&#39;pretty&#39;</span><span class="p">)</span> <span class="n">returns</span> <span class="bp">True</span> <span class="k">if</span> <span class="n">word</span> <span class="n">uses</span> <span class="n">only</span> <span class="n">letters</span> <span class="n">on</span> <span class="n">the</span> <span class="n">first</span> <span class="n">row</span> <span class="n">of</span> <span class="n">the</span> <span class="n">keyboard</span><span class="p">;</span> <span class="bp">False</span> <span class="n">otherwise</span>
+	<span class="n">score</span><span class="p">:</span> <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>
 </pre></div>
 
   
+    <div class="highlight"><pre><span></span><span class="n">Test</span> <span class="n">Case</span> <span class="mi">2</span>
+	<span class="n">isTopRow</span><span class="p">(</span><span class="s1">&#39;TyPeWrItEr&#39;</span><span class="p">)</span> <span class="n">returns</span> <span class="bp">True</span> <span class="k">if</span> <span class="n">word</span> <span class="n">uses</span> <span class="n">only</span> <span class="n">letters</span> <span class="n">on</span> <span class="n">the</span> <span class="n">first</span> <span class="n">row</span> <span class="n">of</span> <span class="n">the</span> <span class="n">keyboard</span><span class="p">;</span> <span class="bp">False</span> <span class="n">otherwise</span>
+	<span class="n">score</span><span class="p">:</span> <span class="mi">2</span><span class="o">/</span><span class="mi">2</span>
+</pre></div>
+
+  
+    <div class="highlight"><pre><span></span><span class="n">Test</span> <span class="n">Case</span> <span class="mi">3</span>
+	<span class="n">isTopRow</span><span class="p">(</span><span class="s1">&#39;jessica jones&#39;</span><span class="p">)</span> <span class="n">returns</span> <span class="bp">True</span> <span class="k">if</span> <span class="n">word</span> <span class="n">uses</span> <span class="n">only</span> <span class="n">letters</span> <span class="n">on</span> <span class="n">the</span> <span class="n">first</span> <span class="n">row</span> <span class="n">of</span> <span class="n">the</span> <span class="n">keyboard</span><span class="p">;</span> <span class="bp">False</span> <span class="n">otherwise</span>
+	<span class="n">score</span><span class="p">:</span> <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>
+</pre></div>
+
+  
+
+
+
+
+<h4 class="alert alert-danger">Failed</h4>
+
+<h5><span class="label label-danger">scrabbleScore</span></h5>
+  
+    <div class="highlight"><pre><span></span><span class="n">Test</span> <span class="n">Case</span> <span class="mi">1</span>
+	<span class="n">scrabbleScore</span><span class="p">(</span><span class="s1">&#39;juxtapose&#39;</span><span class="p">)</span> <span class="n">must</span> <span class="k">return</span> <span class="n">the</span> <span class="n">scrabble</span> <span class="n">value</span> <span class="p">(</span><span class="nb">int</span><span class="p">)</span> <span class="n">of</span> <span class="n">the</span> <span class="n">word</span>
+	<span class="ne">Exception</span> <span class="n">raised</span><span class="p">:</span> <span class="nb">list</span> <span class="n">index</span> <span class="n">out</span> <span class="n">of</span> <span class="nb">range</span>
+	<span class="n">Expected</span> <span class="n">result</span><span class="p">:</span> <span class="mi">25</span>
+	<span class="n">score</span><span class="p">:</span> <span class="mi">0</span><span class="o">/</span><span class="mi">1</span>
+</pre></div>
+
+  
+    <div class="highlight"><pre><span></span><span class="n">Test</span> <span class="n">Case</span> <span class="mi">2</span>
+	<span class="n">scrabbleScore</span><span class="p">(</span><span class="s1">&#39;quiz&#39;</span><span class="p">)</span> <span class="n">must</span> <span class="k">return</span> <span class="n">the</span> <span class="n">scrabble</span> <span class="n">value</span> <span class="p">(</span><span class="nb">int</span><span class="p">)</span> <span class="n">of</span> <span class="n">the</span> <span class="n">word</span>
+	<span class="ne">Exception</span> <span class="n">raised</span><span class="p">:</span> <span class="nb">list</span> <span class="n">index</span> <span class="n">out</span> <span class="n">of</span> <span class="nb">range</span>
+	<span class="n">Expected</span> <span class="n">result</span><span class="p">:</span> <span class="mi">22</span>
+	<span class="n">score</span><span class="p">:</span> <span class="mi">0</span><span class="o">/</span><span class="mi">1</span>
+</pre></div>
+
+  
+    <div class="highlight"><pre><span></span><span class="n">Test</span> <span class="n">Case</span> <span class="mi">3</span>
+	<span class="n">scrabbleScore</span><span class="p">(</span><span class="s1">&#39;Wellesley&#39;</span><span class="p">)</span> <span class="n">must</span> <span class="k">return</span> <span class="n">the</span> <span class="n">scrabble</span> <span class="n">value</span> <span class="p">(</span><span class="nb">int</span><span class="p">)</span> <span class="n">of</span> <span class="n">the</span> <span class="n">word</span>
+	<span class="ne">Exception</span> <span class="n">raised</span><span class="p">:</span> <span class="nb">list</span> <span class="n">index</span> <span class="n">out</span> <span class="n">of</span> <span class="nb">range</span>
+	<span class="n">Expected</span> <span class="n">result</span><span class="p">:</span> <span class="mi">15</span>
+	<span class="n">score</span><span class="p">:</span> <span class="mi">0</span><span class="o">/</span><span class="mi">1</span>
+</pre></div>
+
+  
+    <div class="highlight"><pre><span></span><span class="n">Test</span> <span class="n">Case</span> <span class="mi">4</span>
+	<span class="n">scrabbleScore</span><span class="p">(</span><span class="s1">&#39;Dyonisus&#39;</span><span class="p">)</span> <span class="n">must</span> <span class="k">return</span> <span class="n">the</span> <span class="n">scrabble</span> <span class="n">value</span> <span class="p">(</span><span class="nb">int</span><span class="p">)</span> <span class="n">of</span> <span class="n">the</span> <span class="n">word</span>
+	<span class="ne">Exception</span> <span class="n">raised</span><span class="p">:</span> <span class="nb">list</span> <span class="n">index</span> <span class="n">out</span> <span class="n">of</span> <span class="nb">range</span>
+	<span class="n">Expected</span> <span class="n">result</span><span class="p">:</span> <span class="mi">12</span>
+	<span class="n">score</span><span class="p">:</span> <span class="mi">0</span><span class="o">/</span><span class="mi">1</span>
+</pre></div>
+
+  
+
+
+
+
+<div class="bs-callout bs-callout-info">
+<h4>Hints</h4>
+
+<ul>
+  
+    <li> We noticed that your program threw an IndexError.
+              While many things may cause this, it may have been from
+              trying to access an index that's larger than the length of
+              the list or string. Remember that indexing starts from 0.
+               </li>
+  
+</ul>
+
+</div>
+
+
+
+<h4 class="alert alert-warning">Not Found</h4>
+  
+    <pre>The function isPalindrome is not defined.</pre>
+  
+
+
+
+
+
+  </div><!--collapse-->
+
+<br>
+
+<div class="shortform">
+  <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#q3">
+    <span class="glyphicon glyphicon-menu-down"></span>
+    Question 3
+    <span class="badge">Image Test</span>
+  </button>
+  </div>
+  <div class="collapse" id="q3">
+<br>
+<p>
+  <a href="http://cs.wellesley.edu/~cs111/spring16/assignments/ps3/ps3.html#task2" target="_blank">Task description <span class="glyphicon glyphicon-share-alt"></span></a>
+</p>
+
+<h4 class="alert alert-info">Images</h4>
+
+<h5><span class="label label-info">redblock</span></h5>
+  
+    <pre>Test Case 1<br>	redblock() must return the red quilt<br>	Exception raised: unbound method __init__() must be called with Rectangle instance as first argument (got Square instance instead)<br>	Expected result: <img src=test_cases\q3\redblock.png></pre>
+  
+
+<h5><span class="label label-info">blueblock</span></h5>
+  
+    <pre>Test Case 1<br>	blueblock() must return the blue quilt<br>	Exception raised: unbound method __init__() must be called with Rectangle instance as first argument (got Square instance instead)<br>	Expected result: <img src=test_cases\q3\blueblock.png></pre>
+  
+
+
+
 
 
 
@@ -117,72 +230,47 @@ test cases.
 <br>
 
 <div class="shortform">
-  <button type="button" class="btn btn-warning" data-toggle="collapse" data-target="#q3">
+  <button type="button" class="btn btn-success" data-toggle="collapse" data-target="#q4">
     <span class="glyphicon glyphicon-menu-down"></span>
-    Question 3
-    <span class="badge">4/10</span>
+    Question 4
+    <span class="badge">8/8</span>
   </button>
   </div>
-  <div class="collapse" id="q3">
+  <div class="collapse" id="q4">
 <br>
 <p>
-  <a href="http://cs111.wellesley.edu/spring16/assignments/ps6/ps6.html#task1" target="_blank">Task description <span class="glyphicon glyphicon-share-alt"></span></a>
+  <a href="http://cs.wellesley.edu/~cs111/spring16/assignments/ps7/ps7.html#task1" target="_blank">Task description <span class="glyphicon glyphicon-share-alt"></span></a>
 </p>
 
 
 
 <h4 class="alert alert-success">Passed</h4>
+
+<h5><span class="label label-success">hourglass</span></h5>
   
-    <div class="highlight"><pre><span class="n">test_cases</span><span class="o">/</span><span class="n">q6</span><span class="o">/</span><span class="n">makeUnjumbleDictionary_1</span><span class="o">.</span><span class="n">test</span>
-	<span class="n">makeUnjumbleDictionary</span><span class="p">(</span><span class="s">&#39;tinyWordList.txt&#39;</span><span class="p">)</span> <span class="n">returns</span> <span class="n">a</span> <span class="n">dictionary</span> <span class="n">where</span> <span class="n">each</span> <span class="n">value</span> <span class="ow">is</span> <span class="n">a</span> <span class="nb">list</span> <span class="n">of</span> <span class="n">anagram</span> <span class="n">word</span> <span class="kn">from</span> <span class="nn">the</span> <span class="nn">file</span> <span class="nn">and</span> <span class="nn">the</span> <span class="nn">key</span> <span class="nn">is</span> <span class="nn">the</span> <span class="nn">unjumble</span> <span class="nn">key</span> <span class="nn">for</span> <span class="nn">all</span> <span class="nn">these</span> <span class="nn">words</span>
-	<span class="n">score</span><span class="p">:</span> <span class="mi">3</span><span class="o">/</span><span class="mi">3</span>
+    <div class="highlight"><pre><span></span><span class="n">Test</span> <span class="n">Case</span> <span class="mi">1</span>
+	<span class="n">hourglass</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="s1">&#39;*&#39;</span><span class="p">,</span><span class="s1">&#39;%&#39;</span><span class="p">)</span> <span class="n">returns</span> <span class="bp">None</span> <span class="ow">and</span> <span class="k">print</span> <span class="n">an</span> <span class="n">hourglass</span>
+	<span class="n">score</span><span class="p">:</span> <span class="mi">2</span><span class="o">/</span><span class="mi">2</span>
 </pre></div>
 
   
-    <div class="highlight"><pre><span class="n">test_cases</span><span class="o">/</span><span class="n">q6</span><span class="o">/</span><span class="n">unjumbleKey_1</span><span class="o">.</span><span class="n">test</span>
-	<span class="n">unjumbleKey</span><span class="p">(</span><span class="s">&#39;argle&#39;</span><span class="p">)</span> <span class="n">returns</span> <span class="n">a</span> <span class="nb">hash</span> <span class="n">key</span> <span class="p">(</span><span class="n">string</span> <span class="k">with</span> <span class="n">the</span> <span class="n">letters</span> <span class="n">of</span> <span class="n">the</span> <span class="n">word</span> <span class="ow">in</span> <span class="nb">sorted</span> <span class="n">order</span><span class="p">)</span> <span class="k">for</span> <span class="n">the</span> <span class="n">given</span> <span class="n">word</span>
-	<span class="n">score</span><span class="p">:</span> <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>
+    <div class="highlight"><pre><span></span><span class="n">Test</span> <span class="n">Case</span> <span class="mi">2</span>
+	<span class="n">hourglass</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="s1">&#39;*&#39;</span><span class="p">,</span><span class="s1">&#39;-&#39;</span><span class="p">)</span> <span class="n">returns</span> <span class="bp">None</span> <span class="ow">and</span> <span class="k">print</span> <span class="n">an</span> <span class="n">hourglass</span>
+	<span class="n">score</span><span class="p">:</span> <span class="mi">4</span><span class="o">/</span><span class="mi">4</span>
 </pre></div>
 
   
-
-
-
-<h4 class="alert alert-danger">Failed</h4>
-  
-    <div class="highlight"><pre><span class="n">test_cases</span><span class="o">/</span><span class="n">q6</span><span class="o">/</span><span class="n">unjumble_1</span><span class="o">.</span><span class="n">test</span>
-	<span class="n">unjumble</span><span class="p">({</span><span class="s">&#39;acerst&#39;</span><span class="p">:[</span><span class="s">&#39;caster&#39;</span><span class="p">,</span><span class="s">&#39;caters&#39;</span><span class="p">,</span><span class="s">&#39;crates&#39;</span><span class="p">,</span><span class="s">&#39;reacts&#39;</span><span class="p">,</span><span class="s">&#39;recast&#39;</span><span class="p">,</span><span class="s">&#39;traces&#39;</span><span class="p">],</span><span class="s">&#39;aegilnrt&#39;</span><span class="p">:[</span><span class="s">&#39;alerting&#39;</span><span class="p">,</span><span class="s">&#39;altering&#39;</span><span class="p">,</span><span class="s">&#39;integral&#39;</span><span class="p">,</span><span class="s">&#39;relating&#39;</span><span class="p">,</span><span class="s">&#39;triangle&#39;</span><span class="p">],</span><span class="s">&#39;aeglr&#39;</span><span class="p">:[</span><span class="s">&#39;glare&#39;</span><span class="p">,</span><span class="s">&#39;lager&#39;</span><span class="p">,</span><span class="s">&#39;large&#39;</span><span class="p">,</span><span class="s">&#39;regal&#39;</span><span class="p">],</span><span class="s">&#39;aeinrrst&#39;</span><span class="p">:[</span><span class="s">&#39;restrain&#39;</span><span class="p">,</span><span class="s">&#39;retains&#39;</span><span class="p">,</span><span class="s">&#39;strainer&#39;</span><span class="p">,</span><span class="s">&#39;terrains&#39;</span><span class="p">,</span><span class="s">&#39;trainers&#39;</span><span class="p">],</span><span class="s">&#39;arst&#39;</span><span class="p">:[</span><span class="s">&#39;arts&#39;</span><span class="p">,</span><span class="s">&#39;rats&#39;</span><span class="p">,</span><span class="s">&#39;star&#39;</span><span class="p">,</span><span class="s">&#39;tars&#39;</span><span class="p">,</span><span class="s">&#39;tsar&#39;</span><span class="p">],</span><span class="s">&#39;chiiinorsst&#39;</span><span class="p">:[</span><span class="s">&#39;histrionics&#39;</span><span class="p">,</span><span class="s">&#39;trichinosis&#39;</span><span class="p">],</span><span class="s">&#39;opst&#39;</span><span class="p">:[</span><span class="s">&#39;opts&#39;</span><span class="p">,</span><span class="s">&#39;post&#39;</span><span class="p">,</span><span class="s">&#39;pots&#39;</span><span class="p">,</span><span class="s">&#39;spot&#39;</span><span class="p">,</span><span class="s">&#39;stop&#39;</span><span class="p">,</span><span class="s">&#39;tops&#39;</span><span class="p">]},</span><span class="s">&#39;esrat&#39;</span><span class="p">)</span> <span class="n">must</span> <span class="k">return</span> <span class="n">a</span> <span class="nb">list</span> <span class="n">of</span> <span class="n">anagrams</span> <span class="k">for</span> <span class="n">a</span> <span class="n">given</span> <span class="n">word</span>
-	<span class="ne">Exception</span> <span class="n">raised</span><span class="p">:</span> <span class="k">global</span> <span class="n">name</span> <span class="s">&#39;varname&#39;</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">defined</span>
-	<span class="n">Expected</span> <span class="n">result</span><span class="p">:</span> <span class="p">[]</span>
-	<span class="n">score</span><span class="p">:</span> <span class="mi">0</span><span class="o">/</span><span class="mi">3</span>
-</pre></div>
-
-  
-    <div class="highlight"><pre><span class="n">test_cases</span><span class="o">/</span><span class="n">q6</span><span class="o">/</span><span class="n">unjumble_2</span><span class="o">.</span><span class="n">test</span>
-	<span class="n">unjumble</span><span class="p">({</span><span class="s">&#39;acerst&#39;</span><span class="p">:[</span><span class="s">&#39;caster&#39;</span><span class="p">,</span><span class="s">&#39;caters&#39;</span><span class="p">,</span><span class="s">&#39;crates&#39;</span><span class="p">,</span><span class="s">&#39;reacts&#39;</span><span class="p">,</span><span class="s">&#39;recast&#39;</span><span class="p">,</span><span class="s">&#39;traces&#39;</span><span class="p">],</span><span class="s">&#39;aegilnrt&#39;</span><span class="p">:[</span><span class="s">&#39;alerting&#39;</span><span class="p">,</span><span class="s">&#39;altering&#39;</span><span class="p">,</span><span class="s">&#39;integral&#39;</span><span class="p">,</span><span class="s">&#39;relating&#39;</span><span class="p">,</span><span class="s">&#39;triangle&#39;</span><span class="p">],</span><span class="s">&#39;aeglr&#39;</span><span class="p">:[</span><span class="s">&#39;glare&#39;</span><span class="p">,</span><span class="s">&#39;lager&#39;</span><span class="p">,</span><span class="s">&#39;large&#39;</span><span class="p">,</span><span class="s">&#39;regal&#39;</span><span class="p">],</span><span class="s">&#39;aeinrrst&#39;</span><span class="p">:[</span><span class="s">&#39;restrain&#39;</span><span class="p">,</span><span class="s">&#39;retains&#39;</span><span class="p">,</span><span class="s">&#39;strainer&#39;</span><span class="p">,</span><span class="s">&#39;terrains&#39;</span><span class="p">,</span><span class="s">&#39;trainers&#39;</span><span class="p">],</span><span class="s">&#39;arst&#39;</span><span class="p">:[</span><span class="s">&#39;arts&#39;</span><span class="p">,</span><span class="s">&#39;rats&#39;</span><span class="p">,</span><span class="s">&#39;star&#39;</span><span class="p">,</span><span class="s">&#39;tars&#39;</span><span class="p">,</span><span class="s">&#39;tsar&#39;</span><span class="p">],</span><span class="s">&#39;chiiinorsst&#39;</span><span class="p">:[</span><span class="s">&#39;histrionics&#39;</span><span class="p">,</span><span class="s">&#39;trichinosis&#39;</span><span class="p">],</span><span class="s">&#39;opst&#39;</span><span class="p">:[</span><span class="s">&#39;opts&#39;</span><span class="p">,</span><span class="s">&#39;post&#39;</span><span class="p">,</span><span class="s">&#39;pots&#39;</span><span class="p">,</span><span class="s">&#39;spot&#39;</span><span class="p">,</span><span class="s">&#39;stop&#39;</span><span class="p">,</span><span class="s">&#39;tops&#39;</span><span class="p">]},</span><span class="s">&#39;post&#39;</span><span class="p">)</span> <span class="n">must</span> <span class="k">return</span> <span class="n">a</span> <span class="nb">list</span> <span class="n">of</span> <span class="n">anagrams</span> <span class="k">for</span> <span class="n">a</span> <span class="n">given</span> <span class="n">word</span>
-	<span class="ne">Exception</span> <span class="n">raised</span><span class="p">:</span> <span class="k">global</span> <span class="n">name</span> <span class="s">&#39;varname&#39;</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">defined</span>
-	<span class="n">Expected</span> <span class="n">result</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;opts&#39;</span><span class="p">,</span> <span class="s">&#39;post&#39;</span><span class="p">,</span> <span class="s">&#39;pots&#39;</span><span class="p">,</span> <span class="s">&#39;spot&#39;</span><span class="p">,</span> <span class="s">&#39;stop&#39;</span><span class="p">,</span> <span class="s">&#39;tops&#39;</span><span class="p">]</span>
-	<span class="n">score</span><span class="p">:</span> <span class="mi">0</span><span class="o">/</span><span class="mi">3</span>
+    <div class="highlight"><pre><span></span><span class="n">Test</span> <span class="n">Case</span> <span class="mi">3</span>
+	<span class="n">hourglass</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="s1">&#39;?&#39;</span><span class="p">,</span><span class="s1">&#39;!&#39;</span><span class="p">)</span> <span class="n">returns</span> <span class="bp">None</span> <span class="ow">and</span> <span class="k">print</span> <span class="n">an</span> <span class="n">hourglass</span>
+	<span class="n">score</span><span class="p">:</span> <span class="mi">2</span><span class="o">/</span><span class="mi">2</span>
 </pre></div>
 
   
 
 
 
-<div class="bs-callout bs-callout-info">
-<h4>Hints</h4>
 
-<ul>
-  
-    <li> We noticed that your program threw a NameError.
-              This is generally caused by trying to do something with a variable
-              that does not exist. While this can have many causes, you may have used
-              a variable before defining it, or you might have defined a variable
-              inside an if-clause or function, then tried to use it outside.
-  
-</ul>
 
-</div>
 
 
 
@@ -220,11 +308,6 @@ test cases.
         </tr>
     
         <tr>
-          <th>YourFullName</th>
-          <td>Sravana Reddy</td>
-        </tr>
-    
-        <tr>
           <th>TimeQ1</th>
           <td>1</td>
         </tr>
@@ -241,6 +324,8 @@ test cases.
 </p>
 <div class="panel panel-default"><div class="panel-body">
 <ul>
+  
+      <li> YourFullName
   
       <li> YourUsername
   
