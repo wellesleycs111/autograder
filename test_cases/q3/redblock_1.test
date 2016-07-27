@@ -1,4 +1,4 @@
-class: "GradedImageTest"
+class: "ImageTest"
 call: "redblock()"
 success: "returns the red quilt"
 failure: "must return the red quilt"

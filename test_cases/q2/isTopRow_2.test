@@ -6,4 +6,4 @@ failure: "must return True if word uses only letters on the first row of the key
 # A python expression to be evaluated.  This expression must return the
 # same result for the student and instructor's code.
 test: "wordprops.isTopRow('TyPeWrItEr')"
-weight: "3"
+weight: "2"

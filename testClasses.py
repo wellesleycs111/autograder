@@ -187,6 +187,15 @@ class ImageTest(EvalTest):
     def execute(self,grades,moduleDict,solutionDict,showGrades):
         result = self.evalCode(moduleDict)
 
+        if result == 'Exception was raised':
+            msg = '<pre>Test Case {0}\n\t{1}\n\tException raised: {2}\n\tExpected result: <img src={3}></pre>'.format(self.casenum,
+                                                                                                 self.failure,
+                                                                                                 self.inst,
+                                                                                                 solutionDict['result'])
+            grades.addMessage(('IMAGE',self.funcname,msg))
+            grades.addErrorHints(self.inst)
+            return False
+
         # result will be a cs1graphics Canvas
         userimage = os.path.splitext(os.path.basename(self.path))[0]+'.png'
         result.saveToFile(userimage)

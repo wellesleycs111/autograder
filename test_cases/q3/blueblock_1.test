@@ -1,4 +1,4 @@
-class: "GradedImageTest"
+class: "ImageTest"
 call: "blueblock()"
 success: "returns the blue quilt"
 failure: "must return the blue quilt"

@@ -1,9 +1,9 @@
 class: "PrintTest"
-call: "hourglass(1,5,'*','%')"
+call: "hourglass(1,5,'?','!')"
 success: "returns None and print an hourglass"
 failure: "must return None and print an hourglass"
 
 # A python expression to be evaluated.  This expression must return the
 # same result for the student and instructor's code.
-test: "hourglass.hourglass(1,5,'*','%')"
+test: "hourglass.hourglass(1,5,'?','!')"
 weight: "2"
