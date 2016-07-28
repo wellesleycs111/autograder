@@ -33,7 +33,7 @@ class ReturnPrint:
     def __ne__(self, other):
         return not self.__eq__(other)
     def __str__(self):
-        return '\nReturned value: '+str(self.returnval)+'\n'+'Printed value:\n'+str(self.printval)
+        return '\nReturned value = '+str(self.returnval)+'\n'+'Printed value =\n'+str(self.printval)
 
 
 def capturePrint(func, arglist):
@@ -172,7 +172,7 @@ class EvalTest(TestCase): # moved from tutorialTestClasses
         else:
             student_result = str(result)
 
-        msg = 'Test Case {0}\n\t{1}\n\tstudent result: {2}\n\tcorrect result: {3}'.format(self.casenum,
+        msg = 'Test Case {0}\n\t{1}\n\n\tstudent result: {2}\n\n\tcorrect result: {3}'.format(self.casenum,
                                                                                           self.failure,
                                                                                           student_result,
                                                                                           expected_result)
