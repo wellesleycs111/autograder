@@ -11,7 +11,7 @@
 <body>
 
   <div class="container">
-  <h1>{{psid}} Autochecker Results
+  <h1>Autochecker Results
     {% if studentinfo is defined and studentinfo['YourFullName'] != '' %}
     for {{ studentinfo['YourFullName'] }}
     {% endif %}</h1>
@@ -22,8 +22,7 @@
     <span class="label label-success">All correct</span>
     <span class="label label-warning">Partly correct</span>
     <span class="label label-danger">Incorrect</span>
-    <span class="label label-info">Image Test (not graded)</span>
-
+    <span class="label label-info">Images (ungraded)</span>
         </p>
 
   {% if showGrades %}

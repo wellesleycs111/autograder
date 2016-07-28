@@ -14,7 +14,7 @@
 STUDENT_CODE_DIR = '../psetsolutions'
 STUDENT_CODE_LIST = 'rock_paper_scissors.py,wordprops.py,hourglass.py,unjumble.py,quilt.py,picture.py,cs1graphics.py,honorcode.py'
 PROJECT_TEST_CLASSES = 'testClasses.py'
-PROJECT_NAME = 'Project 3: Rock Paper Scissors & Word Properties'
+PROJECT_NAME = 'Problem Set 3 (due Oct 01)'
 SHOW_GRADES = True
 TIME_OUT = 60
 COVERSHEET = 5

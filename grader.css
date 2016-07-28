@@ -3,6 +3,10 @@ body {
     background-color: #efefef;
 }
 
+pre {
+    font-size: 1.05em;
+}
+
 /* Side notes for calling out things by matthiasg
 -------------------------------------------------- */
 

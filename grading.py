@@ -43,7 +43,7 @@ class Grades:
     self.points = Counter()
 
     self.messages = defaultdict(list)
-
+    
     self.project = projectName
     self.start = time.localtime()[1:6]
 
@@ -155,8 +155,8 @@ class Grades:
     """Passes dictionary of parameters to fill in the Jinja template,
     writes filled-in HTML and grade to files"""
     paramsDict = {}
-
-    paramsDict['psid'] = open('psid.txt').read().strip().upper()
+    paramsDict['pstitle'] = self.project
+    
     urlDict = dict([line.split() for line in open('urls.txt').readlines()])  # mapping from question numbers to URLs
 
     if self.studentinfo:

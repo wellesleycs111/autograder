@@ -145,7 +145,7 @@ class EvalTest(TestCase): # moved from tutorialTestClasses
 
         # exception
         if result=='Exception was raised':
-            msg = 'Test Case {0}\n\t{1}\n\tException raised: {2}\n\tExpected result: {3}'.format(self.casenum,
+            msg = 'Case {0}.\n\t{1}\n\tException raised: {2}\n\tExpected result: {3}'.format(self.casenum,
                                                                                                  self.failure,
                                                                                                  self.inst,
                                                                                                  expected_result)
@@ -158,7 +158,7 @@ class EvalTest(TestCase): # moved from tutorialTestClasses
 
         # correct
         if result == solutionDict['result']:
-            msg = 'Test Case {0}\n\t{1}'.format(self.casenum,
+            msg = 'Case {0}.\n\t{1}'.format(self.casenum,
                                                 self.success)
             if showGrades:
                 msg += '\n\tscore: {0}/{1}'.format(self.weight, self.weight)
@@ -172,7 +172,7 @@ class EvalTest(TestCase): # moved from tutorialTestClasses
         else:
             student_result = str(result)
 
-        msg = 'Test Case {0}\n\t{1}\n\n\tstudent result: {2}\n\n\tcorrect result: {3}'.format(self.casenum,
+        msg = 'Case {0}.\n\t{1}\n\n\tstudent result: {2}\n\n\tcorrect result: {3}'.format(self.casenum,
                                                                                           self.failure,
                                                                                           student_result,
                                                                                           expected_result)
@@ -188,7 +188,7 @@ class ImageTest(EvalTest):
         result = self.evalCode(moduleDict)
 
         if result == 'Exception was raised':
-            msg = '<pre>Test Case {0}\n\t{1}\n\tException raised: {2}\n\tExpected result: <img src={3}></pre>'.format(self.casenum,
+            msg = '<pre>Case {0}.\n\t{1}\n\tException raised: {2}\n\tExpected result: <img src={3}></pre>'.format(self.casenum,
                                                                                                  self.failure,
                                                                                                  self.inst,
                                                                                                  solutionDict['result'])
@@ -200,7 +200,7 @@ class ImageTest(EvalTest):
         userimage = os.path.splitext(os.path.basename(self.path))[0]+'.png'
         result.saveToFile(userimage)
 
-        msg = '<pre>Test Case {0}\n\tExpected image:\n<img src={1}>\n\tYour image:\n<img src={2}></pre>'.format(self.casenum,
+        msg = '<pre>Case {0}.\n\tExpected image:\n<img src={1}>\n\tYour image:\n<img src={2}></pre>'.format(self.casenum,
                                                                                                                 solutionDict['result'],
                                                                                                                 userimage)
         grades.addMessage(('IMAGE', self.funcname, msg))
@@ -215,7 +215,7 @@ class GradedImageTest(EvalTest):
 
         # exception
         if result == 'Exception was raised':
-            msg = 'Test Case {0}\n\t{1}\n\tException raised: {2}\n\tExpected result: {3}'.format(self.casenum,
+            msg = 'Case {0}.\n\t{1}\n\tException raised: {2}\n\tExpected result: {3}'.format(self.casenum,
                                                                                                  self.failure,
                                                                                                  self.inst,
                                                                                                  solutionDict['result'])
@@ -227,14 +227,14 @@ class GradedImageTest(EvalTest):
 
         # correct
         if result.equals(solutionDict['result']):
-            msg = '\n\t{0}\n\tscore: {2}'.format(self.success)
+            msg = 'Case {0}.\n\t{1}'.format(self.casenum, self.success)
             if showGrades:
                 msg += '\n\tscore: {0}/{1}'.format(self.weight, self.weight)
             grades.addMessage(('PASS', self.funcname, msg))
             return True
 
         # incorrect
-        msg = '{0}\n\tstudent result: {1}\n\tcorrect result: {2}'.format(self.failure,
+        msg = 'Case {0}.\n\tstudent result: {1}\n\tcorrect result: {2}'.format(self.failure,
                                                                          result,
                                                                          solutionDict['result'])
         if showGrades:
