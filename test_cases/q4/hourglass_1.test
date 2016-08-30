@@ -1,6 +1,6 @@
 class: "PrintTest"
 call: "hourglass(1,5,'*','%')"
-success: "returns None and print an hourglass"
+success: "returns None and prints an hourglass"
 failure: "must return None and print an hourglass"
 
 # A python expression to be evaluated.  This expression must return the
