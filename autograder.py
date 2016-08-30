@@ -237,10 +237,7 @@ def checkme(question,filename):
     moduleDict['projectTestClasses'] = loadModuleFile(moduleName, options.testCaseCode)
 
 
-
-
-
-if __name__ == '__main__':
+def main():
     options = readCommand(sys.argv)
     codePaths = options.studentCode.split(',')
 
@@ -253,3 +250,6 @@ if __name__ == '__main__':
 
     evaluate(options.testRoot, moduleDict, htmlOutput=options.htmlOutput,
              logOutput=options.logOutput, questionToGrade=options.gradeQuestion)
+
+if __name__=='__main__':
+    main()
