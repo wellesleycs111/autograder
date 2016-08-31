@@ -23,7 +23,7 @@ from collections import defaultdict, Counter
 import util
 import os
 import webbrowser
-
+import json
 
 class Grades:
   "A data structure for project grades, along with formatting code to display them"
@@ -43,9 +43,8 @@ class Grades:
     self.points = Counter()
 
     self.messages = defaultdict(list)
-    
+
     self.project = projectName
-    self.start = time.localtime()[1:6]
 
     self.currentQuestion = None # Which question we're grading
 
@@ -56,7 +55,8 @@ class Grades:
     self.showGrades = showGrades #toggle to show/not show grades on html output
     self.errorHints = {}
 
-    self.printedMessage = 'Starting on %d-%d at %d:%02d:%02d' % self.start
+    self.loggedMessage = {}
+    self.loggedMessage['start_time'] = time.localtime()[1:6]
 
   def addPrereq(self, question, prereq):
     self.prereqs[question].add(prereq)
@@ -74,21 +74,19 @@ class Grades:
 
     for q in self.questions:
       self.errorHints[q]={}
-      self.printedMessage += '\nQuestion %s\n' % q
-      self.printedMessage += '=' * (9 + len(q))
-      self.printedMessage += '\n'
+
+      self.loggedMessage[q] = {}
+      self.loggedMessage[q]['exceptions'] = []
+      self.loggedMessage[q]['messages'] = []
+
       self.currentQuestion = q
 
       if q in self.funcNotDefined:
-          for func in self.funcNotDefined[q]:
-              self.printedMessage+= '***Function %s() not defined.\n' % func
+          self.loggedMessage[q]['funcNotDefined'] = self.funcNotDefined[q]
 
-      incompleted = self.prereqs[q].difference(completedQuestions)
+      incompleted = self.prereqs[q].difference(completedQuestions) #TODO: make use of this?
       if len(incompleted) > 0:
           prereq = incompleted.pop()
-          self.printedMessage += """*** NOTE: Make sure to complete Question %s before working on Question %s,
-*** because Question %s builds upon your answer for Question %s.
-""" % (prereq, q, q, prereq)
           continue
 
       try:
@@ -96,41 +94,33 @@ class Grades:
       except Exception, inst:
         self.addExceptionMessage(inst)
         print Exception, inst  #TODO: handle this better?
+        self.loggedMessage[q]['exceptions'].append(inst)
 
       if self.points[q] >= self.maxes[q]:
         completedQuestions.add(q)
 
-      self.printedMessage += '\n### Question %s: %d/%d ###\n' % (q, self.points[q], self.maxes[q])
+      self.loggedMessage[q]['max'] = self.maxes[q]
+      self.loggedMessage[q]['points'] = self.points[q]
 
-
-    self.printedMessage += '\nFinished at %d:%02d:%02d' % time.localtime()[3:6]
-    self.printedMessage += "\nProvisional grades\n==================\n"
-
-    for q in self.questions:
-      self.printedMessage += 'Question %s: %d/%d\n' % (q, self.points[q], self.maxes[q])
-    self.printedMessage += '------------------\n'
-    self.printedMessage += 'Total: %d/%d\n' % (sum(self.points.values()), sum(self.maxes.values()))
+    self.loggedMessage['end_time'] = time.localtime()[1:6]
 
     if self.htmlOutput:
         self.produceOutput()
-    else:
-        print self.printedMessage
 
     if self.log:
         # Store results of current run
-        if not os.path.isdir('logs'):
-            os.mkdir('logs')
-        current = [int(filename.split('.')[-1]) for filename in os.listdir('logs') if filename.startswith('log')]
+        if not os.path.isdir('.logs'):
+            os.mkdir('.logs')
+        current = [int(filename.split('.')[-1]) for filename in os.listdir('.logs') if filename.startswith('log')]
         if current:
             ctr = max(current)+1
         else:
             ctr = 0
-        with open(os.path.join('logs', 'log.'+str(ctr)), 'w') as o:
-            o.write(self.printedMessage)
+        with open(os.path.join('.logs', 'log.'+str(ctr)), 'w') as o:
+            json.dump(self.loggedMessage, o)
 
   def addExceptionMessage(self, inst):
-      msg = '*** Exception: {0}\n'.format(inst)
-      self.printedMessage += msg
+      self.loggedMessage[self.currentQuestion]['exceptions'].append(inst)
       self.messages[self.currentQuestion].append(msg)
 
   def addErrorHints(self,errorInstance):
@@ -156,7 +146,7 @@ class Grades:
     writes filled-in HTML and grade to files"""
     paramsDict = {}
     paramsDict['pstitle'] = self.project
-    
+
     urlDict = dict([line.split() for line in open('urls.txt').readlines()])  # mapping from question numbers to URLs
 
     if self.studentinfo:
@@ -238,5 +228,5 @@ class Grades:
     self.points[self.currentQuestion] -= amt
 
   def addMessage(self, message):
-    self.printedMessage += '*** {0}\n'.format(' / '.join(message))
+    self.loggedMessage[self.currentQuestion]['messages'].append(message)
     self.messages[self.currentQuestion].append(message)
