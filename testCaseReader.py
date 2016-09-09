@@ -22,7 +22,7 @@ def generateTestFile(caseDict,filename):
     arguments = caseDict['arguments'] #stores test case arguments as a list
     if arguments.endswith(".pickle'"):
         #load data from pickle file
-        arguments = pickle.load(open(os.path.join('test_cases/',caseDict['directory'],arguments)))
+        arguments = pickle.load(open(os.path.join('pickled', arguments)))
     with open(filename,'w') as f:
         #writes test file with information from the list
         if caseDict['result'].endswith('.png'):
