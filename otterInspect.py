@@ -1,20 +1,8 @@
-# autograder.py
+# otterInspect.py
 # -------------
-# This autograder was developed by Sravana Reddy (sravana.reddy@wellesley.edu)
+# This student-side tool was developed by Sravana Reddy (sravana.reddy@wellesley.edu)
 # and Daniela Kreimerman (dkreimer@wellesley.edu), built upon the framework
-# provided by the Berkeley AI autograding scripts. See below.
-#
-# Licensing Information:  You are free to use or extend these projects for
-# educational purposes provided that (1) you do not distribute or publish
-# solutions, (2) you retain this notice, and (3) you provide clear
-# attribution to UC Berkeley, including a link to http://ai.berkeley.edu.
-#
-# Attribution Information: The Pacman AI projects were developed at UC Berkeley.
-# The core projects and autograders were primarily created by John DeNero
-# (denero@cs.berkeley.edu) and Dan Klein (klein@cs.berkeley.edu).
-# Student side autograding was added by Brad Miller, Nick Hay, and
-# Pieter Abbeel (pabbeel@cs.berkeley.edu).
-
+# provided by the Berkeley AI course evaluation scripts.
 
 # imports from python standard library
 import grading
@@ -23,7 +11,6 @@ import optparse
 import os
 import re
 import sys
-import projectParams
 import random
 import util
 from hintmap import ERROR_HINT_MAP
@@ -31,53 +18,8 @@ import pprint
 
 random.seed(0)
 
-# register arguments and set default values
-def readCommand(argv):
-    parser = optparse.OptionParser(description = 'Run public tests on student code')
-    parser.set_defaults(htmlOutput=True, logOutput=True)
-    parser.add_option('--test-directory',
-                      dest = 'testRoot',
-                      default = 'test_cases',
-                      help = 'Root test directory which contains subdirectories corresponding to each question')
-    parser.add_option('--student-code',
-                      dest = 'studentCode',
-                      default = projectParams.STUDENT_CODE_LIST,
-                      help = 'comma separated list of student code files')
-    parser.add_option('--code-directory',
-                    dest = 'codeRoot',
-                    default = projectParams.STUDENT_CODE_DIR,
-                    help = 'Root directory containing the student code')
-    parser.add_option('--test-case-code',
-                      dest = 'testCaseCode',
-                      default = projectParams.PROJECT_TEST_CLASSES,
-                      help = 'class containing testClass classes for this project')
-    parser.add_option('--no-grades',
-                        dest = 'showGrades',
-                        default = projectParams.SHOW_GRADES,
-                        action = 'store_false',
-                        help = 'Won\'t show grades on html output')
-    parser.add_option('--html',
-                    dest = 'htmlOutput',
-                    action = 'store_true',
-                    help = 'Generate HTML output files')
-    parser.add_option('--log',
-                    dest = 'logOutput',
-                    action = 'store_true',
-                    help = 'Log autograder runs')
-    parser.add_option('--question', '-q',
-                    dest = 'gradeQuestion',
-                    default = None,
-                    help = 'Grade one particular question.')
-    (options, args) = parser.parse_args(argv)
-    return options
-
-
-# TODO: Fix this so that it tracebacks work correctly
-# Looking at source of the traceback module, presuming it works
-# the same as the intepreters, it uses co_filename.  This is,
-# however, a readonly attribute.
 def setModuleName(module, filename):
-    functionType = type(readCommand)  #TODO: hacky
+    functionType = type(readCommand)
     classType = type(optparse.Option)
 
     for i in dir(module):
@@ -91,8 +33,6 @@ def setModuleName(module, filename):
             # TODO: assign member __file__'s?
         #print i, type(o)
 
-
-#from cStringIO import StringIO
 
 def loadModuleString(moduleSource):
     # Below broken, imp doesn't believe its being passed a file:
@@ -226,19 +166,14 @@ def evaluate(testRoot, moduleDict, exceptionMap=ERROR_HINT_MAP, htmlOutput=False
     grades.grade(sys.modules[__name__], syntaxErrors, funcNotDefined, exceptionMap)
     return grades.points
 
-def checkme(question,filename):
-    options = readCommand(sys.argv)
-    codePaths = options.studentCode.split(',')
-
-    moduleDict={}
-    moduleName = re.match('.*?([^/]*)\.py', filename).group(1)
-    moduleDict[moduleName] = loadModuleFile(moduleName, os.path.join(options.codeRoot, filename))
-    moduleName = re.match('.*?([^/]*)\.py', options.testCaseCode).group(1)
-    moduleDict['projectTestClasses'] = loadModuleFile(moduleName, options.testCaseCode)
-
-
 def main():
-    options = readCommand(sys.argv)
+    STUDENT_CODE_DIR = '.'
+    STUDENT_CODE_LIST = 'drawOwls.py'
+    PROJECT_TEST_CLASSES = 'testClasses.py'
+    PROJECT_NAME = 'Lab 2 (Sep 13/14)'
+    TIME_OUT = 60
+    COVERSHEET = 9
+
     codePaths = options.studentCode.split(',')
 
     moduleDict = {}
@@ -248,8 +183,11 @@ def main():
     moduleName = re.match('.*?([^/]*)\.py', options.testCaseCode).group(1)
     moduleDict['projectTestClasses'] = loadModuleFile(moduleName, options.testCaseCode)
 
-    evaluate(options.testRoot, moduleDict, htmlOutput=options.htmlOutput,
-             logOutput=options.logOutput, questionToGrade=options.gradeQuestion)
+    evaluate('test_cases',
+             moduleDict,
+             htmlOutput=True,
+             logOutput=True,
+             None)
 
 if __name__=='__main__':
     main()
