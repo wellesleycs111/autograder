@@ -121,7 +121,7 @@ class Grades:
 
   def addExceptionMessage(self, inst):
       self.loggedMessage[self.currentQuestion]['exceptions'].append(inst)
-      self.messages[self.currentQuestion].append(msg)
+
 
   def addErrorHints(self,errorInstance):
     typeOf = str(type(errorInstance))

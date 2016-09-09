@@ -33,8 +33,10 @@ class ReturnPrint:
     def __ne__(self, other):
         return not self.__eq__(other)
     def __str__(self):
-        return '\nReturned value = '+str(self.returnval)+'\n'+'Printed value =\n'+str(self.printval)
-
+        if self.returnval:
+            return '\nReturned value = '+str(self.returnval)+'\n'+'Printed value =\n'+str(self.printval)
+        else:
+            return '\n'+str(self.printval)
 
 def capturePrint(func, arglist):
     """Redirect print output from func and return it alongwith the actual return value"""
@@ -43,7 +45,7 @@ def capturePrint(func, arglist):
     result = cStringIO.StringIO()
     sys.stdout = result
     returnval = func(*arglist)  # call the function
-    printval = result.getvalue().strip('\n')  # strip newlines from ends
+    printval = '\n'.join([line.rstrip() for line in result.getvalue().splitlines()])  # strip trailing spaces from ends
     sys.stdout = old_stdout
     return ReturnPrint(returnval, printval)
 
@@ -158,8 +160,9 @@ class EvalTest(TestCase): # moved from tutorialTestClasses
 
         # correct
         if result == solutionDict['result']:
-            msg = 'Case {0}.\n\t{1}'.format(self.casenum,
-                                                self.success)
+            msg = 'Case {0}.\n\t{1}\n\n\tYour result: {2}'.format(self.casenum,
+                                                                     self.success,
+                                                                     expected_result)
             if showGrades:
                 msg += '\n\tscore: {0}/{1}'.format(self.weight, self.weight)
 
@@ -172,7 +175,7 @@ class EvalTest(TestCase): # moved from tutorialTestClasses
         else:
             student_result = str(result)
 
-        msg = 'Case {0}.\n\t{1}\n\n\tstudent result: {2}\n\n\tcorrect result: {3}'.format(self.casenum,
+        msg = 'Case {0}.\n\t{1}\n\n\tYour result: {2}\n\n\tExpected result: {3}'.format(self.casenum,
                                                                                           self.failure,
                                                                                           student_result,
                                                                                           expected_result)
