@@ -69,7 +69,13 @@ def main():
 
     caseDictList = dataFromFile(options.casefile)
 
+    if 'test_cases' not in os.listdir('.'):
+        os.mkdir('test_cases')
+
     for caseDict in caseDictList:
+        if caseDict['directory'] not in os.listdir('test_cases'):
+            os.mkdir(caseDict['directory'])
+            
         amountOfSolutionsDict[caseDict['functionname']] = amountOfSolutionsDict.get(caseDict['functionname'],0)+1
         testsPerQDict[caseDict['directory']]=testsPerQDict.get(caseDict['directory'],0)+int(caseDict['weight'])
         testFile=os.path.join('test_cases', caseDict['directory'], caseDict['functionname']+'_'+str(amountOfSolutionsDict[caseDict['functionname']]))
