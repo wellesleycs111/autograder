@@ -32,8 +32,8 @@ def generateTestFile(caseDict,filename):
         else:
             f.write("class: \"EvalTest\"\n")
         f.write("call: \""+caseDict['functionname']+"("+caseDict['arguments']+")\"\n")
-        f.write("success: \"returns "+caseDict['description']+"\"\n")
-        f.write("failure: \"must return "+caseDict['description']+"\"\n")
+        f.write("success: \""+caseDict['description']+"\"\n")
+        f.write("failure: \""+caseDict['description']+"\"\n")
         f.write("\n# A python expression to be evaluated.  This expression must return the\n")
         f.write("# same result for the student and instructor's code.\n")
         f.write("test: \""+caseDict['modulename']+"."+caseDict['functionname']+'('+caseDict['arguments']+')\"\n')
@@ -74,8 +74,8 @@ def main():
 
     for caseDict in caseDictList:
         if caseDict['directory'] not in os.listdir('test_cases'):
-            os.mkdir(caseDict['directory'])
-            
+            os.mkdir(os.path.join('test_cases', caseDict['directory']))
+
         amountOfSolutionsDict[caseDict['functionname']] = amountOfSolutionsDict.get(caseDict['functionname'],0)+1
         testsPerQDict[caseDict['directory']]=testsPerQDict.get(caseDict['directory'],0)+int(caseDict['weight'])
         testFile=os.path.join('test_cases', caseDict['directory'], caseDict['functionname']+'_'+str(amountOfSolutionsDict[caseDict['functionname']]))
