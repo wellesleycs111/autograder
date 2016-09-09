@@ -51,10 +51,10 @@ def readCommand(argv):
                       dest = 'testCaseCode',
                       default = projectParams.PROJECT_TEST_CLASSES,
                       help = 'class containing testClass classes for this project')
-    parser.add_option('--no-grades',
+    parser.add_option('--show-grades',
                         dest = 'showGrades',
                         default = projectParams.SHOW_GRADES,
-                        action = 'store_false',
+                        action = 'store_true',
                         help = 'Won\'t show grades on html output')
     parser.add_option('--html',
                     dest = 'htmlOutput',
@@ -143,7 +143,7 @@ def getTestSubdirs(testParser, testRoot, questionToGrade):
 
 
 # evaluate student code
-def evaluate(testRoot, moduleDict, exceptionMap=ERROR_HINT_MAP, htmlOutput=False, logOutput=False, questionToGrade=None):
+def evaluate(testRoot, moduleDict, exceptionMap=ERROR_HINT_MAP, htmlOutput=False, logOutput=False, showGrades=False, questionToGrade=None, projectName='', timeout=60, coverSheetScore=0):
     #TODO: this is ugly -- fix it
     # imports of testbench code.  note that the testClasses import must follow
     # the import of student code due to dependencies
@@ -198,7 +198,7 @@ def evaluate(testRoot, moduleDict, exceptionMap=ERROR_HINT_MAP, htmlOutput=False
                 # read in solution dictionary and pass as an argument
                 testDict = testParser.TestParser(test_file).parse()
                 solutionDict = testParser.TestParser(solution_file).parse()
-                return lambda grades: testCase.execute(grades, moduleDict, solutionDict, projectParams.SHOW_GRADES)
+                return lambda grades: testCase.execute(grades, moduleDict, solutionDict, showGrades)
             question.addTestCase(testCase, makefun(testCase, solution_file))
 
         # Note extra function is necessary for scoping reasons
@@ -210,13 +210,13 @@ def evaluate(testRoot, moduleDict, exceptionMap=ERROR_HINT_MAP, htmlOutput=False
         questions.append((q, question.getMaxPoints()))
 
     studentinfo = util.parseCoverPy(moduleDict['honorcode'])
-    grades = grading.Grades(projectParams.PROJECT_NAME,
+    grades = grading.Grades(projectName,
                             questions,
                             htmlOutput=htmlOutput,
                             logOutput=logOutput,
-                            timeout=projectParams.TIME_OUT,
-                            showGrades=projectParams.SHOW_GRADES,
-                            coverSheetScore=projectParams.COVERSHEET,
+                            timeout=timeout,
+                            showGrades=showGrades,
+                            coverSheetScore=coverSheetScore,
                             studentinfo=studentinfo)
     if questionToGrade == None:
         for q in questionDicts:
@@ -248,8 +248,15 @@ def main():
     moduleName = re.match('.*?([^/]*)\.py', options.testCaseCode).group(1)
     moduleDict['projectTestClasses'] = loadModuleFile(moduleName, options.testCaseCode)
 
-    evaluate(options.testRoot, moduleDict, htmlOutput=options.htmlOutput,
-             logOutput=options.logOutput, questionToGrade=options.gradeQuestion)
+    evaluate(options.testRoot,
+             moduleDict,
+             htmlOutput=options.htmlOutput,
+             logOutput=options.logOutput,
+             showGrades=options.showGrades,
+             questionToGrade=options.gradeQuestion,
+             projectName=projectParams.PROJECT_NAME,
+             timeout=projectParams.TIME_OUT,
+             coverSheetScore=projectParams.COVERSHEET)
 
 if __name__=='__main__':
     main()

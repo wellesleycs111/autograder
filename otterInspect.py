@@ -1,8 +1,8 @@
 # otterInspect.py
 # -------------
-# This student-side tool was developed by Sravana Reddy (sravana.reddy@wellesley.edu)
+# This tool was developed by Sravana Reddy (sravana.reddy@wellesley.edu)
 # and Daniela Kreimerman (dkreimer@wellesley.edu), built upon the framework
-# provided by the Berkeley AI course evaluation scripts.
+# provided by the Berkeley AI evaluation scripts. See below.
 
 # imports from python standard library
 import grading
@@ -19,7 +19,7 @@ import pprint
 random.seed(0)
 
 def setModuleName(module, filename):
-    functionType = type(readCommand)
+    functionType = type(readCommand)  #TODO: hacky
     classType = type(optparse.Option)
 
     for i in dir(module):
@@ -83,7 +83,7 @@ def getTestSubdirs(testParser, testRoot, questionToGrade):
 
 
 # evaluate student code
-def evaluate(testRoot, moduleDict, exceptionMap=ERROR_HINT_MAP, htmlOutput=False, logOutput=False, questionToGrade=None):
+def evaluate(testRoot, moduleDict, exceptionMap=ERROR_HINT_MAP, htmlOutput=False, logOutput=False, showGrades=False, questionToGrade=None, projectName='', timeout=60, coverSheetScore=0):
     #TODO: this is ugly -- fix it
     # imports of testbench code.  note that the testClasses import must follow
     # the import of student code due to dependencies
@@ -138,7 +138,7 @@ def evaluate(testRoot, moduleDict, exceptionMap=ERROR_HINT_MAP, htmlOutput=False
                 # read in solution dictionary and pass as an argument
                 testDict = testParser.TestParser(test_file).parse()
                 solutionDict = testParser.TestParser(solution_file).parse()
-                return lambda grades: testCase.execute(grades, moduleDict, solutionDict, projectParams.SHOW_GRADES)
+                return lambda grades: testCase.execute(grades, moduleDict, solutionDict, showGrades)
             question.addTestCase(testCase, makefun(testCase, solution_file))
 
         # Note extra function is necessary for scoping reasons
@@ -150,13 +150,13 @@ def evaluate(testRoot, moduleDict, exceptionMap=ERROR_HINT_MAP, htmlOutput=False
         questions.append((q, question.getMaxPoints()))
 
     studentinfo = util.parseCoverPy(moduleDict['honorcode'])
-    grades = grading.Grades(projectParams.PROJECT_NAME,
+    grades = grading.Grades(projectName,
                             questions,
                             htmlOutput=htmlOutput,
                             logOutput=logOutput,
-                            timeout=projectParams.TIME_OUT,
-                            showGrades=projectParams.SHOW_GRADES,
-                            coverSheetScore=projectParams.COVERSHEET,
+                            timeout=timeout,
+                            showGrades=showGrades,
+                            coverSheetScore=coverSheetScore,
                             studentinfo=studentinfo)
     if questionToGrade == None:
         for q in questionDicts:
@@ -166,28 +166,43 @@ def evaluate(testRoot, moduleDict, exceptionMap=ERROR_HINT_MAP, htmlOutput=False
     grades.grade(sys.modules[__name__], syntaxErrors, funcNotDefined, exceptionMap)
     return grades.points
 
+def checkme(question,filename):
+    options = readCommand(sys.argv)
+    codePaths = options.studentCode.split(',')
+
+    moduleDict={}
+    moduleName = re.match('.*?([^/]*)\.py', filename).group(1)
+    moduleDict[moduleName] = loadModuleFile(moduleName, os.path.join(options.codeRoot, filename))
+    moduleName = re.match('.*?([^/]*)\.py', options.testCaseCode).group(1)
+    moduleDict['projectTestClasses'] = loadModuleFile(moduleName, options.testCaseCode)
+
+
 def main():
     STUDENT_CODE_DIR = '.'
-    STUDENT_CODE_LIST = 'drawOwls.py'
+    STUDENT_CODE_LIST = 'drawOwls,honorcode.py'
     PROJECT_TEST_CLASSES = 'testClasses.py'
-    PROJECT_NAME = 'Lab 2 (Sep 13/14)'
+    PROJECT_NAME = 'Lab 02 (Sep 13/14)'
     TIME_OUT = 60
     COVERSHEET = 9
 
-    codePaths = options.studentCode.split(',')
+    codePaths = STUDENT_CODE_LIST.split(',')
 
     moduleDict = {}
     for cp in codePaths:
         moduleName = re.match('.*?([^/]*)\.py', cp).group(1)
-        moduleDict[moduleName] = loadModuleFile(moduleName, os.path.join(options.codeRoot, cp))
-    moduleName = re.match('.*?([^/]*)\.py', options.testCaseCode).group(1)
-    moduleDict['projectTestClasses'] = loadModuleFile(moduleName, options.testCaseCode)
+        moduleDict[moduleName] = loadModuleFile(moduleName, os.path.join(STUDENT_CODE_DIR, cp))
+    moduleName = re.match('.*?([^/]*)\.py', PROJECT_TEST_CLASSES).group(1)
+    moduleDict['projectTestClasses'] = loadModuleFile(moduleName, PROJECT_TEST_CLASSES)
 
     evaluate('test_cases',
              moduleDict,
              htmlOutput=True,
              logOutput=True,
-             None)
+             showGrades=False,
+             questionToGrade=None,
+             projectName=PROJECT_NAME,
+             timeout=TIME_OUT,
+             coverSheetScore=COVERSHEET)
 
 if __name__=='__main__':
     main()
