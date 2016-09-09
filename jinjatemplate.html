@@ -43,7 +43,7 @@ test cases.
   <button type="button" class="btn btn-{{q['correctness']}}" data-toggle="collapse" data-target="#q{{q['num']}}">
     <span class="glyphicon glyphicon-menu-down"></span>
     Question {{q['num']}}
-    {% if showGrades %}<span class="badge">{{q['badge']}}</span>{% endif %}
+    {% if showGrades or q['correctness']=='warning' %}<span class="badge">{{q['badge']}}</span>{% endif %}
   </button>
   </div>
   <div class="collapse" id="q{{q['num']}}">
@@ -121,7 +121,7 @@ test cases.
   <button type="button" class="btn btn-{{coversheet['correctness']}}" data-toggle="collapse" data-target="#coversheet">
     <span class="glyphicon glyphicon-menu-down"></span>
     Honor Code Form
-    {% if showGrades and coversheet['correctness'] != "info"%}
+    {% if showGrades or coversheet['correctness'] == "warning"%}
     <span class="badge">{{coversheet['badge']}}</span>
     {% endif %}
   </button>
