@@ -205,16 +205,16 @@ class Grades:
     paramsDict['coversheet'] = {'correctness': util.correctnessColor(self.points['coversheet'], self.maxes['coversheet']),
                                 'badge': str(self.points['coversheet'])+"/"+str(self.maxes['coversheet'])}
 
-    with open('grader_result.html', 'w') as o:
+    with open('your_result.html', 'w') as o:
           o.write(util.fillHTMLTemplate(open('jinjatemplate.html').read(), paramsDict))
 
     if self.showGrades:
-        with open('grade', 'w') as o:
-            for q in self.points:
-                o.write(q+':'+str(self.points[q])+'\n')
-            o.write('total:'+str(sum(self.points.values()))+'\n')
+        with open('grade.json', 'w') as o:
+            gradeDict = {q: (self.points[q], self.maxes[q]) for q in self.points.keys()}
+            gradeDict['total'] = sum(self.points.values())
+            json.dump(gradeDict, o)
 
-    webbrowser.open(os.path.join('file:' + os.getcwd(), 'grader_result.html'),
+    webbrowser.open(os.path.join('file:' + os.getcwd(), 'your_result.html'),
                     new=0,
                     autoraise=True)
 
