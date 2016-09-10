@@ -166,17 +166,6 @@ def evaluate(testRoot, moduleDict, exceptionMap=ERROR_HINT_MAP, htmlOutput=False
     grades.grade(sys.modules[__name__], syntaxErrors, funcNotDefined, exceptionMap)
     return grades.points
 
-def checkme(question,filename):
-    options = readCommand(sys.argv)
-    codePaths = options.studentCode.split(',')
-
-    moduleDict={}
-    moduleName = re.match('.*?([^/]*)\.py', filename).group(1)
-    moduleDict[moduleName] = loadModuleFile(moduleName, os.path.join(options.codeRoot, filename))
-    moduleName = re.match('.*?([^/]*)\.py', options.testCaseCode).group(1)
-    moduleDict['projectTestClasses'] = loadModuleFile(moduleName, options.testCaseCode)
-
-
 def main():
     STUDENT_CODE_DIR = '.'
     STUDENT_CODE_LIST = 'drawOwls,honorcode.py'
