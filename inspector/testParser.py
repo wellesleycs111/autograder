@@ -21,6 +21,8 @@ import sys
 import os
 import pickle
 
+inspectorModDir = os.path.dirname(os.path.realpath(__file__))
+
 class TestParser(object):
 
     def __init__(self, path):
@@ -81,7 +83,7 @@ class TestParser(object):
         if 'result' in test:
             if test['result'].endswith('.pickle'):
                 # load the data from this file
-                test['result'] = pickle.load(open(os.path.join('pickled', test['result'])))
+                test['result'] = pickle.load(open(os.path.join(inspectorModDir, 'pickled', test['result'])))
             elif test['result'].endswith('.png'):
                 test['result'] = os.path.join(os.path.dirname(self.path), test['result'])  # add directory path to image location
             else:

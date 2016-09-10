@@ -1,5 +1,3 @@
-# autograder.py
-# -------------
 # This tool was developed by Sravana Reddy (sravana.reddy@wellesley.edu)
 # and Daniela Kreimerman (dkreimer@wellesley.edu), built upon the framework
 # provided by the Berkeley AI evaluation scripts. See below.
@@ -17,17 +15,21 @@
 
 
 # imports from python standard library
-import grading
 import imp
 import optparse
 import os
 import re
 import sys
-import projectParams
-import random
-import util
-from hintmap import ERROR_HINT_MAP
 import pprint
+import random
+
+# module imports
+import inspector.projectParams as projectParams
+import inspector.util as util
+import inspector.grading as grading
+from inspector.hintmap import ERROR_HINT_MAP
+
+inspectorModDir = os.path.dirname(os.path.realpath(__file__))
 
 random.seed(0)
 
@@ -37,7 +39,7 @@ def readCommand(argv):
     parser.set_defaults(htmlOutput=True, logOutput=True)
     parser.add_option('--test-directory',
                       dest = 'testRoot',
-                      default = 'test_cases',
+                      default = 'inspector/test_cases',
                       help = 'Root test directory which contains subdirectories corresponding to each question')
     parser.add_option('--student-code',
                       dest = 'studentCode',
@@ -121,7 +123,7 @@ def loadModuleFile(moduleName, filePath):
 # returns all the tests you need to run in order to run question
 def getDepends(testParser, testRoot, question):
     allDeps = [question]
-    questionDict = testParser.TestParser(os.path.join(testRoot, question, 'CONFIG')).parse()
+    questionDict = testParser.TestParser(os.path.join(inspectorModDir, testRoot, question, 'CONFIG')).parse()
     if 'depends' in questionDict:
         depends = questionDict['depends'].split()
         for d in depends:
@@ -131,7 +133,7 @@ def getDepends(testParser, testRoot, question):
 
 # get list of questions to grade
 def getTestSubdirs(testParser, testRoot, questionToGrade):
-    problemDict = testParser.TestParser(os.path.join(testRoot, 'CONFIG')).parse()
+    problemDict = testParser.TestParser(os.path.join(inspectorModDir, testRoot, 'CONFIG')).parse()
     if questionToGrade != None:
         questions = getDepends(testParser, testRoot, questionToGrade)
         if len(questions) > 1:
@@ -139,7 +141,7 @@ def getTestSubdirs(testParser, testRoot, questionToGrade):
         return questions
     if 'order' in problemDict:
         return problemDict['order'].split()
-    return sorted(os.listdir(testRoot))
+    return sorted(os.listdir(os.path.join(inspectorModDir, testRoot)))
 
 
 # evaluate student code
@@ -147,7 +149,7 @@ def evaluate(testRoot, moduleDict, exceptionMap=ERROR_HINT_MAP, htmlOutput=False
     #TODO: this is ugly -- fix it
     # imports of testbench code.  note that the testClasses import must follow
     # the import of student code due to dependencies
-    import testParser
+    import inspector.testParser as testParser
     import testClasses
     for module in moduleDict:
         setattr(sys.modules[__name__], module, moduleDict[module])
@@ -161,7 +163,7 @@ def evaluate(testRoot, moduleDict, exceptionMap=ERROR_HINT_MAP, htmlOutput=False
         funcNotDefined[q]=[]
         syntaxErrors[q] = set()
 
-        subdir_path = os.path.join(testRoot, q)
+        subdir_path = os.path.join(inspectorModDir, testRoot, q)
         if not os.path.isdir(subdir_path) or q[0] == '.':
             continue
 

@@ -5,16 +5,20 @@
 # provided by the Berkeley AI evaluation scripts. See below.
 
 # imports from python standard library
-import grading
 import imp
 import optparse
 import os
 import re
 import sys
-import random
-import util
-from hintmap import ERROR_HINT_MAP
 import pprint
+import random
+
+# module imports
+import inspector.util as util
+import inspector.grading as grading
+from inspector.hintmap import ERROR_HINT_MAP
+
+inspectorModDir = os.path.dirname(os.path.realpath(__file__))
 
 random.seed(0)
 
@@ -87,7 +91,7 @@ def evaluate(testRoot, moduleDict, exceptionMap=ERROR_HINT_MAP, htmlOutput=False
     #TODO: this is ugly -- fix it
     # imports of testbench code.  note that the testClasses import must follow
     # the import of student code due to dependencies
-    import testParser
+    import inspector.testParser as testParser
     import testClasses
     for module in moduleDict:
         setattr(sys.modules[__name__], module, moduleDict[module])
@@ -167,8 +171,8 @@ def evaluate(testRoot, moduleDict, exceptionMap=ERROR_HINT_MAP, htmlOutput=False
     return grades.points
 
 def main():
-    STUDENT_CODE_DIR = '.'
-    STUDENT_CODE_LIST = 'drawOwls,honorcode.py'
+    STUDENT_CODE_DIR = '../psetsolutions/'
+    STUDENT_CODE_LIST = 'rock_paper_scissors.py,wordprops.py,hourglass.py,unjumble.py,honorcode.py'
     PROJECT_TEST_CLASSES = 'testClasses.py'
     PROJECT_NAME = 'Lab 02 (Sep 13/14)'
     TIME_OUT = 60
@@ -183,7 +187,7 @@ def main():
     moduleName = re.match('.*?([^/]*)\.py', PROJECT_TEST_CLASSES).group(1)
     moduleDict['projectTestClasses'] = loadModuleFile(moduleName, PROJECT_TEST_CLASSES)
 
-    evaluate('test_cases',
+    evaluate('inspector/test_cases',
              moduleDict,
              htmlOutput=True,
              logOutput=True,

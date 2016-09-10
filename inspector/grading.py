@@ -12,18 +12,18 @@
 # Pieter Abbeel (pabbeel@cs.berkeley.edu).
 
 
-"Common code for autograders"
-
 import cgi
 import time
 import sys
 import traceback
 import pdb
 from collections import defaultdict, Counter
-import util
+import inspector.util as util
 import os
 import webbrowser
 import json
+
+inspectorModDir = os.path.dirname(os.path.realpath(__file__))
 
 class Grades:
   "A data structure for project grades, along with formatting code to display them"
@@ -147,7 +147,8 @@ class Grades:
     paramsDict = {}
     paramsDict['pstitle'] = self.project
 
-    urlDict = dict([line.split() for line in open('urls.txt').readlines()])  # mapping from question numbers to URLs
+    urlDict = dict([line.split() for line in open(os.path.join(inspectorModDir,
+                                                               'urls.txt')).readlines()])  # mapping from question numbers to URLs
 
     if self.studentinfo:
         paramsDict['studentinfo'] = self.studentinfo
@@ -206,7 +207,8 @@ class Grades:
                                 'badge': str(self.points['coversheet'])+"/"+str(self.maxes['coversheet'])}
 
     with open('your_result.html', 'w') as o:
-          o.write(util.fillHTMLTemplate(open('jinjatemplate.html').read(), paramsDict))
+          o.write(util.fillHTMLTemplate(open(os.path.join(inspectorModDir,
+                                                          'jinjatemplate.html')).read(), paramsDict))
 
     if self.showGrades:
         with open('grade.json', 'w') as o:
