@@ -13,7 +13,7 @@
 
 STUDENT_CODE_DIR = '../psetsolutions'
 STUDENT_CODE_LIST = 'rock_paper_scissors.py,wordprops.py,hourglass.py,unjumble.py,honorcode.py'
-PROJECT_TEST_CLASSES = 'testClasses.py'
+PROJECT_TEST_CLASSES = 'inspector/testClasses.py'
 PROJECT_NAME = 'Problem Set 3 (due Oct 01)'
 SHOW_GRADES = True
 TIME_OUT = 60

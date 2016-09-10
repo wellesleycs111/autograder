@@ -173,7 +173,7 @@ def evaluate(testRoot, moduleDict, exceptionMap=ERROR_HINT_MAP, htmlOutput=False
 def main():
     STUDENT_CODE_DIR = '../psetsolutions/'
     STUDENT_CODE_LIST = 'rock_paper_scissors.py,wordprops.py,hourglass.py,unjumble.py,honorcode.py'
-    PROJECT_TEST_CLASSES = 'testClasses.py'
+    PROJECT_TEST_CLASSES = 'inspector/testClasses.py'
     PROJECT_NAME = 'Lab 02 (Sep 13/14)'
     TIME_OUT = 60
     COVERSHEET = 9
