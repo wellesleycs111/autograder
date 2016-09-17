@@ -20,7 +20,6 @@ import optparse
 import os
 import re
 import sys
-import pprint
 import random
 
 # module imports
@@ -92,22 +91,6 @@ def setModuleName(module, filename):
             setattr(o, '__file__', filename)
             # TODO: assign member __file__'s?
         #print i, type(o)
-
-
-#from cStringIO import StringIO
-
-def loadModuleString(moduleSource):
-    # Below broken, imp doesn't believe its being passed a file:
-    #    ValueError: load_module arg#2 should be a file or None
-    #
-    #f = StringIO(moduleCodeDict[k])
-    #tmp = imp.load_module(k, f, k, (".py", "r", imp.PY_SOURCE))
-    tmp = imp.new_module(k)
-    exec moduleCodeDict[k] in tmp.__dict__
-    setModuleName(tmp, k)
-    return tmp
-
-import py_compile
 
 def loadModuleFile(moduleName, filePath):
     try:
@@ -227,17 +210,6 @@ def evaluate(testRoot, moduleDict, exceptionMap=ERROR_HINT_MAP, htmlOutput=False
 
     grades.grade(sys.modules[__name__], syntaxErrors, funcNotDefined, exceptionMap)
     return grades.points
-
-def checkme(question,filename):
-    options = readCommand(sys.argv)
-    codePaths = options.studentCode.split(',')
-
-    moduleDict={}
-    moduleName = re.match('.*?([^/]*)\.py', filename).group(1)
-    moduleDict[moduleName] = loadModuleFile(moduleName, os.path.join(options.codeRoot, filename))
-    moduleName = re.match('.*?([^/]*)\.py', options.testCaseCode).group(1)
-    moduleDict['projectTestClasses'] = loadModuleFile(moduleName, options.testCaseCode)
-
 
 def main():
     options = readCommand(sys.argv)

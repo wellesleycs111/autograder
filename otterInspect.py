@@ -10,7 +10,6 @@ import optparse
 import os
 import re
 import sys
-import pprint
 import random
 
 # module imports
@@ -36,20 +35,6 @@ def setModuleName(module, filename):
             setattr(o, '__file__', filename)
             # TODO: assign member __file__'s?
         #print i, type(o)
-
-
-def loadModuleString(moduleSource):
-    # Below broken, imp doesn't believe its being passed a file:
-    #    ValueError: load_module arg#2 should be a file or None
-    #
-    #f = StringIO(moduleCodeDict[k])
-    #tmp = imp.load_module(k, f, k, (".py", "r", imp.PY_SOURCE))
-    tmp = imp.new_module(k)
-    exec moduleCodeDict[k] in tmp.__dict__
-    setModuleName(tmp, k)
-    return tmp
-
-import py_compile
 
 def loadModuleFile(moduleName, filePath):
     try:

@@ -50,7 +50,7 @@ def generateSolutionFile(caseDict,filename):
 
 def generateCONFIGFile(directory,numPoints):
     '''Creates a CONFIG file for each folder to indicate number of points'''
-    filename = os.path.join('test_cases',directory,'CONFIG')
+    filename = os.path.join('inspector','test_cases',directory,'CONFIG')
     with open(filename,'w')as f:
         f.write("max_points: \""+str(numPoints)+"\"\n")
         f.write("class: \"WeightedCasesQuestion\"\n")
@@ -69,21 +69,27 @@ def main():
 
     caseDictList = dataFromFile(options.casefile)
 
-    if 'test_cases' not in os.listdir('.'):
-        os.mkdir('test_cases')
+    if 'test_cases' not in os.listdir('inspector'):
+        os.mkdir('inspector/test_cases')
 
     for caseDict in caseDictList:
-        if caseDict['directory'] not in os.listdir('test_cases'):
-            os.mkdir(os.path.join('test_cases', caseDict['directory']))
+        if caseDict['directory'] not in os.listdir('inspector/test_cases'):
+            os.mkdir(os.path.join('inspector/test_cases', caseDict['directory']))
 
         amountOfSolutionsDict[caseDict['functionname']] = amountOfSolutionsDict.get(caseDict['functionname'],0)+1
         testsPerQDict[caseDict['directory']]=testsPerQDict.get(caseDict['directory'],0)+int(caseDict['weight'])
-        testFile=os.path.join('test_cases', caseDict['directory'], caseDict['functionname']+'_'+str(amountOfSolutionsDict[caseDict['functionname']]))
+        testFile=os.path.join('inspector', 'test_cases', caseDict['directory'], caseDict['functionname']+'_'+str(amountOfSolutionsDict[caseDict['functionname']]))
         generateTestFile(caseDict,testFile+".test")
         generateSolutionFile(caseDict,testFile+".solution")
 
     for question in testsPerQDict:
         generateCONFIGFile(question, testsPerQDict[question])
+
+    with open(os.path.join('inspector', 'test_cases', 'CONFIG'), 'w') as o:
+        o.write('order: "')
+        for q in sorted(testsPerQDict.keys()):
+            o.write(q+' ')
+        o.write('"\n')
 
 if __name__=='__main__':
     main()
