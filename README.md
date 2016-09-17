@@ -34,6 +34,7 @@ $ rm -r inspector/test_cases/* inspector/picked/*
 
 1. Edit `casefile_creator.txt` with your desired test cases, descriptions, and grade weights.
 For complex arguments or results, create a pickle file with a `.pickle` extension, drop it in the `pickled/` directory, and put the filename in `casefile_creator.txt`.
+If you pickle arguments, the *entire* argument list should be pickled as a tuple.
 
     - Note that for functions with **print** side-effects, you must create an object of type `ReturnPrint` (defined in `inspector/testClasses.py`), pickle it, and set the "print" column in `casefile_creator.txt` to True.
 
