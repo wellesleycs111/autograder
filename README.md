@@ -48,6 +48,8 @@ If you pickle arguments, the *entire* argument list should be pickled as a tuple
 
 1. Now delete `testCaseReader.py` and `casefile_creator.txt` since the students don't need these.
 
+1. Edit `inspector/urls.txt` where each line has a task id (like "task1") and the URL to the problem set description of the task.
+
 1. Place the solution files for the problem set, the empty `honorcode.py` file, and all supporting files in your `/path/to/ps0x` directory. Test that running
 
     ```python otterInspect.py```
