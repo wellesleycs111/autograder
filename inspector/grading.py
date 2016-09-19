@@ -181,9 +181,9 @@ class Grades:
 
         for (status, funcname, msg) in self.messages[q]:
             if status == 'PASS':
-                passedcases[funcname].append(msg.highlight().replace(r"\n","<br>"))
+                passedcases[funcname].append(msg.nohighlight().replace(r"\n","<br>"))
             elif status == 'FAIL':
-                failedcases[funcname].append(msg.highlight().replace(r"\n","<br>"))
+                failedcases[funcname].append(msg.nohighlight().replace(r"\n","<br>"))
             elif status == 'IMAGE':
                 images[funcname].append(desc.replace('\n', '<br>'))
                 badge="Image Test"

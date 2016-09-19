@@ -126,13 +126,21 @@ class Message:
         self.grade = grade
     def highlight(self):
         m = '<pre>Case {0}.\n\t{1}{2}'.format(self.casenum,
-                                                         self.description,
-                                                         util.codeHighlight(str(self.error)+'\nExpected result: '+self.expected))
+                                              self.description,
+                                              util.codeHighlight(str(self.error)+'\nExpected result: '+self.expected))
         if self.grade:
             m + '\n\tscore: {0}/{1}'.format(self.grade[0], self.grade[1])
         m += '</pre>'
         return m
-
+    def nohighlight(self):
+        m = '<pre>Case {0}.\n\t{1}{2}'.format(self.casenum,
+                                              self.description,
+                                              '<pre>{0}</pre>'.format(str(self.error)+'\nExpected result: '+self.expected))
+        if self.grade:
+            m + '\n\tscore: {0}/{1}'.format(self.grade[0], self.grade[1])
+        m += '</pre>'
+        return m
+        
     def __str__(self):
         m = 'Case {0}.\n\t{1}\n\t{2}\n\t{3}'.format(self.casenum,
                                                     self.description,

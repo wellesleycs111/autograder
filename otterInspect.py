@@ -2,7 +2,7 @@
 # -------------
 # This tool was developed by Sravana Reddy (sravana.reddy@wellesley.edu)
 # and Daniela Kreimerman (dkreimer@wellesley.edu), built upon the framework
-# provided by the Berkeley AI evaluation scripts. See below.
+# provided by the Berkeley AI evaluation scripts.
 
 # imports from python standard library
 import imp
@@ -103,7 +103,7 @@ def evaluate(testRoot, moduleDict, exceptionMap=ERROR_HINT_MAP, htmlOutput=False
         # load test cases into question
         tests = filter(lambda t: re.match('[^#~.].*\.test\Z', t), os.listdir(subdir_path))
         tests = map(lambda t: re.match('(.*)\.test\Z', t).group(1), tests)
-        for t in sorted(tests):
+        for t in sorted(tests, key=lambda x:int(x.split('_')[-1])):
             test_file = os.path.join(subdir_path, '%s.test' % t)
             solution_file = os.path.join(subdir_path, '%s.solution' % t)
             test_out_file = os.path.join(subdir_path, '%s.test_output' % t)
