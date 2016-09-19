@@ -1,5 +1,7 @@
-# grading.py
-# ----------
+# This tool was developed by Sravana Reddy (sravana.reddy@wellesley.edu)
+# and Daniela Kreimerman (dkreimer@wellesley.edu), built upon the framework
+# provided by the Berkeley AI evaluation scripts. See below.
+#
 # Licensing Information:  You are free to use or extend these projects for
 # educational purposes provided that (1) you do not distribute or publish
 # solutions, (2) you retain this notice, and (3) you provide clear
@@ -94,7 +96,7 @@ class Grades:
       except Exception, inst:
         self.addExceptionMessage(inst)
         print Exception, inst  #TODO: handle this better?
-        self.loggedMessage[q]['exceptions'].append(inst)
+        self.loggedMessage[q]['exceptions'].append(str(inst))
 
       if self.points[q] >= self.maxes[q]:
         completedQuestions.add(q)
@@ -120,7 +122,7 @@ class Grades:
             json.dump(self.loggedMessage, o)
 
   def addExceptionMessage(self, inst):
-      self.loggedMessage[self.currentQuestion]['exceptions'].append(inst)
+      self.loggedMessage[self.currentQuestion]['exceptions'].append(str(inst))
 
 
   def addErrorHints(self,errorInstance):
@@ -177,11 +179,11 @@ class Grades:
         qmax=self.maxes[q]
         badge = '{0}/{1}'.format(score, qmax)
 
-        for (status, funcname, desc) in self.messages[q]:
+        for (status, funcname, msg) in self.messages[q]:
             if status == 'PASS':
-                passedcases[funcname].append(util.codeHighlight(desc).replace(r"\n","<br>"))
+                passedcases[funcname].append(msg.highlight().replace(r"\n","<br>"))
             elif status == 'FAIL':
-                failedcases[funcname].append(util.codeHighlight(desc).replace(r"\n","<br>"))
+                failedcases[funcname].append(msg.highlight().replace(r"\n","<br>"))
             elif status == 'IMAGE':
                 images[funcname].append(desc.replace('\n', '<br>'))
                 badge="Image Test"
@@ -230,5 +232,5 @@ class Grades:
     self.points[self.currentQuestion] -= amt
 
   def addMessage(self, message):
-    self.loggedMessage[self.currentQuestion]['messages'].append(message)
+    self.loggedMessage[self.currentQuestion]['messages'].append((message[0], message[1], message[2].jsonify()))
     self.messages[self.currentQuestion].append(message)

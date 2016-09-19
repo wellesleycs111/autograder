@@ -17,8 +17,9 @@ import inspect
 import re
 import sys
 import os
-
 import cStringIO
+
+import inspector.util as util
 
 class ReturnPrint:
     """Datatype returned by a function that also prints"""
@@ -113,8 +114,42 @@ class TestCase(object):
         self.raiseNotDefined()
         return True
 
-    def addMessage(self, message):
+    def addMessage(self, message):  #TODO: remove. is this ever used?
         self.messages.extend(message.split('\n'))
+
+class Message:
+    def __init__(self, casenum, description, error, expected, grade=None):
+        self.casenum = casenum
+        self.description = description
+        self.error = error
+        self.expected = expected
+        self.grade = grade
+    def highlight(self):
+        m = '<pre>Case {0}.\n\t{1}{2}'.format(self.casenum,
+                                                         self.description,
+                                                         util.codeHighlight(str(self.error)+'\nExpected result: '+self.expected))
+        if self.grade:
+            m + '\n\tscore: {0}/{1}'.format(self.grade[0], self.grade[1])
+        m += '</pre>'
+        return m
+
+    def __str__(self):
+        m = 'Case {0}.\n\t{1}\n\t{2}\n\t{3}'.format(self.casenum,
+                                                    self.description,
+                                                    str(self.error),
+                                                    'Expected result: '+self.expected)
+        if self.grade:
+            m + '\n\tscore: {0}/{1}'.format(self.grade[0], self.grade[1])
+        return m
+
+    def __repr__(self):
+        return self.__str__()
+
+    def jsonify(self):
+        return {'case': self.casenum,
+             'student': str(self.error),
+             'expected': self.expected,
+             'score': self.grade}
 
 class EvalTest(TestCase): # moved from tutorialTestClasses
 
@@ -147,12 +182,17 @@ class EvalTest(TestCase): # moved from tutorialTestClasses
 
         # exception
         if result=='Exception was raised':
-            msg = 'Case {0}.\n\t{1}\n\tException raised: {2}\n\tExpected result: {3}'.format(self.casenum,
-                                                                                                 self.failure,
-                                                                                                 self.inst,
-                                                                                                 expected_result)
             if showGrades:
-                msg += '\n\tscore: {0}/{1}'.format(0, self.weight)
+                msg = Message(self.casenum,
+                            self.failure,
+                            'Exception raised: '+str(self.inst),
+                            expected_result,
+                            (0, self.weight))
+            else:
+                msg = Message(self.casenum,
+                            self.failure,
+                            'Exception raised: '+str(self.inst),
+                            expected_result)
 
             grades.addMessage(('FAIL', self.funcname, msg))
             grades.addErrorHints(self.inst)
@@ -160,11 +200,17 @@ class EvalTest(TestCase): # moved from tutorialTestClasses
 
         # correct
         if result == solutionDict['result']:
-            msg = 'Case {0}.\n\t{1}\n\n\tYour result: {2}'.format(self.casenum,
-                                                                     self.success,
-                                                                     expected_result)
             if showGrades:
-                msg += '\n\tscore: {0}/{1}'.format(self.weight, self.weight)
+                msg = Message(self.casenum,
+                            self.success,
+                            'Your result: '+expected_result,
+                            expected_result,
+                            (self.weight, self.weight))
+            else:
+                msg = Message(self.casenum,
+                            self.success,
+                            'Your result: '+expected_result,
+                            expected_result)
 
             grades.addMessage(('PASS', self.funcname, msg))
             return True
@@ -175,12 +221,17 @@ class EvalTest(TestCase): # moved from tutorialTestClasses
         else:
             student_result = str(result)
 
-        msg = 'Case {0}.\n\t{1}\n\n\tYour result: {2}\n\n\tExpected result: {3}'.format(self.casenum,
-                                                                                          self.failure,
-                                                                                          student_result,
-                                                                                          expected_result)
         if showGrades:
-            msg += '\n\tscore: {0}/{1}'.format(0, self.weight)
+            msg = Message(self.casenum,
+                        self.failure,
+                        'Your result: '+student_result,
+                        expected_result,
+                        (0, self.weight))
+        else:
+            msg = Message(self.casenum,
+                        self.success,
+                        'Your result: '+student_result,
+                        expected_result)
 
         grades.addMessage(('FAIL', self.funcname, msg))
         return False
@@ -189,7 +240,7 @@ class ImageTest(EvalTest):
 
     def execute(self,grades,moduleDict,solutionDict,showGrades):
         result = self.evalCode(moduleDict)
-
+        #TODO: modify into new message class
         if result == 'Exception was raised':
             msg = '<pre>Case {0}.\n\t{1}\n\tException raised: {2}\n\tExpected result: <img src={3}></pre>'.format(self.casenum,
                                                                                                  self.failure,
