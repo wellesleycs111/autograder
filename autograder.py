@@ -35,7 +35,7 @@ random.seed(0)
 # register arguments and set default values
 def readCommand(argv):
     parser = optparse.OptionParser(description = 'Run public tests on student code')
-    parser.set_defaults(htmlOutput=True, logOutput=True)
+    parser.set_defaults(htmlOutput=False, logOutput=False)
     parser.add_option('--test-directory',
                       dest = 'testRoot',
                       default = 'inspector/test_cases',
@@ -69,6 +69,15 @@ def readCommand(argv):
                     dest = 'gradeQuestion',
                     default = None,
                     help = 'Grade one particular question.')
+    parser.add_option('--output-dir',
+                    dest = 'outputDir',
+                    default = '.',
+                    help = 'Directory to place outputs')
+    parser.add_option('--coversheet',
+                    dest = 'coverSheetScore',
+                    default = 0,
+                    type=int,
+                    help = 'Number of points for cover sheet/honor code')
     (options, args) = parser.parse_args(argv)
     return options
 
@@ -128,7 +137,7 @@ def getTestSubdirs(testParser, testRoot, questionToGrade):
 
 
 # evaluate student code
-def evaluate(testRoot, moduleDict, exceptionMap=ERROR_HINT_MAP, htmlOutput=False, logOutput=False, showGrades=False, questionToGrade=None, projectName='', timeout=60, coverSheetScore=0):
+def evaluate(testRoot, moduleDict, exceptionMap=ERROR_HINT_MAP, htmlOutput=False, logOutput=False, showGrades=False, questionToGrade=None, projectName='', timeout=60, coverSheetScore=0, outputDir='.'):
     #TODO: this is ugly -- fix it
     # imports of testbench code.  note that the testClasses import must follow
     # the import of student code due to dependencies
@@ -159,7 +168,7 @@ def evaluate(testRoot, moduleDict, exceptionMap=ERROR_HINT_MAP, htmlOutput=False
         # load test cases into question
         tests = filter(lambda t: re.match('[^#~.].*\.test\Z', t), os.listdir(subdir_path))
         tests = map(lambda t: re.match('(.*)\.test\Z', t).group(1), tests)
-        for t in sorted(tests):
+        for t in sorted(tests, key=lambda x:int(x.split('_')[-1])):
             test_file = os.path.join(subdir_path, '%s.test' % t)
             solution_file = os.path.join(subdir_path, '%s.solution' % t)
             test_out_file = os.path.join(subdir_path, '%s.test_output' % t)
@@ -202,7 +211,8 @@ def evaluate(testRoot, moduleDict, exceptionMap=ERROR_HINT_MAP, htmlOutput=False
                             timeout=timeout,
                             showGrades=showGrades,
                             coverSheetScore=coverSheetScore,
-                            studentinfo=studentinfo)
+                            studentinfo=studentinfo,
+                            outputDir=outputDir)
     if questionToGrade == None:
         for q in questionDicts:
             for prereq in questionDicts[q].get('depends', '').split():
@@ -230,7 +240,8 @@ def main():
              questionToGrade=options.gradeQuestion,
              projectName=projectParams.PROJECT_NAME,
              timeout=projectParams.TIME_OUT,
-             coverSheetScore=projectParams.COVERSHEET)
+             coverSheetScore=options.coverSheetScore,
+             outputDir=options.outputDir)
 
 if __name__=='__main__':
     main()

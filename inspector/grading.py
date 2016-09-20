@@ -29,7 +29,7 @@ inspectorModDir = os.path.dirname(os.path.realpath(__file__))
 
 class Grades:
   "A data structure for project grades, along with formatting code to display them"
-  def __init__(self, projectName, questionsAndMaxesList, htmlOutput=False, logOutput=False, timeout=30, showGrades=True, coverSheetScore=0, studentinfo = None):
+  def __init__(self, projectName, questionsAndMaxesList, htmlOutput=False, logOutput=False, timeout=30, showGrades=True, coverSheetScore=0, studentinfo = None, outputDir='.'):
     """
     Defines the grading scheme for a project
       projectName: project name
@@ -52,6 +52,8 @@ class Grades:
 
     self.htmlOutput = htmlOutput
     self.log = logOutput
+    self.outputDir = outputDir
+
     self.prereqs = defaultdict(set)
     self.timeout = timeout  # max time for any of the questions
     self.showGrades = showGrades #toggle to show/not show grades on html output
@@ -106,19 +108,32 @@ class Grades:
 
     self.loggedMessage['end_time'] = time.localtime()[1:6]
 
+    if self.studentinfo:
+        if self.maxes['coversheet']:
+            self.points['coversheet'] = int(self.maxes['coversheet']*len(self.studentinfo['filled'])/float(len(self.studentinfo)-2))
+    else:
+        if self.maxes['coversheet']:
+            self.points['coversheet'] = 0
+
     if self.htmlOutput:
         self.produceOutput()
 
+    if self.showGrades:
+        with open(os.path.join(self.outputDir, 'grade.json'), 'w') as o:
+            gradeDict = {q: (self.points[q], self.maxes[q]) for q in self.points.keys()}
+            gradeDict['total'] = sum(self.points.values())
+            json.dump(gradeDict, o)
+
     if self.log:
         # Store results of current run
-        if not os.path.isdir('.logs'):
-            os.mkdir('.logs')
-        current = [int(filename.split('.')[-1]) for filename in os.listdir('.logs') if filename.startswith('log')]
+        if not os.path.isdir(os.path.join(self.outputDir, '.logs')):
+            os.mkdir(os.path.join(self.outputDir, '.logs'))
+        current = [int(filename.split('.')[-1]) for filename in os.listdir(os.path.join(self.outputDir, '.logs')) if filename.startswith('log')]
         if current:
             ctr = max(current)+1
         else:
             ctr = 0
-        with open(os.path.join('.logs', 'log.'+str(ctr)), 'w') as o:
+        with open(os.path.join(self.outputDir, '.logs', 'log.'+str(ctr)), 'w') as o:
             json.dump(self.loggedMessage, o)
 
   def addExceptionMessage(self, inst):
@@ -154,11 +169,6 @@ class Grades:
 
     if self.studentinfo:
         paramsDict['studentinfo'] = self.studentinfo
-        if self.maxes['coversheet']:
-            self.points['coversheet'] = int(self.maxes['coversheet']*len(self.studentinfo['filled'])/float(len(self.studentinfo)-2))
-    else:
-        if self.maxes['coversheet']:
-            self.points['coversheet'] = 0
 
     paramsDict['totalpossible'] = sum(self.maxes.values())
     paramsDict['totalscore'] = sum(self.points.values())
@@ -208,17 +218,11 @@ class Grades:
     paramsDict['coversheet'] = {'correctness': util.correctnessColor(self.points['coversheet'], self.maxes['coversheet']),
                                 'badge': str(self.points['coversheet'])+"/"+str(self.maxes['coversheet'])}
 
-    with open('your_result.html', 'w') as o:
+    with open(os.path.join(self.outputDir, 'your_result.html'), 'w') as o:
           o.write(util.fillHTMLTemplate(open(os.path.join(inspectorModDir,
                                                           'jinjatemplate.html')).read(), paramsDict))
 
-    if self.showGrades:
-        with open('grade.json', 'w') as o:
-            gradeDict = {q: (self.points[q], self.maxes[q]) for q in self.points.keys()}
-            gradeDict['total'] = sum(self.points.values())
-            json.dump(gradeDict, o)
-
-    webbrowser.open(os.path.join('file:' + os.getcwd(), 'your_result.html'),
+    webbrowser.open(os.path.join('file:' + os.path.abspath(self.outputDir), 'your_result.html'),
                     new=0,
                     autoraise=True)
 
