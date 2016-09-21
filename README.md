@@ -11,10 +11,11 @@ Clone this repo and pull for latest changes before starting work.
 1. Create a new directory for the problem set somewhere on your machine.
 Let's refer to it as `/path/to/ps0x`
 
-1. Copy `otterInspect.py`, `testCaseReader.py`, `casefile_creator.txt`, and `inspector/` to this new directory:
+1. Copy `otterInspect.py`, `testCaseReader.py`, `casefile_creator.txt`, `honorcode.py` and `inspector/` to this new directory:
 
     ```
 $ cp otterInspect.py /path/to/ps0x
+$ cp honorcode.py /path/to/ps0x
 $ cp testCaseReader.py /path/to/ps0x
 $ cp casefile_creator.txt /path/to/ps0x
 $ cp -R inspector /path/to/ps0x
@@ -46,11 +47,13 @@ If you pickle arguments, the *entire* argument list should be pickled as a tuple
 
     This populates the `inspector/test_cases` directory with files readable by the otterInspect.
 
-1. Now delete `testCaseReader.py` and `casefile_creator.txt` since the students don't need these.
+1. You can now delete `testCaseReader.py` and `casefile_creator.txt` since the students don't need these.
 
 1. Edit `inspector/urls.txt` where each line has a task id (like "task1") and the URL to the problem set description of the task.
 
-1. Place the solution files for the problem set, the empty `honorcode.py` file, and all supporting files in your `/path/to/ps0x` directory. Test that running
+1. Edit the first few lines of the `main` function in `otterInspect.py` by specifying the filenames for the student code, project name, and due date.
+
+1. Place the solution files for the problem set, and all supporting files in your `/path/to/ps0x` directory. Test that running
 
     ```python otterInspect.py```
 
