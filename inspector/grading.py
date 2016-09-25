@@ -204,7 +204,8 @@ class Grades:
                         util.codeHighlight(error.text, error.offset))
                         for error in self.moduleErrors[q]]
 
-        paramsDict['questions'].append({'num':num,
+        paramsDict['questions'].append({'num': num,
+                                        'name': q,
                                         'correctness':correctness,
                                         'badge':badge,
                                         'passedcases':dict(passedcases),

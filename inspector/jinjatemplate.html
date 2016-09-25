@@ -11,7 +11,7 @@
 <body>
 
   <div class="container">
-  <h1>Otter Inspector <img src="http://cs111.wellesley.edu/content/autograderfiles/otter_inspector_small.png" class="otter"/></h1>
+  <h1>Otter Inspector for {{ pstitle }}<img src="http://cs111.wellesley.edu/content/autograderfiles/otter_inspector_small.png" class="otter"/></h1>
     <h2>Results
     {% if studentinfo is defined and studentinfo['YourFullName'] != '' %}
     for {{ studentinfo['YourFullName'] }}
@@ -42,7 +42,7 @@ test cases.
 <div class="shortform">
   <button type="button" class="btn btn-{{q['correctness']}}" data-toggle="collapse" data-target="#q{{q['num']}}">
     <span class="glyphicon glyphicon-menu-down"></span>
-    Question {{q['num']}}
+    {{q['name']}}
     {% if showGrades or q['correctness']=='warning' %}<span class="badge">{{q['badge']}}</span>{% endif %}
   </button>
   </div>
