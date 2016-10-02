@@ -325,7 +325,13 @@ class GradedImageTest(EvalTest):
         return False
 
 class PrintTest(EvalTest):
-
+    """Class for functions containing print"""
     def __init__(self,question,testDict):
         testDict['test']='projectTestClasses.capturePrint('+testDict['test'].split('(')[0]+',['+testDict['test'][:-1].split('(')[1]+'])'
         super(PrintTest, self).__init__(question, testDict)
+
+class InputTest(EvalTest):
+    """Class for functions containing raw_input (and possibly print)"""
+    def __init__(self,question,testDict):
+        testDict['test']='projectTestClasses.feedInput('+testDict['test'].split('(')[0]+',['+testDict['test'][:-1].split('(')[1]+']'+', "something")'  #TODO: how to encode sample inputs (something)? 
+        super(InputTest, self).__init__(question, testDict)
