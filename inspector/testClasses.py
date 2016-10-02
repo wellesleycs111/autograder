@@ -21,6 +21,7 @@ import cStringIO
 
 import inspector.util as util
 
+# -- print --
 class ReturnPrint:
     """Datatype returned by a function that also prints"""
     def __init__(self, returnval, printval):
@@ -50,7 +51,26 @@ def capturePrint(func, arglist):
     sys.stdout = old_stdout
     return ReturnPrint(returnval, printval)
 
+# -- raw_input --
+def feedInput(func, arglist, s):
+    """Execute a function that contains raw_input,
+    feed in s instead of stdin"""
+    old_stdin = sys.stdin
+    old_stdout = sys.stdout
 
+    tofeed = cStringIO.StringIO(s)
+    result = cStringIO.StringIO()
+
+    sys.stdin = tofeed
+    sys.stdout = result
+
+    returnval = func(*arglist)  # call the function
+    printval = '\n'.join([line.rstrip() for line in result.getvalue().splitlines()])  # strip trailing spaces from ends
+
+    sys.stdin = old_stdin
+    sys.stdout = old_stdout
+
+    return ReturnPrint(returnval, printval)
 
 # Class which models a question in a project.  Note that questions have a
 # maximum number of points they are worth, and are composed of a series of
@@ -140,7 +160,7 @@ class Message:
             m + '\n\tscore: {0}/{1}'.format(self.grade[0], self.grade[1])
         m += '</pre>'
         return m
-        
+
     def __str__(self):
         m = 'Case {0}.\n\t{1}\n\t{2}\n\t{3}'.format(self.casenum,
                                                     self.description,
