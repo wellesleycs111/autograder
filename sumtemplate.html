@@ -1,0 +1,36 @@
+   <!DOCTYPE html>
+<html>
+<head>
+<title>Problem Set Results Summary</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+<link href="http://cs111.wellesley.edu/content/autograderfiles/grader.css" rel="stylesheet"/>
+</head>
+<body>
+
+  <div class="container">
+  <h1>Summary</h1>
+
+<table class="table table-bordered">
+  <tr>
+    <th>Student Username</th>
+    <th>Total Score</th>
+  </tr>
+  {% for student in scores %}
+      {% if student['total'][0] < student['total'][1] %}
+        <tr class="danger" style="font-weight:bold;">
+      {% else %}
+        <tr class="success">
+      {% endif %}
+          <td> {{ student['name'] }} </td>
+          <td>{{ student['total'][0] }}/{{ student['total'][1] }}</td>
+        </tr>
+  {% endfor %}
+</table>
+
+</div><!--container-->
+
+</body>
+</html>

@@ -52,13 +52,13 @@ def correctnessColor(pt, mx):
         return 'danger'
     return 'warning'
 
-def fillHTMLTemplate(templateString, paramsDict):
+def fillHTMLTemplate(templateFile, paramsDict, outfile):
     """Invokes the jinja2 methods to fill in the slots
        in the template.
     """
-    templateObject = jinja2.Template(templateString)
-    htmlContent = templateObject.render(paramsDict)
-    return htmlContent
+    templateObject = jinja2.Template(open(templateFile).read())
+    with open(outfile, 'w') as o:
+        o.write(templateObject.render(paramsDict))
 
 class ModuleError(object):
     def __init__(self, exceptionType, detail):

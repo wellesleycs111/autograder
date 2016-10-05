@@ -75,7 +75,7 @@ def readCommand(argv):
                     help = 'Directory to place outputs')
     parser.add_option('--coversheet',
                     dest = 'coverSheetScore',
-                    default = 0,
+                    default = 5,
                     type=int,
                     help = 'Number of points for cover sheet/honor code')
     (options, args) = parser.parse_args(argv)
@@ -221,8 +221,8 @@ def evaluate(testRoot, moduleDict, exceptionMap=ERROR_HINT_MAP, htmlOutput=False
     grades.grade(sys.modules[__name__], syntaxErrors, funcNotDefined, exceptionMap)
     return grades.points
 
-def main():
-    options = readCommand(sys.argv)
+def main(argv):
+    options = readCommand(argv)
     codePaths = options.studentCode.split(',')
 
     moduleDict = {}
@@ -244,4 +244,4 @@ def main():
              outputDir=options.outputDir)
 
 if __name__=='__main__':
-    main()
+    main(sys.argv)

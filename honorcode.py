@@ -14,8 +14,8 @@ PartnerFullName = ""
 PartnerUsername = ""
 
 TimeReading = 0 # time in hours spent on general reading
-TimeTask1 = 1  # time in hours spent on question 1
-TimeTask2 = 2  # time in hours spent on question 2
+TimeTask1 = 0  # time in hours spent on question 1
+TimeTask2 = 0  # time in hours spent on question 2
 
 # Adhering to Wellesley's Honor Code, how did you write your code?
 # Enter 1, 2, 3, or 4 for HowWeWorked:
@@ -27,4 +27,4 @@ HowWeWorked = 0
 
 # If you received help from CS111 Staff OR consulted external sources,
 # list the people or sources below; otherwise, write "no help".
-Sources = ""
+Sources = " "

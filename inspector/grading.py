@@ -120,8 +120,9 @@ class Grades:
 
     if self.showGrades:
         with open(os.path.join(self.outputDir, 'grade.json'), 'w') as o:
-            gradeDict = {q: (self.points[q], self.maxes[q]) for q in self.points.keys()}
-            gradeDict['total'] = sum(self.points.values())
+            gradeDict = {'tasks': {q: (self.points[q], self.maxes[q]) for q in self.points.keys()}}
+            gradeDict['total'] = (sum(self.points.values()), 
+                                  sum(self.maxes.values()))
             json.dump(gradeDict, o)
 
     if self.log:
@@ -219,9 +220,11 @@ class Grades:
     paramsDict['coversheet'] = {'correctness': util.correctnessColor(self.points['coversheet'], self.maxes['coversheet']),
                                 'badge': str(self.points['coversheet'])+"/"+str(self.maxes['coversheet'])}
 
-    with open(os.path.join(self.outputDir, 'your_result.html'), 'w') as o:
-          o.write(util.fillHTMLTemplate(open(os.path.join(inspectorModDir,
-                                                          'jinjatemplate.html')).read(), paramsDict))
+    util.fillHTMLTemplate(os.path.join(inspectorModDir,
+                                       'jinjatemplate.html'), 
+                          paramsDict, 
+                          os.path.join(self.outputDir, 
+                                       'your_result.html'))
 
     webbrowser.open(os.path.join('file:' + os.path.abspath(self.outputDir), 'your_result.html'),
                     new=0,
