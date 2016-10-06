@@ -156,7 +156,7 @@ def evaluate(testRoot, moduleDict, exceptionMap=ERROR_HINT_MAP, htmlOutput=False
     return grades.points
 
 def main():
-    STUDENT_CODE_DIR = '.'
+    STUDENT_CODE_DIR = '../psetsolutions'
     STUDENT_CODE_LIST = 'rock_paper_scissors.py,honorcode.py'
     PROJECT_TEST_CLASSES = 'inspector/testClasses.py'
     PROJECT_NAME = 'Problem Set 04 (Due Oct 3)'
