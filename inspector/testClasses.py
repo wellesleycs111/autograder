@@ -208,6 +208,9 @@ class EvalTest(TestCase): # moved from tutorialTestClasses
         else:
             expected_result = str(solutionDict['result'])
 
+        if len(expected_result)>200:
+            expected_result = expected_result[:200]+'...'  # truncate
+
         # exception
         if result=='Exception was raised':
             if showGrades:
@@ -249,6 +252,9 @@ class EvalTest(TestCase): # moved from tutorialTestClasses
         else:
             student_result = str(result)
 
+        if len(student_result)>200:
+            student_result = student_result[:200]+'...' #truncate
+
         if showGrades:
             msg = Message(self.casenum,
                         self.failure,
@@ -268,23 +274,38 @@ class ImageTest(EvalTest):
 
     def execute(self,grades,moduleDict,solutionDict,showGrades):
         result = self.evalCode(moduleDict)
-        #TODO: modify into new message class
+
         if result == 'Exception was raised':
-            msg = '<pre>Case {0}.\n\t{1}\n\tException raised: {2}\n\tExpected result: <img src={3}></pre>'.format(self.casenum,
-                                                                                                 self.failure,
-                                                                                                 self.inst,
-                                                                                                 solutionDict['result'])
-            grades.addMessage(('IMAGE',self.funcname,msg))
+            if showGrades:
+                msg = Message(self.casenum,
+                            self.failure,
+                            'Exception raised: '+str(self.inst),
+                            expected_result,
+                            (0, self.weight))
+            else:
+                msg = Message(self.casenum,
+                            self.failure,
+                            'Exception raised: '+str(self.inst),
+                            expected_result)
+
+            grades.addMessage(('FAIL', self.funcname, msg))
             grades.addErrorHints(self.inst)
             return False
 
-        # result will be a cs1graphics Canvas
-        userimage = os.path.splitext(os.path.basename(self.path))[0]+'.png'
-        result.saveToFile(userimage)
+        userimage = os.path.basename(solutionDict['result'])
 
-        msg = '<pre>Case {0}.\n\tExpected image:\n<img src={1}>\n\tYour image:\n<img src={2}></pre>'.format(self.casenum,
-                                                                                                                solutionDict['result'],
-                                                                                                                userimage)
+        if showGrades:
+            msg = Message(self.casenum,
+                        self.success,
+                        'Your image:\n'+'<img src="'+userimage+'" />',
+                        '\n<img src="'+solutionDict['result']+'" />',
+                        (self.weight, self.weight))
+        else:
+            msg = Message(self.casenum,
+                        self.success,
+                        'Your image:\n'+'<img src="'+userimage+'" />',
+                        '\n<img src="'+solutionDict['result']+'" />')
+
         grades.addMessage(('IMAGE', self.funcname, msg))
         return True
 
@@ -333,5 +354,5 @@ class PrintTest(EvalTest):
 class InputTest(EvalTest):
     """Class for functions containing raw_input (and possibly print)"""
     def __init__(self,question,testDict):
-        testDict['test']='projectTestClasses.feedInput('+testDict['test'].split('(')[0]+',['+testDict['test'][:-1].split('(')[1]+']'+', "something")'  #TODO: how to encode sample inputs (something)? 
+        testDict['test']='projectTestClasses.feedInput('+testDict['test'].split('(')[0]+',['+testDict['test'][:-1].split('(')[1]+']'+', "something")'  #TODO: how to encode sample inputs (something)?
         super(InputTest, self).__init__(question, testDict)

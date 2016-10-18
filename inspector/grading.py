@@ -121,7 +121,7 @@ class Grades:
     if self.showGrades:
         with open(os.path.join(self.outputDir, 'grade.json'), 'w') as o:
             gradeDict = {'tasks': {q: (self.points[q], self.maxes[q]) for q in self.points.keys()}}
-            gradeDict['total'] = (sum(self.points.values()), 
+            gradeDict['total'] = (sum(self.points.values()),
                                   sum(self.maxes.values()))
             json.dump(gradeDict, o)
 
@@ -196,7 +196,7 @@ class Grades:
             elif status == 'FAIL':
                 failedcases[funcname].append(msg.nohighlight().replace(r"\n","<br>"))
             elif status == 'IMAGE':
-                images[funcname].append(desc.replace('\n', '<br>'))
+                images[funcname].append(msg.nohighlight().replace('\n', '<br>'))
                 badge="Image Test"
 
         undefined = ['<pre>The function '+funcname+' is not defined.</pre>' for funcname in self.funcNotDefined[q]]
@@ -221,9 +221,9 @@ class Grades:
                                 'badge': str(self.points['coversheet'])+"/"+str(self.maxes['coversheet'])}
 
     util.fillHTMLTemplate(os.path.join(inspectorModDir,
-                                       'jinjatemplate.html'), 
-                          paramsDict, 
-                          os.path.join(self.outputDir, 
+                                       'jinjatemplate.html'),
+                          paramsDict,
+                          os.path.join(self.outputDir,
                                        'your_result.html'))
 
     webbrowser.open(os.path.join('file:' + os.path.abspath(self.outputDir), 'your_result.html'),
