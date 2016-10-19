@@ -6,7 +6,7 @@
 
 # imports from python standard library
 import imp
-import optparse
+import argparse
 import os
 import re
 import sys
@@ -155,13 +155,15 @@ def evaluate(testRoot, moduleDict, exceptionMap=ERROR_HINT_MAP, htmlOutput=False
     grades.grade(sys.modules[__name__], syntaxErrors, funcNotDefined, exceptionMap)
     return grades.points
 
-def main():
-    STUDENT_CODE_DIR = '../psetsolutions'
-    STUDENT_CODE_LIST = 'rock_paper_scissors.py,honorcode.py'
+def main(showGrades, htmlOutput):
+    # edit this for each problem set
+    STUDENT_CODE_DIR = '.'
+    STUDENT_CODE_LIST = 'wordsearch.py,tictactoe.py,honorcode.py'
     PROJECT_TEST_CLASSES = 'inspector/testClasses.py'
-    PROJECT_NAME = 'Problem Set 04 (Due Oct 3)'
+    PROJECT_NAME = 'Problem Set 05 (Due Oct 17)'
     TIME_OUT = 60
-    COVERSHEET = 9
+    COVERSHEET = 10
+    # done editing
 
     codePaths = STUDENT_CODE_LIST.split(',')
 
@@ -174,13 +176,25 @@ def main():
 
     evaluate('inspector/test_cases',
              moduleDict,
-             htmlOutput=True,
+             htmlOutput=htmlOutput,
              logOutput=True,
-             showGrades=False,
+             showGrades=showGrades,
              questionToGrade=None,
              projectName=PROJECT_NAME,
              timeout=TIME_OUT,
              coverSheetScore=COVERSHEET)
 
 if __name__=='__main__':
-    main()
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--showGrades',
+                      dest = 'showGrades',
+                      action = 'store_true',
+                      default = False,
+                      help = 'Won\'t show grades on html output or write grade.json file')
+    parser.add_argument('--htmlOutput',
+                    dest = 'htmlOutput',
+                    action = 'store_false',  # becomes false when specified
+                    default = True,
+                    help = 'Generate and show HTML output files')
+    args = parser.parse_args()
+    main(args.showGrades, args.htmlOutput)
