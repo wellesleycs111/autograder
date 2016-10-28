@@ -200,6 +200,13 @@ class EvalTest(TestCase): # moved from tutorialTestClasses
             self.inst=inst
             return 'Exception was raised'
 
+    def areResultsEqual(self, actualResult, expectedResult):
+        # Added by Lyn to fuzzify float comparisons
+        if isinstance(actualResult, float) and isinstance(expectedResult, float):
+            return round(actualResult, 5) == round(expectedResult, 5)
+        else:
+            return actualResult == expectedResult
+
     def execute(self, grades, moduleDict, solutionDict, showGrades):
         result = self.evalCode(moduleDict)
 
@@ -230,7 +237,7 @@ class EvalTest(TestCase): # moved from tutorialTestClasses
             return False
 
         # correct
-        if result == solutionDict['result']:
+        if self.areResultsEqual(result, solutionDict['result']):
             if showGrades:
                 msg = Message(self.casenum,
                             self.success,
