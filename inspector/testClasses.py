@@ -218,6 +218,14 @@ class EvalTest(TestCase): # moved from tutorialTestClasses
         if len(expected_result)>200:
             expected_result = expected_result[:200]+'...'  # truncate
 
+        if isinstance(result, str):
+            student_result = '"{0}"'.format(result)  # otherwise, "" are stripped   
+        else:
+            student_result = str(result)
+
+        if len(student_result)>200:
+            student_result = student_result[:200]+'...' #truncate                
+        
         # exception
         if result=='Exception was raised':
             if showGrades:
@@ -241,27 +249,19 @@ class EvalTest(TestCase): # moved from tutorialTestClasses
             if showGrades:
                 msg = Message(self.casenum,
                             self.success,
-                            'Your result: '+expected_result,
+                            'Your result: '+student_result,
                             expected_result,
                             (self.weight, self.weight))
             else:
                 msg = Message(self.casenum,
                             self.success,
-                            'Your result: '+expected_result,
+                            'Your result: '+student_result,
                             expected_result)
 
             grades.addMessage(('PASS', self.funcname, msg))
             return True
 
         # incorrect
-        if isinstance(result, str):
-            student_result = '"{0}"'.format(result)  # otherwise, "" are stripped
-        else:
-            student_result = str(result)
-
-        if len(student_result)>200:
-            student_result = student_result[:200]+'...' #truncate
-
         if showGrades:
             msg = Message(self.casenum,
                         self.failure,
