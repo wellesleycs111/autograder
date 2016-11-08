@@ -201,11 +201,32 @@ class EvalTest(TestCase): # moved from tutorialTestClasses
             return 'Exception was raised'
 
     def areResultsEqual(self, actualResult, expectedResult):
-        # Added by Lyn to fuzzify float comparisons
-        if isinstance(actualResult, float) and isinstance(expectedResult, float):
-            return round(actualResult, 5) == round(expectedResult, 5)
-        else:
-            return actualResult == expectedResult
+        """fuzzify float comparisons"""
+        fuzzyFloatDigits = 5
+        if type(val1) != type(val2):
+            return False
+        elif isinstance(val1, float): # Do "close enough" fuzzy equality on floats
+          return round(val1,fuzzyFloatDigits) == round(val2,fuzzyFloatDigits)
+        elif isinstance(val1, list):
+          return len(val1) == len(val2) and all([areResultsEqual(v1,v2) for v1,v2 in zip(val1,val2)])
+        elif isinstance(val1, tuple):
+          return len(val1) == len(val2) and all([areResultsEqual(v1,v2) for v1,v2 in zip(val1,val2)])
+        elif isinstance(val1, set):
+          if len(val1) !=len(val2):
+                return False
+          else:
+            sortedVals1 = sorted(val1)
+            sortedVals2 = sorted(val2)
+            return all([areResultsEqual(v1,v2) for v1,v2 in zip(sortedVals1,sortedVals2)])
+        elif isinstance(val1, dict):
+          if len(val1) !=len(val2):
+                return False
+          else:
+            sortedItems1 = sorted(val1.items())
+            sortedItems2 = sorted(val2.items())
+            return all([key1 == key2 and areResultsEqual(v1,v2) for ((key1,v1),(key2,v2)) in zip(sortedItems1,sortedItems2)])
+        else: # Do regular equality check
+            return val1 == val2
 
     def execute(self, grades, moduleDict, solutionDict, showGrades):
         result = self.evalCode(moduleDict)
@@ -219,13 +240,13 @@ class EvalTest(TestCase): # moved from tutorialTestClasses
             expected_result = expected_result[:200]+'...'  # truncate
 
         if isinstance(result, str):
-            student_result = '"{0}"'.format(result)  # otherwise, "" are stripped   
+            student_result = '"{0}"'.format(result)  # otherwise, "" are stripped
         else:
             student_result = str(result)
 
         if len(student_result)>200:
-            student_result = student_result[:200]+'...' #truncate                
-        
+            student_result = student_result[:200]+'...' #truncate
+
         # exception
         if result=='Exception was raised':
             if showGrades:
