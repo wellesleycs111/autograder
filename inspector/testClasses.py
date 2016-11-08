@@ -200,7 +200,7 @@ class EvalTest(TestCase): # moved from tutorialTestClasses
             self.inst=inst
             return 'Exception was raised'
 
-    def areResultsEqual(self, actualResult, expectedResult):
+    def areResultsEqual(self, val1, val2):
         """fuzzify float comparisons"""
         fuzzyFloatDigits = 5
         if type(val1) != type(val2):
