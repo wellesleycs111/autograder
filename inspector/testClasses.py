@@ -208,23 +208,23 @@ class EvalTest(TestCase): # moved from tutorialTestClasses
         elif isinstance(val1, float): # Do "close enough" fuzzy equality on floats
           return round(val1,fuzzyFloatDigits) == round(val2,fuzzyFloatDigits)
         elif isinstance(val1, list):
-          return len(val1) == len(val2) and all([areResultsEqual(v1,v2) for v1,v2 in zip(val1,val2)])
+          return len(val1) == len(val2) and all([self.areResultsEqual(v1, v2) for v1,v2 in zip(val1,val2)])
         elif isinstance(val1, tuple):
-          return len(val1) == len(val2) and all([areResultsEqual(v1,v2) for v1,v2 in zip(val1,val2)])
+          return len(val1) == len(val2) and all([self.areResultsEqual(v1,v2) for v1,v2 in zip(val1,val2)])
         elif isinstance(val1, set):
           if len(val1) !=len(val2):
                 return False
           else:
             sortedVals1 = sorted(val1)
             sortedVals2 = sorted(val2)
-            return all([areResultsEqual(v1,v2) for v1,v2 in zip(sortedVals1,sortedVals2)])
+            return all([self.areResultsEqual(v1,v2) for v1,v2 in zip(sortedVals1,sortedVals2)])
         elif isinstance(val1, dict):
           if len(val1) !=len(val2):
                 return False
           else:
             sortedItems1 = sorted(val1.items())
             sortedItems2 = sorted(val2.items())
-            return all([key1 == key2 and areResultsEqual(v1,v2) for ((key1,v1),(key2,v2)) in zip(sortedItems1,sortedItems2)])
+            return all([key1 == key2 and self.areResultsEqual(v1,v2) for ((key1,v1),(key2,v2)) in zip(sortedItems1,sortedItems2)])
         else: # Do regular equality check
             return val1 == val2
 
