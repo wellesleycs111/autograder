@@ -155,7 +155,7 @@ def evaluate(testRoot, moduleDict, exceptionMap=ERROR_HINT_MAP, htmlOutput=False
     grades.grade(sys.modules[__name__], syntaxErrors, funcNotDefined, exceptionMap)
     return grades.points
 
-def main(showGrades, htmlOutput):
+def main(showGrades, htmlOutput, task):
     # edit this for each problem set
     STUDENT_CODE_DIR = '.'
     STUDENT_CODE_LIST = 'wordsearch.py,tictactoe.py,honorcode.py'
@@ -173,13 +173,12 @@ def main(showGrades, htmlOutput):
         moduleDict[moduleName] = loadModuleFile(moduleName, os.path.join(STUDENT_CODE_DIR, cp))
     moduleName = re.match('.*?([^/]*)\.py', PROJECT_TEST_CLASSES).group(1)
     moduleDict['projectTestClasses'] = loadModuleFile(moduleName, PROJECT_TEST_CLASSES)
-
     evaluate('inspector/test_cases',
              moduleDict,
              htmlOutput=htmlOutput,
              logOutput=True,
              showGrades=showGrades,
-             questionToGrade=None,
+             questionToGrade=task,
              projectName=PROJECT_NAME,
              timeout=TIME_OUT,
              coverSheetScore=COVERSHEET)
@@ -196,5 +195,9 @@ if __name__=='__main__':
                     action = 'store_false',  # becomes false when specified
                     default = True,
                     help = 'Generate and show HTML output files')
+    parser.add_argument('--task',
+                        dest = 'task',
+                        default = None,
+                        help = 'Grade a specific task')
     args = parser.parse_args()
-    main(args.showGrades, args.htmlOutput)
+    main(args.showGrades, args.htmlOutput, args.task)
