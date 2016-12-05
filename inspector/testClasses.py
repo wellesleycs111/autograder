@@ -147,7 +147,7 @@ class Message:
     def highlight(self):
         m = '<pre>Case {0}.\n\t{1}{2}'.format(self.casenum,
                                               self.description,
-                                              util.codeHighlight(str(self.error)+'\nExpected result: '+self.expected))
+                                              util.codeHighlight(str(self.error)+'\n\nExpected result: '+self.expected))
         if self.grade:
             m + '\n\tscore: {0}/{1}'.format(self.grade[0], self.grade[1])
         m += '</pre>'
@@ -155,7 +155,7 @@ class Message:
     def nohighlight(self):
         m = '<pre>Case {0}.\n\t{1}{2}'.format(self.casenum,
                                               self.description,
-                                              '<pre>{0}</pre>'.format(str(self.error)+'\nExpected result: '+self.expected))
+                                              '<pre>{0}</pre>'.format(str(self.error)+'\n\nExpected result: '+self.expected))
         if self.grade:
             m + '\n\tscore: {0}/{1}'.format(self.grade[0], self.grade[1])
         m += '</pre>'
@@ -229,6 +229,8 @@ class EvalTest(TestCase): # moved from tutorialTestClasses
             return val1 == val2
 
     def execute(self, grades, moduleDict, solutionDict, showGrades):
+        truncatelen = 1000 # change as needed
+        
         result = self.evalCode(moduleDict)
 
         if isinstance(solutionDict['result'], str):
@@ -236,16 +238,16 @@ class EvalTest(TestCase): # moved from tutorialTestClasses
         else:
             expected_result = str(solutionDict['result'])
 
-        if len(expected_result)>200:
-            expected_result = expected_result[:200]+'...'  # truncate
+        if len(expected_result)>truncatelen:
+            expected_result = expected_result[:truncatelen]+'...'  # truncate
 
         if isinstance(result, str):
             student_result = '"{0}"'.format(result)  # otherwise, "" are stripped
         else:
             student_result = str(result)
 
-        if len(student_result)>200:
-            student_result = student_result[:200]+'...' #truncate
+        if len(student_result)>truncatelen:
+            student_result = student_result[:truncatelen]+'...' #truncate
 
         # exception
         if result=='Exception was raised':

@@ -13,7 +13,6 @@ YourUsername = ""
 PartnerFullName = ""
 PartnerUsername = ""
 
-TimeReading = 0 # time in hours spent on general reading
 TimeTask1 = 0  # time in hours spent on question 1
 TimeTask2 = 0  # time in hours spent on question 2
 

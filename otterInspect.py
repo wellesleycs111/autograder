@@ -162,7 +162,7 @@ def main(showGrades, htmlOutput):
     PROJECT_TEST_CLASSES = 'inspector/testClasses.py'
     PROJECT_NAME = 'Problem Set 05 (Due Oct 17)'
     TIME_OUT = 60
-    COVERSHEET = 10
+    COVERSHEET = 8
     # done editing
 
     codePaths = STUDENT_CODE_LIST.split(',')
